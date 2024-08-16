@@ -16,7 +16,7 @@ CC65:
 - LIB.INC is library with specific VIC20 routines
 - \AGD\ENGINE.INC is MPAGD engine
 
-I inserted an endless loop just after the mloop label for testing.
+I inserted an endless loop just after the mloop label for testing in the engine.
 This code is relocated if I want to test a part of the code.
 Screenbuilding is working now.
 
