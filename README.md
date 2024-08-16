@@ -22,11 +22,11 @@ Screenbuilding is working now.
 
 
 VIC20 memory:
-- $0400-$06ff = MAP with tile properties
-- $0700-$0717 = Screen Line offset table low-byte
-- $0718-$072f = Screen Line offset table low-byte
-- $1000-$1240 = Screen
-- $1800-$1aff = Font storage (char 0-95)
-- $1b00-????? = Tiles copied from MPAGD (96-xx)
-- $2000-????? = Gamecode
-- $9400-$97ff = To be used for tile colours
+- $0400-$06ff   = MAP with tile properties
+- $0700-$0717   = Screen Line offset table low-byte
+- $0718-$072f   = Screen Line offset table low-byte
+- $1000-$1240   = Screen
+- $1800-$1aff   = Font storage (char 0-95)
+- $1b00-?????   = Tiles copied from MPAGD (96-xx)
+- $2000-?????   = Gamecode
+- $9400-$97ff   = To be used for tile colours
