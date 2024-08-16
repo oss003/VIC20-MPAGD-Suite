@@ -1,0 +1,238 @@
+; Spectrum Next AGD Game Compiler skeleton program
+; Jonathan Cauldwell, February 2018
+
+; Define the play area in character/block cells
+; Screen is divided into 32 columns and 24 rows (Spectrum and Next/Timex) or 25 rows (CPC)
+; The 4 parameters for DEFINEWINDOW are top edge, left edge, height and width respectively
+
+DEFINEWINDOW    1 1 22 30
+
+DEFINECONTROLS  'Q' 'A' 'O' 'P' ' ' 'M' 'N' '1' '2'
+
+DEFINEFONT	$00,$00,$00,$00,$00,$00,$00,$00
+		$00,$30,$30,$30,$30,$30,$00,$30
+		$00,$30,$0C,$0C,$33,$30,$C0,$C0
+		$0C,$3C,$3F,$F3,$FF,$F3,$F3,$3C
+		$00,$CC,$FC,$FC,$3C,$CC,$0C,$F0
+		$03,$03,$0F,$C3,$FF,$C3,$FF,$C3
+		$3C,$FF,$3C,$3C,$FF,$3C,$00,$3C
+		$3C,$CF,$FF,$FC,$F3,$CC,$F3,$3C
+		$00,$0C,$30,$30,$30,$30,$0C,$00
+		$00,$30,$0C,$0C,$0C,$0C,$30,$00
+		$3C,$3C,$FF,$F3,$FC,$F3,$3C,$3C
+		$30,$3C,$FC,$FF,$C3,$F3,$C3,$FC
+		$00,$00,$00,$00,$00,$0C,$0C,$30
+		$00,$00,$00,$00,$3C,$00,$00,$00
+		$00,$00,$00,$00,$00,$00,$30,$00
+		$0C,$3C,$3F,$FF,$C3,$CF,$C3,$3F
+		$30,$FC,$CC,$CC,$CC,$FC,$30,$00
+		$30,$F0,$F0,$30,$30,$FC,$FC,$00
+		$F0,$FC,$0C,$30,$C0,$FC,$FC,$00
+		$F0,$FC,$0C,$30,$0C,$FC,$F0,$00
+		$CC,$CC,$CC,$FC,$0C,$0C,$0C,$00
+		$3C,$FC,$C0,$F0,$0C,$FC,$F0,$00
+		$3C,$FC,$C0,$FC,$CC,$FC,$30,$00
+		$F0,$FC,$0C,$0C,$30,$C0,$C0,$00
+		$30,$FC,$CC,$30,$CC,$FC,$30,$00
+		$3C,$FC,$CC,$FC,$3C,$0C,$0C,$00
+		$00,$00,$00,$30,$00,$00,$30,$00
+		$00,$00,$00,$00,$00,$00,$00,$00
+		$F0,$FC,$FF,$FF,$FF,$C3,$C3,$FF
+		$00,$00,$00,$00,$00,$00,$00,$00
+		$00,$3C,$00,$3C,$3C,$FF,$C3,$3C
+		$3C,$0F,$0F,$0F,$0F,$0F,$0F,$3C
+		$00,$3F,$CF,$3F,$CF,$3F,$CF,$3F
+		$30,$FC,$0C,$FC,$FC,$CC,$CC,$00
+		$F0,$FC,$0C,$F0,$CC,$FC,$F0,$00
+		$3C,$FC,$00,$C0,$C0,$FC,$3C,$00
+		$F0,$FC,$0C,$CC,$CC,$FC,$F0,$00
+		$3C,$FC,$00,$F0,$C0,$FC,$3C,$00
+		$3C,$FC,$00,$F0,$C0,$C0,$C0,$00
+		$3C,$FC,$00,$CC,$CC,$FC,$3C,$00
+		$CC,$CC,$0C,$FC,$CC,$CC,$CC,$00
+		$FC,$FC,$00,$30,$30,$FC,$FC,$00
+		$0C,$0C,$00,$0C,$0C,$FC,$F0,$00
+		$CC,$CC,$30,$F0,$F0,$CC,$CC,$00
+		$C0,$C0,$00,$C0,$C0,$FC,$3C,$00
+		$CC,$FC,$0C,$CC,$CC,$CC,$CC,$00
+		$F0,$FC,$0C,$CC,$CC,$CC,$CC,$00
+		$30,$FC,$0C,$CC,$CC,$FC,$30,$00
+		$F0,$FC,$0C,$FC,$F0,$C0,$C0,$00
+		$30,$FC,$0C,$CC,$CC,$C0,$3C,$0C
+		$F0,$FC,$0C,$FC,$F0,$CC,$CC,$00
+		$3C,$FC,$00,$F0,$3C,$FC,$F0,$00
+		$FC,$FC,$00,$30,$30,$30,$30,$00
+		$CC,$CC,$0C,$CC,$CC,$FC,$3C,$00
+		$CC,$CC,$0C,$CC,$CC,$30,$30,$00
+		$CC,$CC,$0C,$CC,$CC,$FC,$CC,$00
+		$CC,$CC,$30,$30,$30,$CC,$CC,$00
+		$CC,$CC,$0C,$FC,$0C,$FC,$F0,$00
+		$FC,$FC,$00,$0C,$30,$FC,$FC,$00
+		$FC,$30,$30,$30,$30,$30,$30,$FC
+		$00,$C0,$C0,$30,$30,$0C,$0C,$00
+		$00,$F0,$30,$30,$30,$30,$F0,$00
+		$30,$FC,$FC,$FC,$FC,$30,$0C,$30
+		$00,$3F,$3F,$3F,$0C,$33,$00,$3F
+		$00,$FF,$CF,$33,$CC,$F3,$3C,$0F
+		$00,$00,$F0,$0C,$FC,$CC,$FC,$00
+		$00,$C0,$C0,$F0,$CC,$CC,$FC,$00
+		$FC,$03,$F3,$C3,$C3,$F3,$03,$FC
+		$00,$0C,$0C,$3C,$CC,$CC,$FC,$00
+		$00,$00,$3C,$CC,$FC,$C0,$FC,$00
+		$00,$30,$C0,$F0,$C0,$C0,$C0,$00
+		$00,$00,$3C,$CC,$CC,$FC,$0C,$F0
+		$00,$C0,$C0,$F0,$CC,$CC,$CC,$00
+		$00,$30,$00,$F0,$30,$30,$F0,$00
+		$00,$0C,$00,$0C,$0C,$0C,$CC,$30
+		$00,$C0,$CC,$F0,$F0,$CC,$CC,$00
+		$00,$C0,$C0,$C0,$C0,$C0,$30,$00
+		$00,$00,$30,$FC,$FC,$CC,$CC,$00
+		$00,$00,$F0,$CC,$CC,$CC,$CC,$00
+		$00,$00,$30,$CC,$CC,$CC,$30,$00
+		$00,$00,$F0,$CC,$CC,$F0,$C0,$C0
+		$00,$00,$3C,$CC,$CC,$3C,$0C,$0C
+		$00,$00,$30,$CC,$C0,$C0,$C0,$00
+		$00,$00,$3C,$C0,$30,$0C,$F0,$00
+		$00,$30,$FC,$30,$30,$30,$0C,$00
+		$CC,$F0,$F0,$F0,$F0,$F0,$F0,$C0
+		$3F,$FF,$CC,$C0,$C0,$F0,$FC,$C0
+		$00,$0F,$3F,$F3,$CF,$F3,$CF,$F3
+		$3C,$C3,$F3,$F3,$C3,$C3,$C3,$3C
+		$00,$30,$3C,$3F,$0F,$3F,$0F,$3F
+		$0C,$3C,$0C,$FF,$3F,$FF,$0C,$3C
+		$00,$3C,$30,$F0,$30,$30,$3C,$00
+		$00,$30,$30,$30,$30,$30,$30,$00
+		$00,$F0,$30,$3C,$30,$30,$F0,$00
+		$00,$3C,$F0,$00,$00,$00,$00,$00
+		$FC,$03,$F3,$C3,$C3,$F3,$03,$FC
+
+; Background blocks to be used in the game
+; First we define the type - eg EMPTYBLOCK, PLATFORMBLOCK or DEADLYBLOCK
+; Next 16 numbers are alternating graphic and attribute bytes from top to bottom
+
+; Block 0
+
+DEFINEBLOCK     EMPTYBLOCK      ; property
+                0 0 0 0 0 0 0 0 71                                      ; Spectrum.
+
+; Sprites
+; First argument defines the number of frames
+; Then 32 bytes for each sprite frame (Spectrum and Timex) or 80 bytes (CPC).
+
+DEFINESPRITE    1		; number of frames
+                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0         ; Spectrum and Timex.
+                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+
+; Screen layouts are best arranged in monospaced rows and columns
+; DEFINESCREEN is followed by the block numbers that make up the screen
+; Our play area is 22x22, so we need 22 rows of 22 columns
+; The compiler will automatically compress screens
+
+DEFINESCREEN
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+; Next we define the sprites that appear on the screen
+; SPRITEPOSITION requires 4 numbers for image, type, Y coordinate and X coordinate in that order
+; Coordinates are based on Spectrum screen, even for CPC so need to change for conversions
+
+SPRITEPOSITION 66,0,88,128
+
+
+; Define objects
+; Spectrum: First number is attribute, then the starting room, next 2 are for Y and X coordinates then 32 for image.
+; Timex: First number is the starting room, next 2 are for Y and X coordinates then 32 for image.
+; CPC: First number is the starting room, next 2 are for Y and X coordinates then 80 for image.
+; Coordinates are based on Spectrum screen, even for CPC so need to change for conversions
+
+; Spectrum:
+DEFINEOBJECT    0,0,160,32     ; attribute, room, Y, X
+                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+; Map.
+; First argument is WIDTH, second is the startscreen
+; We then arrange the map as a grid with correct width, monospaced here for readability
+; where no room is present we put 255
+
+MAP		WIDTH 3
+		STARTSCREEN 0
+		255 000 255
+ENDMAP
+
+; Sprite events
+
+; Player controls
+EVENT PLAYER
+
+EVENT SPRITETYPE1
+
+EVENT SPRITETYPE2
+
+EVENT SPRITETYPE3
+
+EVENT SPRITETYPE4
+
+EVENT SPRITETYPE5
+
+EVENT SPRITETYPE6
+
+EVENT SPRITETYPE7
+
+EVENT SPRITETYPE8
+
+EVENT INITSPRITE
+
+EVENT MAINLOOP1
+IF Z 0
+  EXPLODE 50
+  LET A 0
+  WHILE A < 255
+  ENDWHILE
+
+  LET Z 1
+ENDIF
+IF KEY OPTION1
+  LET Z 0
+ENDIF
+
+EVENT MAINLOOP2
+
+EVENT INTROMENU
+LET Z 1
+
+EVENT GAMEINIT
+
+EVENT RESTARTSCREEN
+cls
+
+EVENT FELLTOOFAR
+
+EVENT KILLPLAYER
+
+EVENT LOSTGAME
+
+EVENT COMPLETEDGAME
+
+EVENT NEWHIGHSCORE
+
+EVENT COLLECTBLOCK

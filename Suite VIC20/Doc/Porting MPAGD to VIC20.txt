@@ -1,0 +1,12 @@
+-------------------------------------------------------------------
+Screen:
+-------------------------------------------------------------------
+The screen of the VIC20 is character based and is set to 24x24
+
+-------------------------------------------------------------------
+Font:
+-------------------------------------------------------------------
+MPAGD has 96 characters of 8x8 = 768 bytes
+The VIC20 screencodes differ from the ASCII font but because these 
+codes are not used, the MPAGD font is copied 1:1 to $1800.
+This means that ASCII codes $20-$7F are screencodes $00-$5F

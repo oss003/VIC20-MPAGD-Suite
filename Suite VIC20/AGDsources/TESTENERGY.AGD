@@ -1,0 +1,316 @@
+; Spectrum Next AGD Game Compiler skeleton program
+; Jonathan Cauldwell, February 2018
+
+DEFINEWINDOW    2 1 20 29
+
+DEFINECONTROLS  'Q' 'A' 'O' 'P' ' ' '1' '2'
+
+DEFINEFONT      0 0 0 0 0 0 0 0
+                0 48 48 48 48 0 48 0
+                0 108 108 0 0 0 0 0
+                0 108 254 108 108 254 108 0
+                0 24 126 120 126 30 126 24
+                0 230 236 24 48 110 206 0
+                0 48 120 48 126 204 126 0
+                0 24 48 0 0 0 0 0
+                0 12 24 24 24 24 12 0
+                0 96 48 48 48 48 96 0
+                0 0 60 24 126 24 60 0
+                0 0 24 24 126 24 24 0
+                0 0 0 0 0 24 24 48
+                0 0 0 0 126 0 0 0
+                0 0 0 0 0 56 56 0
+                0 0 6 12 24 48 96 0
+                0 124 206 222 246 230 124 0
+                0 56 120 24 24 24 126 0
+                0 124 198 6 124 192 254 0
+                0 124 198 28 6 198 124 0
+                0 24 56 120 216 254 24 0
+                0 254 192 252 6 198 124 0
+                0 124 192 252 198 198 124 0
+                0 254 6 12 24 48 48 0
+                0 124 198 124 198 198 124 0
+                0 124 198 198 126 6 124 0
+                0 0 0 48 0 0 48 0
+                0 0 48 0 0 48 48 96
+                0 0 12 24 48 24 12 0
+                0 0 0 126 0 126 0 0
+                0 0 48 24 12 24 48 0
+                0 124 198 12 24 0 24 0
+                0 124 222 254 254 192 124 0
+                0 124 198 198 254 198 198 0
+                0 252 198 252 198 198 252 0
+                0 124 198 192 192 198 124 0
+                0 248 204 198 198 204 248 0
+                0 254 192 252 192 192 254 0
+                0 254 192 252 192 192 192 0
+                0 124 198 192 222 198 124 0
+                0 198 198 254 198 198 198 0
+                0 126 24 24 24 24 126 0
+                0 6 6 6 198 198 124 0
+                0 204 216 240 216 204 198 0
+                0 192 192 192 192 192 254 0
+                0 198 238 254 198 198 198 0
+                0 198 230 246 222 206 198 0
+                0 124 198 198 198 198 124 0
+                0 252 198 198 252 192 192 0
+                0 124 198 198 246 222 124 0
+                0 252 198 198 252 204 198 0
+                0 124 192 124 6 198 124 0
+                0 254 48 48 48 48 48 0
+                0 198 198 198 198 198 124 0
+                0 198 198 198 198 108 56 0
+                0 198 198 198 198 254 108 0
+                0 198 108 56 56 108 198 0
+                0 134 204 120 48 48 48 0
+                0 254 12 24 48 96 254 0
+                0 30 24 24 24 24 30 0
+                0 0 192 96 48 24 12 0
+                0 240 48 48 48 48 240 0
+                0 48 120 252 48 48 48 0
+                0 0 0 0 0 0 0 255
+                0 60 102 248 96 96 254 0
+                0 0 120 12 124 204 124 0
+                0 96 96 124 102 102 124 0
+                0 0 60 96 96 96 60 0
+                0 12 12 124 204 204 124 0
+                0 0 120 204 248 192 124 0
+                0 28 48 56 48 48 48 0
+                0 0 124 204 204 124 12 120
+                0 192 192 248 204 204 204 0
+                0 48 0 112 48 48 120 0
+                0 12 0 12 12 12 108 56
+                0 96 120 112 112 120 108 0
+                0 48 48 48 48 48 28 0
+                0 0 248 252 252 252 252 0
+                0 0 248 204 204 204 204 0
+                0 0 120 204 204 204 120 0
+                0 0 248 204 204 248 192 192
+                0 0 124 204 204 124 12 14
+                0 0 60 96 96 96 96 0
+                0 0 120 192 120 12 248 0
+                0 48 120 48 48 48 28 0
+                0 0 204 204 204 204 120 0
+                0 0 204 204 120 120 48 0
+                0 0 204 252 252 252 120 0
+                0 0 204 120 48 120 204 0
+                0 0 204 204 204 124 12 120
+                0 0 252 24 48 96 252 0
+                0 30 24 112 24 24 30 0
+                0 24 24 24 24 24 24 0
+                0 240 48 28 48 48 240 0
+                0 60 120 0 0 0 0 0
+                124 198 187 227 227 187 198 124
+
+; Topblocks 8x
+DEFINEBLOCK EMPTYBLOCK 0 0 0 0 0 0 0 0 71
+DEFINEBLOCK EMPTYBLOCK 0 0 0 0 0 0 0 255 $42
+DEFINEBLOCK EMPTYBLOCK 0 0 0 0 0 0 255 255 $42
+DEFINEBLOCK EMPTYBLOCK 0 0 0 0 0 255 255 255 $42
+DEFINEBLOCK EMPTYBLOCK 0 0 0 0 255 255 255 255 $42
+DEFINEBLOCK EMPTYBLOCK 0 0 0 255 255 255 255 255 $42
+DEFINEBLOCK EMPTYBLOCK 0 0 255 255 255 255 255 255 $42
+DEFINEBLOCK EMPTYBLOCK 0 255 255 255 255 255 255 255 $42
+
+; Full block
+DEFINEBLOCK EMPTYBLOCK 255 255 255 255 255 255 255 255 $42
+
+
+DEFINESPRITE 1			; Spider
+         0,0,0,0,0,0,0,0
+         0,0,3,128,7,192,7,224
+         7,76,55,234,42,18,32,4
+         16,8,8,8,4,0,4,0
+
+DEFINESPRITE 1			; Half spider/half child
+         3,128,7,192,7,224,7,64
+         3,224,1,192,3,0,3,128
+         3,76,55,42,42,18,32,4
+         16,8,8,8,4,0,4,0
+
+DEFINESPRITE 1			; Child
+         0,0,3,192,7,224,7,64
+         3,96,1,192,1,0,7,192
+         11,160,19,144,35,144,36,128
+         4,128,4,128,4,192,6,0
+
+DEFINESCREEN
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+SPRITEPOSITION 0,2,88,112
+
+DEFINEOBJECT    0,254,160,32
+                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+
+MAP		WIDTH 3
+		STARTSCREEN 0
+		255 000 255
+ENDMAP
+
+EVENT PLAYER
+  IF E < 160 		; Check for fase 2
+    LET IMAGE 2
+    IF E < 106 		; Check for fase 1
+      LET IMAGE 1
+      IF E < 53 	; Check for fase 0
+        LET IMAGE 0
+      ENDIF
+    ENDIF
+  ENDIF
+
+; Bounce player around
+
+  IF DIRECTION = 0
+    IF CANGOUP
+        SPRITEUP
+    ELSE
+        LET DIRECTION = 1
+    ENDIF
+  ELSE
+    IF CANGODOWN
+        SPRITEDOWN
+    ELSE
+        LET DIRECTION = 0
+    ENDIF
+  ENDIF
+
+  IF SETTINGA = 0
+    IF CANGOLEFT
+        SPRITELEFT
+    ELSE
+        LET SETTINGA = 1
+    ENDIF
+  ELSE
+    IF CANGORIGHT
+        SPRITERIGHT
+    ELSE
+        LET SETTINGA = 0
+    ENDIF
+  ENDIF
+
+  ANIMATE
+
+EVENT SPRITETYPE1
+
+EVENT SPRITETYPE2
+
+EVENT SPRITETYPE3
+
+EVENT SPRITETYPE4
+
+EVENT SPRITETYPE5
+
+EVENT SPRITETYPE6
+
+EVENT SPRITETYPE7
+
+EVENT SPRITETYPE8
+
+EVENT INITSPRITE
+
+EVENT MAINLOOP1
+
+ IF KEY OPTION1		; Check for press 1
+  IF E < 160
+    ADD 1 TO E
+  ENDIF
+  LET R = 1
+ ENDIF
+
+ IF KEY OPTION2		; Check for press 2
+  IF E > 0
+    SUBTRACT 1 FROM E
+  ENDIF
+  LET R = 1
+ ENDIF
+
+  IF R = 1		; Only draw bar if keys pressed
+
+  LET J = E
+  DIVIDE J BY 8		; J = nr full blocks
+  LET I = J
+  MULTIPLY I BY 8
+  LET K = E
+  SUBTRACT I FROM K	; K = topblock
+
+  LET L = 21
+
+  IF J > 0
+    REPEAT J		; Draw vertical bar
+     AT L,31
+     PUTBLOCK 8
+     SUBTRACT 1 FROM L
+    ENDREPEAT
+  ENDIF
+
+  AT L,31		; Draw top
+  IF E < 160
+    PUTBLOCK K
+  ENDIF
+
+  LET R = 0
+
+ ENDIF
+
+EVENT MAINLOOP2
+
+EVENT INTROMENU
+ CLS
+ PRINTMODE 1
+ AT 0 8
+ PRINT "ENERGY BAR TEST:"
+ PRINTMODE 0
+ AT 23 1
+ PRINT "PRESS 1->ENERGY+  2->ENERGY-"
+ LET E 0
+ LET R 1
+ LET S 2
+
+ LET L 2		; Draw empty energy bar
+ REPEAT 20
+  AT L,31
+  PUTBLOCK 0
+  ADD 1 TO L
+ ENDREPEAT
+
+ PLOT 246,123		; Plot fase markers
+ PLOT 247,123
+ PLOT 246,70
+ PLOT 247,70
+
+EVENT GAMEINIT
+
+EVENT RESTARTSCREEN
+
+EVENT FELLTOOFAR
+
+EVENT KILLPLAYER
+
+EVENT LOSTGAME
+
+EVENT COMPLETEDGAME
+
+EVENT NEWHIGHSCORE
+
+EVENT COLLECTBLOCK
+

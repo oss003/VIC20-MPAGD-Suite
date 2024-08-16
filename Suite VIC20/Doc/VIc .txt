@@ -1,0 +1,15 @@
+Zeropage vars?
+No problem
+
+Basic?
+Need SYS command for assembler 
+
+Chars?
+Copy into Char 1800
+
+Interrupts?
+BREAK
+
+Colour RAM:
+FG = Char
+BG = Tile
