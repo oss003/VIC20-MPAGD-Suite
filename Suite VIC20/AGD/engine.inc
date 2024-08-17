@@ -41,14 +41,12 @@
 
 	aflag 	= 0		; adventure mode
 	bflag	= 0		; big sprites (16x24)
-	bigflag = 0
 	crflag 	= 0		; crumbling blocks
 	fflag 	= 0		; floppy version (skip #0axx)
 	gflag 	= 0		; graphic colour mode
 	hflag 	= 0		; hidden sprite mode
 	iflag 	= 0		; invert mode
 	kflag 	= 0		; color attributes control (Breakanoid)
-	rflag 	= 0			; RAM Pre-Shifted Tables
 	xflag 	= 0		; metablocks (16x16)
 
 .if aflag
