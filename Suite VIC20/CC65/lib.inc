@@ -52,6 +52,13 @@
 ;		bit 3 selects inverted or normal mode
 ;------------------------------------------------------------
 
+; Settings
+
+	SrcWidth	= 24
+	ScrHeight	= 24
+	CentreX		= 2
+	CentreY		= 24
+
 ; Addresses
 
 	MapAddr		= $400		; RAM
@@ -112,27 +119,27 @@ Init:
 
 ; Disable interrupts
 
-;	lda #$7f
-;	sta $911e
-;	sta $912e
+	lda #$7f
+	sta $911e
+	sta $912e
 
 ; Init screen for NTSC
 ; this sets the background and border color of the screen
 
-; in this case border black and background white
+; in this case border black and background black
 	lda #%00011000			
 	sta RegF
 
 ; max num of columns (24)
 	lda Reg2
 	and #%10000000
-	ora #24
+	ora #SrcWidth
 	sta Reg2
 
 ; max num of lines (mult by 2 - 24) for 8x8 chars
 	lda Reg3
 	and #%01000001
-	ora #48		; number of rows multipled by two
+	ora #SrcWidth*2		; number of rows multipled by two
 	sta Reg3
 
 ; horizontal and vertical position must be set for 
@@ -143,11 +150,11 @@ Init:
 ; move horizontal position in the screen
 	lda Reg0
 	and #%10000000
-	ora #2
+	ora #CentreX
 	sta Reg0
 
 ; move vertical position in the screen
-	lda #$18
+	lda #CentreY
 	sta Reg1
 
 ; Set character data pointer to CHAR RAM at $1800
@@ -220,7 +227,7 @@ setsa0:
 	sta SCROFF_hb,y		; write high byte.
 	jsr nline		; next line down.
 	iny			; next position in table.
-	cpy #24
+	cpy #ScrHeight
 	bne setsa0
 	rts
 

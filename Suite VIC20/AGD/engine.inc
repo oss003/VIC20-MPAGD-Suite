@@ -35,18 +35,20 @@
 ;	xflag			; metablocks (16x16)
 
 ;--------------------------------------------------------------
-; Temporary setting of manual flags
+; Temporary setting of flags
 ; Needs to be updated for VIC usage
 ;--------------------------------------------------------------
 
 	aflag 	= 0		; adventure mode
 	bflag	= 0		; big sprites (16x24)
+	bigflag = 0
 	crflag 	= 0		; crumbling blocks
 	fflag 	= 0		; floppy version (skip #0axx)
 	gflag 	= 0		; graphic colour mode
 	hflag 	= 0		; hidden sprite mode
 	iflag 	= 0		; invert mode
 	kflag 	= 0		; color attributes control (Breakanoid)
+	rflag 	= 0			; RAM Pre-Shifted Tables
 	xflag 	= 0		; metablocks (16x16)
 
 .if aflag
@@ -4236,6 +4238,23 @@ pradd:
 	sta bufaddr+1
 	rts
 
+;--------------------------------------------------------------
+; Set colour of char at (dispx, dispy) in hl.
+; 
+; Output:
+;  bufaddr = MAP + dispy*24 + dispx
+;--------------------------------------------------------------
+
+gaadd:
+
+	jsr getoffset
+
+	clc
+	lda bufaddr+1
+	adc #>ColorAttr
+	sta bufaddr+1
+	rts
+
 ;----------------------------------------------
 
 ; Print attributes, properties and pixels.
@@ -4274,6 +4293,14 @@ pattr2:
 ; Print attributes, no properties.
 
 panp:
+	ldx z80_b
+	lda bcol,x
+	pha
+	jsr gaadd
+	ldy #0
+	pla
+	sta (bufaddr),y
+
 	jsr gprad 		; get screen address.
 
 	lda z80_b		; get blocknr
