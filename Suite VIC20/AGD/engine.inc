@@ -1160,8 +1160,6 @@ evtyp8:	.word evnt08
 ;--------------------------------------------------------------
 
 dspr:
-	rts
-
 	lda #(NUMSPR/2)		; number of sprites to display.
 	sta sprcnt
 dspr0:
@@ -5251,10 +5249,14 @@ noEor:	sta seed
 	sta varrnd		; return number in variable.
 	rts
 
-;--------------------------------------------------------
-; Keys
+;-------------------------------------------------------
+; Joystick and keyboard reading routines.
 ;
-; Out: joyval=x65FUDLR (bit cleared if key pressed)
+; contrl = 0, Keyboard
+;          1, JoyKeyb
+;          2, JoyMMC
+;
+;      joyval=x65FUDLR (bit cleared if key pressed)
 ;             ||||||||
 ;             |||||||+> Right    KEY 0  - X
 ;             ||||||+-> Left     KEY 1  - Z
@@ -5269,71 +5271,16 @@ noEor:	sta seed
 ;                       Option2  KEY 8  - 2
 ;                       Option3  KEY 9  - 3
 ;                       Option4  KEY 10 - 4
-;--------------------------------------------------------
-
-;              X   Z   .   ;  SPC  Q   P
-;keys:   .byte $35,$15,$93,$22,$90,$04,$14       ; Keys defined by game designer.
-;        .byte $21,$11,$01,$92                   ; menu options.
-jkeys:  .byte $03,$01,$02,$04,$00,$04,$14       ; Joykey keys
-        .byte $21,$11,$01,$92                   ; menu options.
-
-;--------------------------------------------------------
-; Keyboard test routine.
-;
-; Input:
-;  A = key to read, high nibble=row and low nibble=col
-;
-; Output:
-;  carry clr = key pressed
-;  carry set = key not pressed
-;--------------------------------------------------------
-
-ktest:
-	sta z80_a		; save key
-
-	lsr a			; set row
-	lsr a
-	lsr a
-	lsr a
-	ora #ScrMode		; don't flip screenmode
-	sta KeyRowAddr
-
-	lda z80_a
-	and #$0f
-	tax
-	lda KeyColAddr		; read column
-
-	and keymask,x		; check key pressed
-	beq pressed
-	sec			; key not pressed
-	rts
-pressed:
-	clc			; key pressed
-	rts
-
-keymask:	.byte $01,$02,$04,$08,$10,$20
-
-;-------------------------------------------------------
-; Joystick and keyboard reading routines.
-;
-; contrl = 0, Keyboard
-;          1, JoyKeyb
-;          2, JoyMMC
 ;-------------------------------------------------------
 
 joykey:
-	rts
-
 	lda contrl 		; control flag.
 	cmp #1
-	bne :+
-	jmp joyjoy 		; read keyboard joystick
-:
+	beq joy1 		; scan joystick1
 	cmp #2
-	bne :+
-	jmp joysin 		; read MMC joystick.
-:
-; Keyboard controls.
+	beq joy2 		; scan joystick2
+
+; Scan keyboard
 
 	lda #0		 	; zero reading.
 	sta z80_e
@@ -5346,84 +5293,22 @@ joyke0:
 
 	dey		 	; next key.
 	bpl joyke0 		; repeat for all keys.
-	jmp joyjo1 		; store the value.
-
-; Keyboard joystick controls.
-
-joyjoy:
-	lda #0		 	; zero reading.
-	sta z80_e
-
-	ldy #6	 		; address of last key.
-joyjo3:
-	lda jkeys,y 		; get key from table.
-	jsr ktest		; being pressed?
-	rol z80_e 		; rotate into reading.
-
-	dey		 	; next key.
-	bpl joyjo3 		; repeat for all keys.
-joyjo1:
-	lda z80_e 		; copy e register to accumulator.
-joyjo2:
-	sta joyval		; remember value.
-	rts
-
-
-; AtoMMC joystick controls.
-
-; Set PORTB direction
-
-joyinit:
-	lda #$ff   		; Write value to latch, bits 0-7 input
-	sta DatReg
-	jsr interwritedelay
-	lda #$a1   		; Write direction in latch to PORTB
-	sta CmdReg
-
-wait_until_not_busy:
-	lda CmdReg
-	bmi wait_until_not_busy
-	rts
-
-; Get PORTB value
-
-joysin:
-	lda #$a2   		; Read value PORTB in latch
-	sta CmdReg
-	jsr interwritedelay
-
-	lda DatReg		; Read joystick status
-	and #$7f
+joyret:
+	lda z80_e
 	sta joyval
-
-	lda keys+5		; check fire2
-	jsr ktest
-	bcs :+
-	lda joyval
-	and #$df
-	sta joyval
-:
-	lda keys+6		; check fire3
-	jsr ktest
-	bcs :+
-	lda joyval
-	and #$bf
-	sta joyval
-:
 	rts
 
-; Short delay
-; Enough to intersperse 2 writes to the FATPIC.
+; Scan joystick 1
 
-interwritedelay:
-	lda  #8
-	sec
-loop:
-	sbc  #1
-	bne  loop
-	rts
+joy1:
+	jsr joy1scan
+	jmp joyret 		; store the value.
 
-;tmp_byte:   .byte 0
+; Scan joystick 2
+
+joy2:
+	jsr joy2scan
+	jmp joyret 		; store the value.
 
 ;---------------------------------------------------------------
 ; Getkey in column,row format
@@ -5840,6 +5725,8 @@ tmp2:	.byte 0
 ;-----------------------------------------------------------------
 
 sspria:
+	rts
+
 	jsr gsprad		; get old sprite address.
 sspri2:
 .if rflag

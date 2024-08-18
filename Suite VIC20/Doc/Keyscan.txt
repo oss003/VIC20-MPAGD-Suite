@@ -1,0 +1,21 @@
+mainloop:
+
+    ; This section prints a if in row code 251 
+    ; the key 251 (a) is selected
+    ; It is possible to scan multiple rows in 
+    ; sequence and scan more than 1 button
+    ; for each row at the same time
+    lda #251    ; This is the code of row in 
+                ; the keyboard map
+    sta $9120   ; Read the row
+    lda $9121   ; In a the value
+                ; $ff if no key is selected
+    cmp #253
+    beq found
+    lda #$20
+    jmp notfound
+found:
+    lda #1
+notfound:
+    tay
+

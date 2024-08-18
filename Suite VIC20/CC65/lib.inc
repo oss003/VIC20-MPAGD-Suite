@@ -17,6 +17,32 @@
 ;	$c000-$dfff	 8,0kB	BASIC ROM
 ;	$e000-$ffff	 8,0kB	KERNAL ROM
 ;
+; Keyboard matrix:
+;                          	  $9121
+;          $9120	b7  b6  b5  b4  b3  b2  b1  b0
+; 	127-0111 1111 	F7  Hom  -   0   8   6   4   2
+; 	191-1011 1111 	F5       @   O   U   T   E   Q
+; 	223-1101 1111 	F3   =   :   K   H   F   S  Com
+; 	239-1110 1111 	F1  RSh  .   M   B   C   Z  Spc
+; 	247-1111 0111	Cur  /   ,   N   V   X  LSh Run
+; 	251-1111 1011	Cur  ;   L   J   G   D   A  Ctr
+; 	253-1111 1101	Ret  *   P   I   Y   R   W
+; 	254-1111 1110	Del Pnd  +   9   7   5   3   1
+;
+;	 P =$65,O=$14,A=$51,Q=$10
+;	SPC=$30,N=$44,M=$34
+;	 1 =$70,2=$00,3=$71,4=$01
+;
+; Joysticks:
+;
+;               b7    b6    b5    b4    b3    b2    b1    b0
+;	$9111	-     -     Fire  Left  Down  Up    -     -
+;	$9120	Right -     -     -     -     -     -     -
+;
+;	$9122	DDRB = Data Direction Register port $9120
+;               0 = input, 1 = output
+;		Bit7 should be 0 to read joystick $9120
+;
 ; Video registers:
 ;
 ;	$9000	horizontal centering
@@ -74,6 +100,11 @@
 	Reg3		= $9003		; Set # of rows
 	Reg5		= $9005		; Start of character memory
 	RegF		= $900f		; Screen and border color register
+	JoyAddr1	= $9111		; Joystick address 1
+	KeyColAddr	= $9120		; Keyboard column (write)
+	JoyAddr2	= $9120		; Joystick address 2
+	KeyRowAddr	= $9121		; Keyboard row (read)
+	DDRB		= $9122		; Bit7 must be 0 for joystick read
 	ColorAttr	= $9400		; Color attributes
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -81,8 +112,6 @@
 
 ;	ScreenAddr  	= $8000		; Startaddress video RAM
 	ScrSelAddr  	= $b000		; Screen selection address
-	KeyRowAddr  	= $b000		; PIA key matrix row
-	KeyColAddr  	= $b001		; PIA key matrix column
 	SpeakerBit  	= $b002		; Speaker bit
 	CmdReg      	= $b400		; Command register AtoMMC
 	DatReg      	= $b401		; Data register AtoMMC 
@@ -101,7 +130,6 @@
 	SCRSYNC	 	= $fe66		; wait for next CRT field flyback 60 Hz
 	SCRSYNC1 	= $fe6b		; wait for CRT field flyback 60 Hz
 	OSRDCH   	= $fe94		; get key subroutine
-        READKEY  	= $fe71		; scan key matrix subroutine
 	OSWRCH	 	= $fff4		; write character
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -161,7 +189,7 @@ Init:
 	lda #CentreY
 	sta Reg1
 
-; Set character data pointer to CHAR RAM at $1800
+; Set character data pointer to CHAR RAM at $1400
 	lda Reg5
 	and #%11110000
 	ora #%1110
@@ -354,5 +382,114 @@ sndskip:
 	pla
 	tay
 	pla
+	rts
+
+;-------------------------------------------------------------
+; KTEST, scan key and return in carry if key pressed
+;
+; Keyboard test routine.
+;
+; Input:
+;  A = key to read, high nibble=col and low nibble=row
+;
+; Output:
+;  carry clr = key pressed
+;  carry set = key not pressed
+;--------------------------------------------------------
+
+ktest:
+	sta z80_a		; save key
+
+	lsr a			; set row
+	lsr a
+	lsr a
+	lsr a
+	tax
+	lda colmask,x
+	sta KeyColAddr
+
+	lda z80_a
+	and #$0f
+	tax
+
+	lda KeyRowAddr		; read column
+	and keymask,x		; check key pressed
+	beq pressed
+	sec			; key not pressed
+	rts
+pressed:
+	clc			; key pressed
+	rts
+
+colmask:	.byte 127,191,223,239,247,251,253,254
+keymask:	.byte $01,$02,$04,$08,$10,$20,$40,$80
+
+;-------------------------------------------------------------
+; JOY1SCAN, scan joystick1 and return key in z80_e
+;-------------------------------------------------------------
+
+joy1scan:
+	lda #$ff
+	sta z80_e
+
+	lda JoyAddr1
+	lsr a
+	lsr a
+
+	lsr a
+	rol z80_e	; Up
+	lsr a
+	rol z80_e	; Down
+	lsr a
+	rol z80_e	; Left
+
+	lda #%01111111
+	sta DDRB	; Bit7 = input joystick b7
+	lda JoyAddr2
+	asl a
+	rol z80_e	; Right
+	lda #%11111111
+	sta DDRB	; Reset  
+
+	lda JoyAddr1
+	and #%00100000
+	bne :+
+	lda z80_e
+	and #%11101111	; Fire
+	sta z80_e
+
+	lda keys+5	; Fire2
+	jsr ktest
+	bcs :+
+	lda z80_e
+	and #%11011111
+	sta z80_e
+:
+	lda keys+6	; Fire3
+	jsr ktest
+	bcs :+
+	lda z80_e
+	and #%10111111
+	sta z80_e
+:
+	rts
+
+;-------------------------------------------------------------
+; JOY2SCAN, scan joystick2 and return key in z80_e
+;-------------------------------------------------------------
+
+joy2scan:
+	rts
+
+;-------------------------------------------------------------
+; READKEY, Wait for keypress
+;-------------------------------------------------------------
+
+READKEY:
+	lda #0
+	sta KeyColAddr
+	lda KeyRowAddr
+	cmp #$ff
+	beq READKEY
 	rts
 
