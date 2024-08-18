@@ -3858,8 +3858,14 @@ void CR_ClS( void )
 
 void CR_Border( void )
 {
-//	CompileArgument();
+	CompileArgument();
 	WriteInstruction( "; BORDER command" );						/* address of ROM BORDER routine. */
+	WriteInstruction("and #7");
+	WriteInstruction("sta tmp");
+	WriteInstruction("lda RegF" );
+	WriteInstruction("and #%11111000");
+	WriteInstruction("ora tmp" );
+	WriteInstruction("sta RegF" );
 }
 
 void CR_Colour( void )
@@ -3871,15 +3877,23 @@ void CR_Colour( void )
 void CR_Paper( void )
 {
 	CompileArgument();
-	WriteText( " 	; PAPER" );						/* set the permanent attributes. */
-	WriteInstruction("jsr setbgcol" );								/* multiply by 8 to get paper. */
+	WriteText( " 	; PAPER" );						/* set the background colour */
+	WriteInstruction("asl a");
+	WriteInstruction("asl a");
+	WriteInstruction("asl a");
+	WriteInstruction("asl a");
+	WriteInstruction("sta tmp");
+	WriteInstruction("lda RegF" );
+	WriteInstruction("and #%10001111");
+	WriteInstruction("ora tmp" );
+	WriteInstruction("sta RegF" );
 }
 
 void CR_Ink( void )
 {
 	CompileArgument();
 	WriteText( " 	; INK" );						/* set the permanent attributes. */
-	WriteInstruction("jsr setfgcol" );								/* multiply by 8 to get paper. */
+	WriteInstruction("sta fontcol" );								/* multiply by 8 to get paper. */
 }
 
 void CR_Clut( void )

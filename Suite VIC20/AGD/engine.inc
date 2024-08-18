@@ -1160,6 +1160,8 @@ evtyp8:	.word evnt08
 ;--------------------------------------------------------------
 
 dspr:
+	rts
+
 	lda #(NUMSPR/2)		; number of sprites to display.
 	sta sprcnt
 dspr0:
@@ -1475,6 +1477,8 @@ prsloop:
 ;----------------------------------------------------
 
 pspr:
+	rts
+
 	lda #NUMSPR		; sprites to process.
 	sta sprptr
 
@@ -3222,18 +3226,6 @@ rpblc0:
 	sta z80_i
 	jsr dspr 		; display sprites.
 mloop:
-;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-; Breakpoint to check if the code reaches this point
-; Prints OK at the top left
-;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	lda #47
-	sta $123e
-	lda #43
-	sta $123f
-endless:
-	jmp endless
-;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 	jsr vsync 		; synchronise with display.
 	lda #<sprtab 		; address of sprite table, even sprites.
 	sta z80_x
@@ -5330,6 +5322,8 @@ keymask:	.byte $01,$02,$04,$08,$10,$20
 ;-------------------------------------------------------
 
 joykey:
+	rts
+
 	lda contrl 		; control flag.
 	cmp #1
 	bne :+

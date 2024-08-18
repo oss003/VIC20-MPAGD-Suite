@@ -50,7 +50,11 @@
 ;		bits 4-7 select background color
 ;		bits 0-2 select border color
 ;		bit 3 selects inverted or normal mode
+;
 ;------------------------------------------------------------
+; VIC variables:
+;
+	fontcol:		.byte 0
 
 ; Settings
 
@@ -163,6 +167,10 @@ Init:
 	ora #%1110
 	sta Reg5
 
+; Reset fontcolor
+	lda #0		; Black
+	sta fontcol
+
 ; Copy MPAGD font (96 chars = 768 bytes) to CHAR RAM (CHARcode 0-95)
 
 	ldx #0
@@ -261,16 +269,24 @@ setpal:
 	rts
 
 ;----------------------------------------------------------------------
-; PCHAR, Display characte on screen
+; PCHAR, Display character on screen
 ;----------------------------------------------------------------------
 
 pchar:
 	sec
 	sbc #32
 	sta fntaddr
-pchark:
+
+; Set color attribute
+
+	jsr gaadd
+	lda fontcol
+	ldy #0
+	sta (bufaddr),y
+
+; Display character
+
 	jsr gprad		; get screen address.
-	ldx #7			; lines to write.
 pchar0:
 	lda fntaddr
 	ldy #0
@@ -313,7 +329,7 @@ vsync:
 	ldx $a2			; Set Timer1 expired bit
 vsync1:
 	cpx $a2			; Check Interrupt Flag Register
-	beq vsync1
+;	beq vsync1
 
 	lda clock
 	and #1
