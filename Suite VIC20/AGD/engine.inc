@@ -102,6 +102,19 @@
 .if xflag
 	.out "- Metabclocksmode enabled" 
 .endif
+.if modelflag
+	SrcWidth	= 24	; PAL settings
+	ScrHeight	= 24
+	CentreX		= 10
+	CentreY		= 33
+	.out "- PAL" 
+.else
+	SrcWidth	= 24	; NTSC settings
+	ScrHeight	= 24
+	CentreX		= 2
+	CentreY		= 24
+	.out "- NTSC" 
+.endif
 .out ""
 
 ;------------------------------------------------------------
@@ -112,8 +125,8 @@
 
 	MAP 		= MapAddr	; properties map buffer (3x256 bytes)
 	SCROFF_lb 	= MAP+3*256	; screen address line table lo-byte (24 bytes)
-	SCROFF_hb 	= SCROFF_lb+24	; screen address line table hi-byte (24 bytes)
-	SHRAPN 		= SCROFF_hb+24	; shrapnel table (55x6 bytes)
+	SCROFF_hb 	= SCROFF_lb+ScrHeight	; screen address line table hi-byte (24 bytes)
+	SHRAPN 		= SCROFF_hb+ScrHeight	; shrapnel table (55x6 bytes)
 
 ; Block characteristics.
 
@@ -1107,7 +1120,7 @@ scrd:
 nline:
 	clc
 	lda scraddr 		; get low byte of address.
-	adc #24
+	adc #ScrHeight
 	sta scraddr 		; new low byte of address.
 	bcc :+
 	inc scraddr+1 		; new high byte of address.
@@ -1390,7 +1403,7 @@ nexpos:
 nexlin:
 	inc dispy 		; newline.
 	lda dispy		; vertical position.
-	cmp #24			; past screen edge?
+	cmp #ScrHeight			; past screen edge?
 	bcs :+
 	rts			; no, still okay.
 :
@@ -3953,7 +3966,7 @@ grbase:	.word ScreenAddr	; graphics base address.
 
 checkx:
 	lda dispy		; y position.
-	cmp #24			; off screen?
+	cmp #ScrHeight		; off screen?
 	bcs :+
 	rts			; no, it's okay.
 :
@@ -5411,7 +5424,7 @@ dmsg2:
 dmsg1:
 	inc dispy
 	lda dispy
-	cmp #24
+	cmp #ScrHeight
 	bcc dmsg4
 	lda #0
 	sta dispy

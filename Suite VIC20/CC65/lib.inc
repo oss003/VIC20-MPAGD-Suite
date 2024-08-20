@@ -84,16 +84,12 @@
 
 ; Settings
 
-	SrcWidth	= 24
-	ScrHeight	= 24
-	CentreX		= 2
-	CentreY		= 24
 
 ; Addresses
 
 	MapAddr		= $400		; RAM
 	ScreenAddr	= $1000		; VIDEO RAM
-	CharAddress	= $1800		; CHAR RAM
+	CharAddress	= $1400		; CHAR RAM
 	Reg0		= $9000		; Horizontal centering
 	Reg1		= $9001		; Vertical centering
 	Reg2		= $9002		; Set # of columns
@@ -106,19 +102,21 @@
 	KeyRowAddr	= $9121		; Keyboard row (read)
 	DDRB		= $9122		; Bit7 must be 0 for joystick read
 	ColorAttr	= $9400		; Color attributes
+	Timer1_Low  	= $9114		; Timer 1 low byte
+	Timer1_High 	= $9115		; Timer 1 high byte
+	Timer2_Low  	= $9118		; Timer 2 low byte
+	Timer2_High 	= $9119		; Timer 2 high byte
+	AUX		= $911b		; Auxiliary control register
+	IFR		= $911d		; Interrupt Flag Register
+	IER		= $911e		; Interrupt Enable Register
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ; System constants Atom, needs to be updated for VIC usage 
 
-;	ScreenAddr  	= $8000		; Startaddress video RAM
 	ScrSelAddr  	= $b000		; Screen selection address
 	SpeakerBit  	= $b002		; Speaker bit
 	CmdReg      	= $b400		; Command register AtoMMC
 	DatReg      	= $b401		; Data register AtoMMC 
-	Timer2_Low  	= $b808		; Timer 2 low byte
-	Timer2_High 	= $b809		; Timer 2 high byte
-	Timer1_Low  	= $b804		; Timer 1 low byte
-	Timer1_High 	= $b805		; Timer 1 high byte
 
 	green		= $00		; Colour definition filters
 	yellow		= $55
@@ -162,7 +160,7 @@ Init:
 	lda #%00011000			
 	sta RegF
 
-; max num of columns (24)
+; max num of columns 24
 	lda Reg2
 	and #%10000000
 	ora #SrcWidth
@@ -192,7 +190,7 @@ Init:
 ; Set character data pointer to CHAR RAM at $1400
 	lda Reg5
 	and #%11110000
-	ora #%1110
+	ora #%1101
 	sta Reg5
 
 ; Reset fontcolor
@@ -265,6 +263,20 @@ setsa0:
 	iny			; next position in table.
 	cpy #ScrHeight
 	bne setsa0
+
+; Init VIA timer for timeout 1/25 sec
+
+	lda #$e0		; T1 continuous
+	sta AUX
+	lda #$7f		; No int
+	sta IER
+	lda #0
+	sta IFR			; Clear interrupt flags
+	lda #<40000		; Timer 1/25 sec
+	sta Timer1_Low
+	lda #>40000
+	sta Timer1_High
+
 	rts
 
 ;----------------------------------------------------------------------
@@ -354,10 +366,11 @@ vsync:
 	pha
 	jsr joykey		; read joystick/keyboard.
 
-	ldx $a2			; Set Timer1 expired bit
+	lda #$40		; Set Timer1 expired bit
 vsync1:
-	cpx $a2			; Check Interrupt Flag Register
-;	beq vsync1
+	bit IFR			; Check Interrupt Flag Register
+	beq vsync1
+	lda Timer1_Low		; Clear Timer interrupt
 
 	lda clock
 	and #1
@@ -457,13 +470,6 @@ joy1scan:
 	lda z80_e
 	and #%11101111	; Fire
 	sta z80_e
-
-	lda keys+5	; Fire2
-	jsr ktest
-	bcs :+
-	lda z80_e
-	and #%11011111
-	sta z80_e
 :
 	lda keys+6	; Fire3
 	jsr ktest
@@ -472,6 +478,14 @@ joy1scan:
 	and #%10111111
 	sta z80_e
 :
+	lda keys+5	; Fire2
+	jsr ktest
+	bcs :+
+	lda z80_e
+	and #%11011111
+	sta z80_e
+:
+
 	rts
 
 ;-------------------------------------------------------------
@@ -482,14 +496,39 @@ joy2scan:
 	rts
 
 ;-------------------------------------------------------------
-; READKEY, Wait for keypress
+; READKEY, Wait for keypress and then wait for release
 ;-------------------------------------------------------------
 
 READKEY:
-	lda #0
+	lda #$ff
+	sta tmp
+	ldx #7
+scanrow:
+	lda colmask,x
 	sta KeyColAddr
-	lda KeyRowAddr
+	lda KeyRowAddr		; read column
+	and tmp
+	sta tmp
+	dex
+	bpl scanrow
+	lda tmp
 	cmp #$ff
 	beq READKEY
+
+ReleaseKey:
+	lda #$ff
+	sta tmp
+	ldx #7
+scanrow1:
+	lda colmask,x
+	sta KeyColAddr
+	lda KeyRowAddr		; read column
+	and tmp
+	sta tmp
+	dex
+	bpl scanrow1
+	lda tmp
+	cmp #$ff
+	bne ReleaseKey
 	rts
 
