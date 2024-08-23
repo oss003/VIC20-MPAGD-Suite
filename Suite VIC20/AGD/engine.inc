@@ -103,6 +103,10 @@
 	.out "- Metablocksmode enabled" 
 .endif
 
+;------------------------------------------------------------
+; VIC20 check for PAL or NTSC
+;------------------------------------------------------------
+
 .if modelflag
 	SrcWidth	= 24	; PAL settings
 	ScrHeight	= 24
@@ -336,12 +340,12 @@ evis0:
 	rts
 
 ;-------------------------------------------------------------------
-; Jump to new screen.
+; Locate screen number in mapdat.
 ;-------------------------------------------------------------------
 ; - Input :
 ;	A = Screennr
 ; - Output:
-;	Updated current roomnr
+;	roomtb = index to location in mapdat
 ;	Draw new room
 ;-------------------------------------------------------------------
 

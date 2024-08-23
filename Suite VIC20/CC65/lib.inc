@@ -330,15 +330,15 @@ setpal:
 
 pchar:
 	sec
-	sbc #32
+	sbc #32			; Convert ASCII to MPAGD code
 	sta fntaddr
 
 ; Set color attribute
 
-	jsr gaadd
-	lda tmp
+	jsr gaadd		; Calculate color attribute address
+	lda fontcol		; Get fontcolour
 	ldy #0
-	sta (bufaddr),y
+	sta (bufaddr),y		; Colour character
 
 ; Display character
 
