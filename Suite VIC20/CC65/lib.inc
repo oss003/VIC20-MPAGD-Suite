@@ -129,6 +129,22 @@
 	SCRSYNC1 	= $fe6b		; wait for CRT field flyback 60 Hz
 	OSRDCH   	= $fe94		; get key subroutine
 	OSWRCH	 	= $fff4		; write character
+
+.if iflag
+	TxtInvert   	= $ff		; Invert byte for character printing
+	ScrFillByte 	= $ff		; Screen fill byte for CLS
+.else
+	TxtInvert   	= $00		; Invert byte for character printing
+	ScrFillByte 	= $00		; Screen fill byte for CLS
+.endif
+
+.if gflag
+	ScrMode    	= $d0		;  $d0 = CLEAR4a colour
+.else
+	ScrMode     	= $f0		;  $f0 = CLEAR4  mono
+.endif
+
+
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;============================================================
@@ -272,9 +288,9 @@ setsa0:
 	sta IER
 	lda #0
 	sta IFR			; Clear interrupt flags
-	lda #<40000		; Timer 1/25 sec
+	lda #<timervalue	; Timer 1/25 sec
 	sta Timer1_Low
-	lda #>40000
+	lda #>timervalue
 	sta Timer1_High
 
 	rts
@@ -320,7 +336,7 @@ pchar:
 ; Set color attribute
 
 	jsr gaadd
-	lda fontcol
+	lda tmp
 	ldy #0
 	sta (bufaddr),y
 
@@ -530,5 +546,34 @@ scanrow1:
 	lda tmp
 	cmp #$ff
 	bne ReleaseKey
+	rts
+
+;----------------------------------------------------
+; Delay routine 1/50 sec
+;
+; Wait 1/60 sec = 16666 usec
+; Wait 208 x 16 =  3328 usec
+;                 19994 usec
+; rts           =     6 usec
+; Total         = 20000 usec
+;----------------------------------------------------
+
+delay:
+	sta xtmp
+del_loop:
+	lda $9004
+	bne del_loop			; wait for flyback (1/60 sec)
+
+	ldy #208			; wait 208 x 16 = 3328 usec
+delay1:
+	adc ($80,x)			;	 6 usec
+	adc ($80,x)			;	 6 usec
+	dey				;	 2 usec
+	bne delay1			;	 2 usec
+	nop				; 2 usec
+	nop				; 2 usec
+					; tot: 20000 usec
+	dec xtmp
+	bne del_loop
 	rts
 

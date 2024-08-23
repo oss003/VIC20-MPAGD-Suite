@@ -102,3 +102,9 @@ tmproom:    .res 1
 ogptr:	    .res 2		; original sprite pointer.
 
 ;sndtyp:     .res 1
+
+TmpAddr:    .res 2
+bwid:	    .res 1     		; box/menu width.
+blen:	    .res 1     		; box/menu height.
+btop:	    .res 1    	 	; box coordinates.
+blft:	    .res 1

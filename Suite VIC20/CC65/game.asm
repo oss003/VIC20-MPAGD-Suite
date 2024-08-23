@@ -5,8 +5,8 @@
 
 .segment "ZEROPAGE"
 	.include "game.cfg" 
-	.include "z80-zp.inc"
 	.include "engine-zp.inc"
+	.include "z80-zp.inc"
 
 ;----------------------------------------------
 ; BASIC header
