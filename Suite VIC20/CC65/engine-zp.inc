@@ -108,3 +108,17 @@ bwid:	    .res 1     		; box/menu width.
 blen:	    .res 1     		; box/menu height.
 btop:	    .res 1    	 	; box coordinates.
 blft:	    .res 1
+;----------------------------------------------------
+; Scrolly text and puzzle variables.
+;----------------------------------------------------
+
+.if sflag
+txtcnt:		.res 1		; delay counter
+txtwid:		.res 1		; width of ticker message.
+txtpos:		.res 1		; text pointer
+txtini:		.res 2		; text message address
+txtscr:		.res 2		; screen address
+txtclr:		.res 2		; colour address
+
+.endif
+

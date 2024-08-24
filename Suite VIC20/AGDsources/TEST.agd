@@ -228,7 +228,7 @@ EVENT INTROMENU
   REPEAT 8
     PAPER A
     ADD 1 TO A
-    DELAY 50
+    DELAY 25
   ENDREPEAT
 
 ; Toggle border

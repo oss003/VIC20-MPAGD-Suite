@@ -1453,6 +1453,13 @@ prsloop:
 	jsr READKEY
 	cpy #255
 	beq prsloop			; wait until key pressed
+
+prsrelease:
+	jsr vsync
+	jsr READKEY
+	cpy #255
+	bne prsrelease			; wait until key pressed
+
 	jsr joykey
 	pla
 	tay
@@ -2181,18 +2188,6 @@ fdchk:
 	pla
 	sta dispx
 	rts
-.endif
-
-;----------------------------------------------------
-; Scrolly text and puzzle variables.
-;----------------------------------------------------
-
-.if sflag
-txtbit:	.byte 128		; bit to write.
-txtwid:	.byte 16		; width of ticker message.
-txtpos:	.word msgdat
-txtini:	.word msgdat
-txtscr:	.word ScreenAddr
 .endif
 
 ;----------------------------------------------------
@@ -4189,7 +4184,10 @@ swpsb0:
 	rts
 
 ;----------------------------------------------------
-; Get screen address.
+; Get screen address at (dispx, dispy).
+; 
+; Output:
+;  scraddr = SCREEN + dispy*24 + dispx
 ;----------------------------------------------------
 
 gprad:
@@ -4204,7 +4202,7 @@ gprad:
 	rts
 
 ;--------------------------------------------------------------
-; Get property buffer address of char at (dispx, dispy) in hl.
+; Get property buffer address at (dispx, dispy).
 ; 
 ; Output:
 ;  bufaddr = MAP + dispy*24 + dispx
@@ -4221,10 +4219,10 @@ pradd:
 	rts
 
 ;--------------------------------------------------------------
-; Set colour of char at (dispx, dispy) in hl.
+; Get attribute address at (dispx, dispy).
 ; 
 ; Output:
-;  bufaddr = MAP + dispy*24 + dispx
+;  bufaddr = COLOR + dispy*24 + dispx
 ;--------------------------------------------------------------
 
 gaadd:
@@ -6186,129 +6184,69 @@ clw1:
 scrly:
 	rts
 	.word txtscr         	; get left screen address.
-	sta scr_l
-	lda txtscr+1
-	sta scr_l+1
-	sta scr_r+1
-	
-	stx xtmp
 
-	clc         		; get right screen address.
-	lda scr_l
-	adc txtwid
-	sta scr_r
-	dec scr_r
-.if gflag
-scrly7:
-	ldx #2
-.endif
-scrly1:
-	ldy txtwid		; set txtwide
-	dey
-	clc
-scrly0:
-	lda (scr_l),y		; scroll 1 line
-	rol a
-	sta (scr_l),y
-	dey
-	bpl scrly0
-.if gflag
-	dex
-	bne scrly1
-.endif
-	clc			; point to next line
-	lda scr_l
-	adc #32
-	sta scr_l
-.if gflag
-	bcc scrly7		; repeat 8 times
-.else
-	bcc scrly1		; repeat 8 times
-.endif
-	lda txtpos 		; get text pointer.
-	sta scr_txt
-	lda txtpos+1
-	sta scr_txt+1
+; Scroll all characters to the left 
 
-	ldy #0
-	lda (scr_txt),y 	; find character we're displaying.
+	inc txtcnt
+	lda txtcnt
+	and #3
+	beq :+
+	rts
+:
+	ldy #1
+sleft:
+	lda (txtscr),y 
+	dey
+	sta (txtscr),y
+	iny
+	lda (txtclr),y 
+	dey
+	sta (txtclr),y
+	iny
+	iny
+	cpy txtwid
+	bne sleft
+
+; Print character
+
+	ldy txtpos
+	lda (txtini),y
+	pha
+	sec
+	sbc #32
 	and #127 		; remove end marker bit if applicable.
 	cmp #13			; is it newline?
 	bne scrly5 		; no, it's okay.
 	lda #32			; convert to a space instead.
 scrly5:
-	sta fntaddr		; calculate char address
-	lda #0
-	sta fntaddr+1
-	asl fntaddr  		; multiply char by 8.
-	rol fntaddr+1
-	asl fntaddr
-	rol fntaddr+1
-	asl fntaddr
-	rol fntaddr+1
-	lda fntaddr
-	clc
-	adc #<(font-256)
-	sta scrly3+1		; that's the low byte.
-	lda fntaddr+1
-	adc #>(font-256)
-	sta scrly3+2		; add displacement.
-	lda fntaddr+2
-
-	ldx #0
-scrly3:
-	lda $3333,x		; get image of char line.
-	and txtbit
-	beq scrly2		; don't plot pixel
-	ldy scrline,x
-	lda (scr_r),y
-	clc
-.if gflag
-	ora #3
-.else
-	ora #1
-.endif
-	sta (scr_r),y		; plot pixel
-scrly2:
-	inx			; next line of char.
-	cpx #8
-	bne scrly3
-
-	lsr txtbit		; bit of text to display.
-.if gflag
-	lsr txtbit		; bit of text to display.
-.endif
-	bcs :+
-	rts
-:
-	ldy #0
-	lda (scr_txt),y 	; what was the character?
+	ldy txtwid
+	dey
+	sta (txtscr),y
+	lda fontcol
+	sta (txtclr),y
+	pla
 	asl a	  		; end of message?
 	bcs scrly4
 	inc txtpos
-	bne :+
-	inc txtpos+1
-:
 	jmp scrly6 		; not yet - continue.
 scrly4:
-	lda txtini 		; start of scrolling message.
+	lda #0 			; reset string pointer.
 	sta txtpos
-	lda txtini+1
-	sta txtpos+1
 scrly6:
-	lda #128
-	sta txtbit
-	ldx xtmp
 	rts
-
-scrline:	.byte $00,$20,$40,$60,$80,$a0,$c0,$e0
 
 ;-------------------------------------------------------
 ; Entry TICKER command
 ;
-; Entry:
+; Input:
 ;  z80_b = message nr
 ;  z80_c = width
+; Output
+;  txtini = message address
+;  txtscr = screen address
+;  txtwid = width of scroller
+;  txtpos = message pointer
+;  txtcnt = delay counter
 ;-------------------------------------------------------
 
 iscrly:
@@ -6322,9 +6260,9 @@ iscrly:
 	lda z80_c 		; width.
 	sec
 	sbc #1			; subtract one.
-	cmp #32 		; is it between 1 and 32?
+	cmp #24 		; is it between 1 and 24?
 	bcc :+
-	lda #$60
+	lda #$60		; Opcode RTS
 	jmp iscrl0		; no, disable messages.
 :
 	ldx z80_b		; message number.
@@ -6344,14 +6282,18 @@ iscrl0:
 
 	lda scraddr 		; set text screen address.
 	sta txtscr
+	sta txtclr
 	lda scraddr+1
 	sta txtscr+1
+	clc
+	adc #>(ColorAttr-ScreenAddr)
+	sta txtclr+1
 
 	lda z80_c		; width.
 	sta txtwid		; set width in working storage.
 
-	lda #128 		; start with leftmost bit.
-	sta txtbit
+	lda #0			; reset delay counter
+	sta txtcnt
 
 	jmp scrly4
 .endif

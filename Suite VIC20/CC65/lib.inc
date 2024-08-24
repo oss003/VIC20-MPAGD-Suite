@@ -101,7 +101,6 @@
 	JoyAddr2	= $9120		; Joystick address 2
 	KeyRowAddr	= $9121		; Keyboard row (read)
 	DDRB		= $9122		; Bit7 must be 0 for joystick read
-	ColorAttr	= $9400		; Color attributes
 	Timer1_Low  	= $9114		; Timer 1 low byte
 	Timer1_High 	= $9115		; Timer 1 high byte
 	Timer2_Low  	= $9118		; Timer 2 low byte
@@ -109,6 +108,7 @@
 	AUX		= $911b		; Auxiliary control register
 	IFR		= $911d		; Interrupt Flag Register
 	IER		= $911e		; Interrupt Enable Register
+	ColorAttr	= $9400		; Color attributes
 
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ; System constants Atom, needs to be updated for VIC usage 
@@ -406,6 +406,7 @@ sndwait:
 	dec sndtyp
 	bne sndloop
 sndskip: 
+
 	pla
 	tax
 	pla
@@ -528,6 +529,11 @@ scanrow:
 	dex
 	bpl scanrow
 	lda tmp
+	tay
+	rts
+
+
+
 	cmp #$ff
 	beq READKEY
 
