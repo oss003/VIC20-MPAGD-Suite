@@ -6,9 +6,9 @@
 ;
 ;	$0000-$03ff	 1.0kB	CPU WS
 ;	$0400-$0fff	 3,0kB	RAM
-;	$1000-$17ff	 2,0kB	VIDEO RAM
-;	$1800-$1fff	 2,0kB	CHAR RAM
-;	$2000-$7fff	24,0kB	RAM
+;	$1000-$17ff	 1,0kB	VIDEO RAM
+;	$1400-$1Bff	 2,0kB	CHAR RAM
+;	$1C00-$7fff	25,0kB	RAM
 ;	$8000-$8fff	 4,0kB	CHAR ROM
 ;	$9000-$93ff	 1,0kB	VIC VIA's
 ;	$9400-$97ff	 1,0kB	COLOUR RAM
@@ -77,13 +77,14 @@
 ;		bits 0-2 select border color
 ;		bit 3 selects inverted or normal mode
 ;
-;------------------------------------------------------------
+
+; VIC constants
+
+	OBJCHAR 	= 178		; first char nr for objects
+
 ; VIC variables:
-;
-	fontcol:		.byte 0
 
-; Settings
-
+	fontcol:	.byte 0		; Frontcolour text
 
 ; Addresses
 
@@ -109,43 +110,6 @@
 	IFR		= $911d		; Interrupt Flag Register
 	IER		= $911e		; Interrupt Enable Register
 	ColorAttr	= $9400		; Color attributes
-
-;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-; System constants Atom, needs to be updated for VIC usage 
-
-	ScrSelAddr  	= $b000		; Screen selection address
-	SpeakerBit  	= $b002		; Speaker bit
-	CmdReg      	= $b400		; Command register AtoMMC
-	DatReg      	= $b401		; Data register AtoMMC 
-
-	green		= $00		; Colour definition filters
-	yellow		= $55
-	blue		= $aa
-	red		= $ff
-
-; System calls Atom
-
-	SCRSYNC	 	= $fe66		; wait for next CRT field flyback 60 Hz
-	SCRSYNC1 	= $fe6b		; wait for CRT field flyback 60 Hz
-	OSRDCH   	= $fe94		; get key subroutine
-	OSWRCH	 	= $fff4		; write character
-
-.if iflag
-	TxtInvert   	= $ff		; Invert byte for character printing
-	ScrFillByte 	= $ff		; Screen fill byte for CLS
-.else
-	TxtInvert   	= $00		; Invert byte for character printing
-	ScrFillByte 	= $00		; Screen fill byte for CLS
-.endif
-
-.if gflag
-	ScrMode    	= $d0		;  $d0 = CLEAR4a colour
-.else
-	ScrMode     	= $f0		;  $f0 = CLEAR4  mono
-.endif
-
-
-;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;============================================================
 ; PLATFORM ROUTINES
@@ -396,7 +360,7 @@ vsync1:
 	lda sndtyp
 	beq sndskip
 sndloop:
-	lda SpeakerBit		; handle sound
+;	lda SpeakerBit		; handle sound
 	ldy sndtyp
 sndwait:
 	dey
@@ -532,28 +496,6 @@ scanrow:
 	tay
 	rts
 
-
-
-	cmp #$ff
-	beq READKEY
-
-ReleaseKey:
-	lda #$ff
-	sta tmp
-	ldx #7
-scanrow1:
-	lda colmask,x
-	sta KeyColAddr
-	lda KeyRowAddr		; read column
-	and tmp
-	sta tmp
-	dex
-	bpl scanrow1
-	lda tmp
-	cmp #$ff
-	bne ReleaseKey
-	rts
-
 ;----------------------------------------------------
 ; Delay routine 1/50 sec
 ;
@@ -582,4 +524,138 @@ delay1:
 	dec xtmp
 	bne del_loop
 	rts
+
+;-------------------------------------------------------------
+; Object routines
+;-------------------------------------------------------------
+
+; Clear all 6 Object slots
+
+clrobjslots:
+	ldx #5
+	lda #$ff			; Mark slot is free
+clrobjloop:
+	sta objslots,x
+	dex
+	bpl clrobjloop
+	rts
+
+; Find a free Object slot and save obj nr in it
+
+findfreeslot:
+	ldx #0
+findobjloop:
+	lda objslots,x			; Get slot vale
+	bmi slotfound			; Jump if free
+	inx				; Point to next slot
+	cpx #6
+	bne findobjloop			; Repeat
+	sec				; No slot free, set carry
+	rts
+slotfound:
+	lda sprcnt			; get object nr
+	sta objslots,x			; store in slot
+	clc				; Slot set, clear carry
+	rts
+
+; Copy object image data to char RAM
+; X = slot pointer
+
+copyobj2chr:
+	lda objaddr_lb,x		; Calculate char RAM address	
+	sta bufaddr
+	lda objaddr_hb,x
+	sta bufaddr+1
+
+	ldy #31
+copyloop:
+	lda (z80_hl),y			; get object data
+	sta (bufaddr),y			; store in char RAM
+	dey
+	bpl copyloop			; repeat for 32 bytes
+	rts
+
+; Display object
+; A = slot pointer
+
+displayobj:
+	lsr a				; calculate object char nr
+	lsr a
+	clc
+	adc #OBJCHAR
+	sta charnr			; charnr = slotptr*4 + 178
+
+	jsr getoffset			; Calculate screen address
+	lda bufaddr
+	sta scraddr
+	clc
+	lda bufaddr+1
+	adc #>ScreenAddr
+	sta scraddr+1
+
+	ldy #0
+	lda charnr
+	sta (scraddr),y			; Display top left
+
+	iny
+	inc charnr
+	lda charnr
+	sta (scraddr),y			; Display top right
+
+	ldy #24
+	inc charnr
+	lda charnr
+	sta (scraddr),y			; Display bottom left
+
+	iny
+	inc charnr
+	lda charnr
+	sta (scraddr),y			; Display bottom right
+
+	rts
+
+; Erase sprite
+; TODO -> RESTORE BACKGROUND
+
+eraseobj:
+	jsr getoffset			; Calculate screen address
+	lda bufaddr
+	sta scraddr
+	clc
+	lda bufaddr+1
+	adc #>ScreenAddr
+	sta scraddr+1
+
+	ldy #0
+	lda #96
+	sta (scraddr),y			; erase top left
+
+	iny
+	lda #96
+	sta (scraddr),y			; erase top right
+
+	ldy #24
+	lda #96
+	sta (scraddr),y			; erase bottom left
+
+	iny
+	lda #96
+	sta (scraddr),y			; erase bottom right
+
+	rts
+
+; Object slots for objects on screen
+
+objslots:	.byte 0,0,0,0,0,0
+
+; Calculate object char locations for data storage
+
+objaddr_lb:	
+	.repeat 6,i
+		.byte <(CharAddress + (OBJCHAR*8 + i*32))
+	.endrepeat
+objaddr_hb:	
+	.repeat 6,i
+		.byte >(CharAddress + (OBJCHAR*8 + i*32))
+	.endrepeat
 

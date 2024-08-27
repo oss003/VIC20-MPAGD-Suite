@@ -5,7 +5,7 @@
 ; Screen is divided into 32 columns and 24 rows (Spectrum and Next/Timex) or 25 rows (CPC)
 ; The 4 parameters for DEFINEWINDOW are top edge, left edge, height and width respectively
 
-DEFINEWINDOW    1 1 22 24
+DEFINEWINDOW    1 1 22 22
 
 DEFINEFONT      0 0 0 0 0 0 0 0
                 0 48 48 48 48 0 48 0
@@ -110,8 +110,22 @@ DEFINEFONT      0 0 0 0 0 0 0 0
 
 ; Block 0
 
-DEFINEBLOCK     EMPTYBLOCK      ; property
-                0 0 0 0 0 0 0 0 71                                      ; Spectrum.
+DEFINEBLOCK EMPTYBLOCK 255,255,255,255,255,255,255,255,0
+DEFINEBLOCK EMPTYBLOCK 255,255,255,255,255,255,255,255,1
+DEFINEBLOCK EMPTYBLOCK 255,255,255,255,255,255,255,255,2
+DEFINEBLOCK EMPTYBLOCK 255,255,255,255,255,255,255,255,3
+DEFINEBLOCK EMPTYBLOCK 255,255,255,255,255,255,255,255,4
+DEFINEBLOCK EMPTYBLOCK 255,255,255,255,255,255,255,255,5
+DEFINEBLOCK EMPTYBLOCK 255,255,255,255,255,255,255,255,6
+DEFINEBLOCK EMPTYBLOCK 255,255,255,255,255,255,255,255,7
+DEFINEBLOCK EMPTYBLOCK 255,255,255,255,255,255,255,255,8
+DEFINEBLOCK EMPTYBLOCK 255,255,255,255,255,255,255,255,9
+DEFINEBLOCK EMPTYBLOCK 255,255,255,255,255,255,255,255,10
+DEFINEBLOCK EMPTYBLOCK 255,255,255,255,255,255,255,255,11
+DEFINEBLOCK EMPTYBLOCK 255,255,255,255,255,255,255,255,12
+DEFINEBLOCK EMPTYBLOCK 255,255,255,255,255,255,255,255,13
+DEFINEBLOCK EMPTYBLOCK 255,255,255,255,255,255,255,255,14
+DEFINEBLOCK EMPTYBLOCK 255,255,255,255,255,255,255,255,15
 
 ; Sprites
 ; First argument defines the number of frames
@@ -127,34 +141,34 @@ DEFINESPRITE    1		; number of frames
 ; The compiler will automatically compress screens
 
 DEFINESCREEN
-	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+	1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+	2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
+	3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3
+	4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4
+	5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5
+	6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6
+	7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7
+	8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8
+	9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9
+	10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10
+	11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11
+	12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12
+	13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13
+	14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14
+	15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15
+	0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,0,0,0,0,0
+	0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,0,0,0,0,0
+	0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,0,0,0,0,0
+	0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,0,0,0,0,0
+	0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,0,0,0,0,0
+	0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0,0,0,0,0,0
 
 ; Next we define the sprites that appear on the screen
 ; SPRITEPOSITION requires 4 numbers for image, type, Y coordinate and X coordinate in that order
 ; Coordinates are based on Spectrum screen, even for CPC so need to change for conversions
 
-SPRITEPOSITION 66,0,200,128
+SPRITEPOSITION 66,0,88,128
 
 
 ; Define objects
@@ -164,42 +178,9 @@ SPRITEPOSITION 66,0,200,128
 ; Coordinates are based on Spectrum screen, even for CPC so need to change for conversions
 
 ; Spectrum:
-DEFINEOBJECT    0,0,80,20     ; attribute, room, Y, X
-                255 255 255 255 255 255 255 255
-                255 255 255 255 255 255 255 255
-                255 255 255 255 255 255 255 255
-                255 255 255 255 255 255 255 255
-
-DEFINEOBJECT    0,0,100,40     ; attribute, room, Y, X
-                255 255 255 255 255 255 255 255
-                255 255 255 255 255 255 255 255
-                255 255 255 255 255 255 255 255
-                255 255 255 255 255 255 255 255
-
-DEFINEOBJECT    0,0,120,60     ; attribute, room, Y, X
-                255 255 255 255 255 255 255 255
-                255 255 255 255 255 255 255 255
-                255 255 255 255 255 255 255 255
-                255 255 255 255 255 255 255 255
-
-DEFINEOBJECT    0,0,140,80     ; attribute, room, Y, X
-                255 255 255 255 255 255 255 255
-                255 255 255 255 255 255 255 255
-                255 255 255 255 255 255 255 255
-                255 255 255 255 255 255 255 255
-
-DEFINEOBJECT    0,0,160,100     ; attribute, room, Y, X
-                255 255 255 255 255 255 255 255
-                255 255 255 255 255 255 255 255
-                255 255 255 255 255 255 255 255
-                255 255 255 255 255 255 255 255
-
-DEFINEOBJECT    0,0,180,120     ; attribute, room, Y, X
-                255 255 255 255 255 255 255 255
-                255 255 255 255 255 255 255 255
-                255 255 255 255 255 255 255 255
-                255 255 255 255 255 255 255 255
-
+DEFINEOBJECT    0,0,160,32     ; attribute, room, Y, X
+                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+                0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 ; Map.
 ; First argument is WIDTH, second is the startscreen
 ; We then arrange the map as a grid with correct width, monospaced here for readability
@@ -234,62 +215,15 @@ EVENT SPRITETYPE8
 EVENT INITSPRITE
 
 EVENT MAINLOOP1
-
- PRINTMODE 1
- AT 0 1
- PRINT "MENU/INVENTORY TEST:"
- PRINTMODE 0
-
- AT 4 1
- PRINT "MENU      = PRESS 1"
- AT 5 1
- PRINT "EMPTY INV = PRESS 2"
- AT 6 1
- PRINT "INVENTORY = PRESS 3"
-
- IF KEY OPTION1
-  MENU "ONE,TWO,THREE,FOUR,FIVE,SIX,SEVEN"
-  AT 22,5
-  PRINT "SELECTION WAS: "
-  DISPLAY OPT
-  PRINT "  "
- ENDIF
-
- IF KEY OPTION2
-  IF GOT 0
-    PUT 20,80,0
-  ENDIF
-  IF GOT 3
-    PUT 80,140,3
-  ENDIF
-  IF GOT 5
-    PUT 120,180,5
-  ENDIF
-  INV " OBJ0 , OBJ1 , OBJ2 , OBJ3 , OBJ4 , OBJ5"
-  AT 22,5
-  PRINT "SELECTION WAS: "
-  DISPLAY OPT
-  PRINT "  "
- ENDIF
-
- IF KEY OPTION3
-  GET 0
-  GET 3
-  GET 5
-  INV " OBJ0 , OBJ1 , OBJ2 , OBJ3 , OBJ4 , OBJ5"
-  AT 22,5
-  PRINT "SELECTION WAS: "
-  DISPLAY OPT
-  PRINT "  "
- ENDIF
-
+ 
 EVENT MAINLOOP2
 
 EVENT INTROMENU
-CLS
+
 EVENT GAMEINIT
 
 EVENT RESTARTSCREEN
+AT 0,4:PRINT"DEMO VIC20 MPAGD"
 
 EVENT FELLTOOFAR
 
