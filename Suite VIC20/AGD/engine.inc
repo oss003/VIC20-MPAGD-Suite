@@ -2025,24 +2025,24 @@ iniob:
 
 	ldx numob 		; number of objects in the game.
 iniob0:
-	ldy #35
+	ldy #36
 	lda (z80_ix),y 		; start screen.
-	ldy #32
+	ldy #33
 	sta (z80_ix),y 		; set start screen.
 
-	ldy #36
+	ldy #37
 	lda (z80_ix),y 		; find start y.
-	ldy #33
+	ldy #34
 	sta (z80_ix),y 		; set start y.
 
-	ldy #37
+	ldy #38
 	lda (z80_ix),y 		; get initial x.
-	ldy #34
+	ldy #35
 	sta (z80_ix),y 		; set x coord.
 
 	clc 			; point to next object.
 	lda z80_x
-	adc #38			; distance between objects.
+	adc #39			; distance between objects.
 	sta z80_x
 	bcc :+
 	inc z80_i
@@ -3521,10 +3521,10 @@ plsnd:
 ;---------------------------------------------------
 ; Objects handling.
 ; 32 bytes for image
-; 3 for room, y and x
+; 4 for colour, room, y and x
 ; 3 for starting room, y and x.
 ; 254 = disabled.
-; 255 = object in player"s pockets.
+; 255 = object in player's pockets.
 ;---------------------------------------------------
 
 ;---------------------------------------------------
@@ -3539,9 +3539,9 @@ shwob:
 	sta z80_h
 
 	lda #0
-	sta sprcnt
+	sta objnr
 shwob0:
-	ldy #32 			; distance to room number.
+	ldy #33 			; distance to room number.
 	lda (z80_hl),y 			; same as an item?
 	cmp scno 			; current location.
 	bne :+
@@ -3549,13 +3549,13 @@ shwob0:
 :
 	clc
 	lda z80_l
-	adc #38 			; distance to next item.
+	adc #39 			; distance to next item.
 	sta z80_l
 	lda z80_h
 	adc #0
 	sta z80_h	 		; point to it.
-	inc sprcnt
-	lda sprcnt
+	inc objnr
+	lda objnr
 	cmp numob
 	bne shwob0 			; repeat for others.
 	rts
@@ -3574,17 +3574,18 @@ dobj:
 	rts
 :
 	jsr copyobj2chr			; Copy object data to char ram
-	ldy #33
-	lda (z80_hl),y 			; point to y.
+	ldy #32
+	lda (z80_hl),y 			; get object colour
+	sta objcol
+	ldy #34
+	lda (z80_hl),y 			; get object y.
 	sta dispy
 	iny
-	lda (z80_hl),y 			; point to x.
+	lda (z80_hl),y 			; get object x.
 	sta dispx
 
-	jmp sprite 			; draw this sprite.
-
-charnr:	.byte 0
-
+	jmp displayobj		; draw this sprite.
+ 
 ;--------------------------------------
 ; Remove an object.
 ;
@@ -3593,6 +3594,7 @@ charnr:	.byte 0
 ;--------------------------------------
 
 remob:
+	sta objnr
 	cmp numob			; number of objects in game.
 	bcc :+				; are we checking past the end?
 	rts				; yes, can't get non-existent item.
@@ -3602,7 +3604,7 @@ remob:
 	pla				; retrieve object number.
 	jsr gotob			; get its address.
 	lda #254
-	ldy #32
+	ldy #33
 	sta (z80_hl),y			; remove it.
 	rts
 
@@ -3623,7 +3625,7 @@ getob:
 	bne :+
 	rts			; we already do.
 :
-	ldy #32
+	ldy #33
 	lda (z80_hl),y		; is it on this screen?
 	cmp scno 		; current screen.
 	bne getob0		; not on screen, so nothing to delete.
@@ -3632,10 +3634,10 @@ getob:
 	sta (z80_hl),y		; pick it up.
 	iny 			; point to y coord.
 getob1:
-	ldy #33
+	ldy #34
 	lda (z80_hl),y		; y coord.
 	sta dispy
-	ldy #34
+	ldy #35
 	lda (z80_hl),y 		; x coord.
 	sta dispx
 	jmp eraseobj 		; delete object sprite.
@@ -3678,7 +3680,7 @@ findob:
 fndob2:
 	clc
 	lda z80_l
-	adc #38 		; size of each object.
+	adc #39 		; size of each object.
 	sta z80_l
 	bcc :+
 	inc z80_h
@@ -3686,7 +3688,7 @@ fndob2:
 	dex 			; repeat until we find address.
 	bne fndob2
 fndob1:
-	ldy #32			; distance to room it's in.
+	ldy #33			; distance to room it's in.
 	lda (z80_hl),y		; fetch status.
 	rts
 .endif
@@ -3700,6 +3702,7 @@ fndob1:
 
 .if oflag
 drpob:
+	sta objnr
 	cmp numob 		; are we checking past the end?
 	bcc :+
 	rts			; yes, can't drop non-existent item.
@@ -3709,9 +3712,9 @@ drpob:
 	bne :+
 	rts			; yes, nothing to do.
 :
-	ldy #32
+	ldy #33
 	lda scno
-	sta (z80_hl),y		; bring onto screen.
+	sta (z80_hl),y		; get screen.
 	lda dispy		; sprite y coordinate.
 	iny 
 	sta (z80_hl),y		; point to object y.
@@ -3737,14 +3740,14 @@ skobj:
 	sta z80_b 		; set up the loop counter.
 skobj0:
 	lda scno		; current room number.
-	ldy #32
+	ldy #33
 	cmp (z80_hl),y		; is object in here?
 	bne :+
 	jsr skobj1		; yes, check coordinates.
 :
 	clc			; point to next object in table.
 	lda z80_l
-	adc #38			; size of each object.
+	adc #39			; size of each object.
 	sta z80_l
 	bcc :+
 	inc z80_h
@@ -3756,7 +3759,7 @@ skobj0:
 	rts
 
 skobj1:
-	ldy #33			; point to y coordinate.
+	ldy #34			; point to y coordinate.
 	lda (z80_hl),y		; point to y coordinate.
 	sec
 	ldy #8
@@ -3766,7 +3769,7 @@ skobj1:
 	cmp #16+COLDISTY-1	; within range?
 	bcs skobj2		; no, ignore object.
 
-	ldy #34			; point to x coordinate now.
+	ldy #35			; point to x coordinate now.
 	lda (z80_hl),y 		; get coordinate.
 	sec
 	ldy #9
@@ -4260,18 +4263,6 @@ pchr:
 	jsr pchar 		; show character in accumulator.
 	inc dispx		; move along one.
 	rts
-
-;----------------------------------------------------
-; Draw sprite
-;----------------------------------------------------
-
-.if oflag
-sprite:
-	lda sprcnt
-	jmp displayobj
-
-;xtmp:	.byte 0
-.endif
 
 ;-----------------------------------------------------------
 ; Get room address.

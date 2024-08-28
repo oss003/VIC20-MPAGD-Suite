@@ -553,15 +553,21 @@ findobjloop:
 	sec				; No slot free, set carry
 	rts
 slotfound:
-	lda sprcnt			; get object nr
+	lda objnr			; get object nr
 	sta objslots,x			; store in slot
+	stx curobjslot
+sta $7fff
+nop
+nop
+nop
 	clc				; Slot set, clear carry
 	rts
 
 ; Copy object image data to char RAM
-; X = slot pointer
+; z80_hl = object data address
 
 copyobj2chr:
+	ldx curobjslot
 	lda objaddr_lb,x		; Calculate char RAM address	
 	sta bufaddr
 	lda objaddr_hb,x
@@ -576,11 +582,12 @@ copyloop:
 	rts
 
 ; Display object
-; A = slot pointer
+; curobjslot = slot pointer
 
 displayobj:
-	lsr a				; calculate object char nr
-	lsr a
+	lda curobjslot
+	asl a				; calculate object char nr
+	asl a
 	clc
 	adc #OBJCHAR
 	sta charnr			; charnr = slotptr*4 + 178
@@ -593,24 +600,67 @@ displayobj:
 	adc #>ScreenAddr
 	sta scraddr+1
 
+; Save background char and display object on screen
+
+	ldx curobjslot			; Set buffer offset pointer
+
 	ldy #0
-	lda charnr
-	sta (scraddr),y			; Display top left
+	lda (scraddr),y			; get screen char top left
+	sta bufchar1,x			; save background char
+	lda charnr			; get object char
+	sta (scraddr),y			; display on screen
 
 	iny
 	inc charnr
-	lda charnr
-	sta (scraddr),y			; Display top right
+	lda (scraddr),y			; get screen char 
+	sta bufchar2,x			; save background char
+	lda charnr			; get object char
+	sta (scraddr),y			; display on screen
 
 	ldy #24
 	inc charnr
-	lda charnr
-	sta (scraddr),y			; Display bottom left
+	lda (scraddr),y			; get screen char 
+	sta bufchar3,x			; save background char
+	lda charnr			; get object char
+	sta (scraddr),y			; display on screen
 
 	iny
 	inc charnr
-	lda charnr
-	sta (scraddr),y			; Display bottom right
+	lda (scraddr),y			; get screen char 
+	sta bufchar4,x			; save background char
+	lda charnr			; get object char
+	sta (scraddr),y			; display on screen
+
+; Save background colours and set object colour on screen
+
+	clc				; Point to Color RAM
+	lda scraddr+1
+	adc #>(ColorAttr-ScreenAddr)
+	sta scraddr+1
+
+	ldy #0
+	lda (scraddr),y			; get colour top left
+	sta bufcol1,x			; save background colour
+	lda objcol
+	sta (scraddr),y			; set object colour
+
+	iny
+	lda (scraddr),y			; get colour top right
+	sta bufcol2,x			; save background colour
+	lda objcol
+	sta (scraddr),y			; set object colour 
+
+	ldy #24
+	lda (scraddr),y			; get colour bottom left
+	sta bufcol3,x			; save background colour
+	lda objcol
+	sta (scraddr),y			; set object colour
+
+	iny
+	lda (scraddr),y			; get colour bottom right
+	sta bufcol4,x			; save background colour
+	lda objcol
+	sta (scraddr),y			; set object colour
 
 	rts
 
@@ -626,27 +676,69 @@ eraseobj:
 	adc #>ScreenAddr
 	sta scraddr+1
 
+; Find slotnr
+
 	ldy #0
-	lda #96
+	lda (scraddr),y			; erase top left
+	sec
+	sbc #OBJCHAR
+	lsr a
+	lsr a
+	tax
+
+; Erase object from screen and restore background 
+
+	lda bufchar1,x
 	sta (scraddr),y			; erase top left
-
 	iny
-	lda #96
+	lda bufchar2,x
 	sta (scraddr),y			; erase top right
-
 	ldy #24
-	lda #96
+	lda bufchar3,x
 	sta (scraddr),y			; erase bottom left
-
 	iny
-	lda #96
+	lda bufchar4,x
+	sta (scraddr),y			; erase bottom right
+
+; Restore background colour
+
+	clc
+	lda scraddr+1
+	adc #>(ColorAttr-ScreenAddr)
+	sta scraddr+1
+
+	ldy #0
+	lda bufcol1,x
+	sta (scraddr),y			; erase top left
+	iny
+	lda bufcol2,x
+	sta (scraddr),y			; erase top right
+	ldy #24
+	lda bufcol3,x
+	sta (scraddr),y			; erase bottom left
+	iny
+	lda bufcol4,x
 	sta (scraddr),y			; erase bottom right
 
 	rts
 
 ; Object slots for objects on screen
 
+objnr:		.byte 0
+charnr:		.byte 0
+
+curobjslot:	.byte 0
 objslots:	.byte 0,0,0,0,0,0
+
+bufchar1:	.byte 0,0,0,0,0,0
+bufchar2:	.byte 0,0,0,0,0,0
+bufchar3:	.byte 0,0,0,0,0,0
+bufchar4:	.byte 0,0,0,0,0,0
+
+bufcol1:	.byte 0,0,0,0,0,0
+bufcol2:	.byte 0,0,0,0,0,0
+bufcol3:	.byte 0,0,0,0,0,0
+bufcol4:	.byte 0,0,0,0,0,0
 
 ; Calculate object char locations for data storage
 
@@ -659,3 +751,4 @@ objaddr_hb:
 		.byte >(CharAddress + (OBJCHAR*8 + i*32))
 	.endrepeat
 
+objcol:	.byte 0
