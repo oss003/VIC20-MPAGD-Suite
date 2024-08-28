@@ -22,9 +22,9 @@ Screenbuilding is working now.
 
 
 VIC20 memory:
-- $0400-$06ff   = MAP with tile properties
-- $0700-$0717   = Screen Line offset table low-byte
-- $0718-$072f   = Screen Line offset table low-byte
+- $0400-$06ff		= MAP with tile properties
+- $0700-$0717		= Screen Line offset table low-byte
+- $0718-$072f		= Screen Line offset table low-byte
 - $0730-$0fff   = Free
 - $1000-$1240   = Screen
 - $1400-$16ff   = Font storage                  (char   0- 95)
