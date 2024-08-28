@@ -29,9 +29,11 @@ VIC20 memory:
 - $1000-$1240   = Screen
 - $1400-$16ff   = Font storage                  (char   0- 95)
 - $1700-$198f   = Tiles copied from MPAGD       (char  96-177)
-- $1990-$19b3   = 6 objects, 4 chars per object (char 178-201)
-- $19b4-$1fff   = 6 sprites, 9 chars per sprite (char 202-255)
-- $2000-?????   = Gamecode
+- $1990-$1a4f   = 6 objects, 4 chars per object (char 178-201)
+- $1a50-$1bff   = 6 sprites, 9 chars per sprite (char 202-255)
+- $1c00-$7fff   = Gamecode
+- $8000-$8fff   = CHAR ROM
+- $9000-$93ff   = VIC VIA's
 - $9400-$960f   = To be used for tile colours (24x22)
 - $9610-$97ff   = Free
 - $9800-$9fff   = I/O
