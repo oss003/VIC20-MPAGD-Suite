@@ -22,11 +22,21 @@ Screenbuilding is working now.
 
 
 VIC20 memory:
-- $0400-$06ff   = MAP with tile properties
-- $0700-$0717   = Screen Line offset table low-byte
-- $0718-$072f   = Screen Line offset table low-byte
+- $0400-$06ff		= MAP with tile properties
+- $0700-$0717		= Screen Line offset table low-byte
+- $0718-$072f		= Screen Line offset table low-byte
+- $0730-$0fff   = Free
 - $1000-$1240   = Screen
-- $1800-$1aff   = Font storage (char 0-95)
-- $1b00-?????   = Tiles copied from MPAGD (96-xx)
-- $2000-?????   = Gamecode
-- $9400-$97ff   = To be used for tile colours
+- $1400-$16ff   = Font storage                  (char   0- 95)
+- $1700-$198f   = Tiles copied from MPAGD       (char  96-177)
+- $1990-$1a4f   = 6 objects, 4 chars per object (char 178-201)
+- $1a50-$1bff   = 6 sprites, 9 chars per sprite (char 202-255)
+- $1c00-$7fff   = Gamecode
+- $8000-$8fff   = CHAR ROM
+- $9000-$93ff   = VIC VIA's
+- $9400-$960f   = To be used for tile colours (24x22)
+- $9610-$97ff   = Free
+- $9800-$9fff   = I/O
+- $a000-$bfff   = Free
+- $c000-$dfff   = BASIC ROM
+- $e000-$ffff   = KERNAL ROM
