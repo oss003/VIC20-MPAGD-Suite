@@ -836,7 +836,7 @@ unsigned char cDefaultHop[ 25 ] =
 
 unsigned char cDefaultKeys[ 11 ] =
 {
-	0x35,0x15,0x93,0x22,0x90,0x04,0x14,0x21,0x11,0x01,0x92
+	0x65,0x14,0x51,0x10,0x30,0x44,0x34,0x70,0x00,0x71,0x01
 };
 
 const unsigned char cKeyOrder[ 11 ] =
@@ -1601,7 +1601,7 @@ void CreateSprites( void )
 {
 	short int nDataMax;
 	short int nData;
-	unsigned char *cSrc;									/* source pointer. */
+	unsigned char *cSrc;								/* source pointer. */
 	short int nCounter = 0;
 	short int nFrame = 0;
 	short int nShifts = 0;
@@ -1650,7 +1650,7 @@ void CreateSprites( void )
 			for ( nShifts = 0; nShifts < nShiftsMax; nShifts++ )
 			{
 				cSrc = cBufPos;
-				WriteText( "\n        .byte " );						/* start of text message */
+				WriteText( "\n        .byte " );			/* start of text message */
 				nData = 0;
 				while ( nData++ < nDataMax )
 				{
@@ -1658,7 +1658,7 @@ void CreateSprites( void )
 					cByte[ 1 ] = *cSrc++;
 					cByte[ 2 ] = 0;
 
-					for( nLoop = 0; nLoop < nShifts; nLoop++ )		/* pre-shift the sprite */
+					for( nLoop = 0; nLoop < nShifts; nLoop++ )	/* pre-shift the sprite */
 					{
 						cByte[ 2 ] = cByte[ 1 ] << 6;
 						cByte[ 1 ] >>= 2;
@@ -1667,12 +1667,12 @@ void CreateSprites( void )
 						cByte[ 0 ] |= cByte[ 2 ];
 					}
 
-					WriteNumber( cByte[ 0 ] );						/* write byte of data */
-					WriteText( "," );								/* put a comma */
-					WriteNumber( cByte[ 1 ] );						/* write byte of data */
+					WriteNumber( cByte[ 0 ] );			/* write byte of data */
+					WriteText( "," );				/* put a comma */
+					WriteNumber( cByte[ 1 ] );			/* write byte of data */
 					if ( nData < nDataMax )
 					{
-						WriteText( "," );							/* more to come; put a comma */
+						WriteText( "," );			/* more to come; put a comma */
 					}
 				}
 			}
@@ -1706,14 +1706,14 @@ void CreateSprites( void )
 void CreateScreens( void )
 {
 	short int nThisScreen = 0;
-	short int nBytes = 0;										/* bytes to write. */
+	short int nBytes = 0;								/* bytes to write. */
 	short int nByteCount;
 	short int nColumn = 0;
 	short int nCount = 0;
 	short int nByte = 0;
 	short int nFirstByte = -1;
 	short int nScreenSize = 0;
-	unsigned char *cSrc;										/* source pointer. */
+	unsigned char *cSrc;								/* source pointer. */
 
 	/* Set up source address. */
 	cSrc = cBufPos;
@@ -1736,12 +1736,12 @@ void CreateScreens( void )
 		while ( nBytes > 0 )
 		{
 			nCount = 0;
-			nFirstByte = *cSrc;									/* fetch first byte. */
+			nFirstByte = *cSrc;						/* fetch first byte. */
 
 			do
 			{
 				nByte = *++cSrc;
-				nCount++;										/* count the bytes. */
+				nCount++;						/* count the bytes. */
 				nBytes--;
 			}
 			while ( nByte == nFirstByte && nCount < 256 && nBytes > 0 );
@@ -1988,8 +1988,8 @@ void CreateObjects( void )
 				WriteText( "," );
 			}
 
-//			WriteNumber( cAttr );
-//			WriteText( "," );
+			WriteNumber( cAttr );
+			WriteText( "," );
 			WriteNumber( cScrn );
 			WriteText( "," );
 			WriteNumber( cY );
@@ -4680,20 +4680,20 @@ void CR_ControlMenu( void )
 {
 	WriteInstruction( "\nrtcon:			; CONTROLMENU" );
 	WriteInstruction( "jsr vsync" );
-	WriteInstruction( "lda #0" );
+	WriteInstruction( "lda #0" );		// Keyboard
 	WriteInstruction( "sta contrl" );
 	WriteInstruction( "lda keys+7" );
 	WriteInstruction( "jsr ktest" );
 	WriteInstruction( "bcc rtcon1" );
-	WriteInstruction( "lda #1" );
+	WriteInstruction( "lda #1" );		// Joystick 1
 	WriteInstruction( "sta contrl" );
 	WriteInstruction( "lda keys+8" );
 	WriteInstruction( "jsr ktest" );
-	WriteInstruction( "bcc rtcon1" );
-	WriteInstruction( "lda #2" );
-	WriteInstruction( "sta contrl" );
-	WriteInstruction( "lda keys+9" );
-	WriteInstruction( "jsr ktest" );
+//	WriteInstruction( "bcc rtcon1" );
+//	WriteInstruction( "lda #2" );		// Joystick 2
+//	WriteInstruction( "sta contrl" );
+//	WriteInstruction( "lda keys+9" );
+//	WriteInstruction( "jsr ktest" );
 	WriteInstruction( "bcs rtcon" );
 	WriteInstruction( "rtcon1:" );
 }
@@ -5156,6 +5156,10 @@ void CR_SpritePosition( void )
 
 void CR_DefineObject( void )
 {
+	int tmp;
+	int i;
+	char objarray[36];
+
 	unsigned short int nArg;
 	short int nDatum = 0;
 	unsigned char cChar;
@@ -5166,20 +5170,52 @@ void CR_DefineObject( void )
 		nEvent = -1;
 	}
 
+	for (i = 0; i < 4; i++){
+		nArg = NextKeyword();
+			cChar = ( char )GetNum( 8 );
+			objarray[i]=cChar;
+	}
+
+	for (i = 4; i < 12; i++){
+		nArg = NextKeyword();
+			cChar = ( char )GetNum( 8 );
+			objarray[i]=cChar;
+		nArg = NextKeyword();
+			cChar = ( char )GetNum( 8 );
+			objarray[i + 8]=cChar;
+	}
+
+	for (i = 20; i < 28; i++){
+		nArg = NextKeyword();
+			cChar = ( char )GetNum( 8 );
+			objarray[i]=cChar;
+		nArg = NextKeyword();
+			cChar = ( char )GetNum( 8 );
+			objarray[i + 8]=cChar;
+	}
+
+// Test purpose
+//
+//	for (i = 0; i < 36; i++){
+//		printf("%02X ",objarray[i] & 255);
+//	}
+
 	do
 	{
-		nArg = NextKeyword();
-		if ( nArg == INS_NUM )
-		{
-			cChar = ( char )GetNum( 8 );
-			fwrite( &cChar, 1, 1, pWorkObj );					/* write character to objects workfile. */
+//		nArg = NextKeyword();
+//		if ( nArg == INS_NUM )
+//		{
+//			cChar = ( char )GetNum( 8 );
+//			fwrite( &cChar, 1, 1, pWorkObj );					/* write character to objects workfile. */
+			fwrite( &objarray[nDatum], 1, 1, pWorkObj );					/* write character to objects workfile. */
+
 			nDatum++;
-		}
-		else
-		{
-			Error( "Missing data for DEFINEOBJECT" );
-			nDatum = 36;
-		}
+//		}
+//		else
+//		{
+//			Error( "Missing data for DEFINEOBJECT" );
+//			nDatum = 36;
+//		}
 	}
 	while ( nDatum < 36 );
 
@@ -5440,188 +5476,171 @@ unsigned char ConvertKey( short int nNum )
 	{
 
 	// row 0
-		case 0x33:		// 3
-			nCode = 0x01;
+		case 45:		// -
+			nCode = 0x05;
 			break;
-		case 0xbd:		// -
-			nCode = 0x02;
-			break;
-		case 0x47:		// G
-			nCode = 0x03;
-			break;
-		case 0x51:		// Q
+		case 48:		// 0
 			nCode = 0x04;
 			break;
-		case 0x1b:		// ESC
-			nCode = 0x05;
+		case 56:		// 8
+			nCode = 0x03;
+			break;
+		case 54:		// 6
+			nCode = 0x02;
+			break;
+		case 52:		// 4
+			nCode = 0x01;
+			break;
+		case 50:		// 2
+			nCode = 0x00;
 			break;
 
 	// row 1
-		case 0x32:		// 2
-			nCode = 0x11;
-			break;
-		case 0x2c:		// ,
-			nCode = 0x12;
-			break;
-		case 0x46:		// F
-			nCode = 0x13;
-			break;
-		case 0x50:		// P
-			nCode = 0x14;
-			break;
-		case 0x5a:		// Z
+		case 64:		// @
 			nCode = 0x15;
 			break;
+		case 79:		// O
+			nCode = 0x14;
+			break;
+		case 85:		// U
+			nCode = 0x13;
+			break;
+		case 84:		// T
+			nCode = 0x12;
+			break;
+		case 69:		// E
+			nCode = 0x11;
+			break;
+		case 81:		// Q
+			nCode = 0x10;
+			break;
+
 
 	// row 2
-		case 0x26:		// UP/DOWN
-			nCode = 0x20;
+		case 61:		// =
+			nCode = 0x26;
 			break;
-		case 0x31:		// 1
-			nCode = 0x21;
+		case 58:		// :
+			nCode = 0x25;
 			break;
-		case 0x3b:		// ;
-			nCode = 0x22;
-			break;
-		case 0x45:		// E
-			nCode = 0x23;
-			break;
-		case 0x4f:		// O
+		case 75:		// K
 			nCode = 0x24;
 			break;
-		case 0x59:		// Y
-			nCode = 0x25;
+		case 72:		// H
+			nCode = 0x23;
+			break;
+		case 70:		// F
+			nCode = 0x22;
+			break;
+		case 83:		// S
+			nCode = 0x21;
 			break;
 
 	// row 3
-		case 0x27:		// LINKS/RECHTS
-			nCode = 0x30;
+		case 46:		// .
+			nCode = 0x35;
 			break;
-		case 0x30:		// 0
-			nCode = 0x31;
-			break;
-		case 0x3a:		// :
-			nCode = 0x32;
-			break;
-		case 0x44:		// D
-			nCode = 0x33;
-			break;
-		case 0x4e:		// N
+		case 77:		// M
 			nCode = 0x34;
 			break;
-		case 0x58:		// X
-			nCode = 0x35;
+		case 66:		// B
+			nCode = 0x33;
+			break;
+		case 67:		// C
+			nCode = 0x32;
+			break;
+		case 90:		// Z
+			nCode = 0x31;
+			break;
+		case 32:		// SPC
+			nCode = 0x30;
 			break;
 
 	// row 4
-		case 0x14:		// LOCK
-			nCode = 0x40;
+		case 47:		// /
+			nCode = 0x46;
 			break;
-		case 0x08:		// DELETE
-			nCode = 0x41;
+		case 44:		// ,
+			nCode = 0x45;
 			break;
-		case 0x39:		// 9
-			nCode = 0x42;
-			break;
-		case 0x43:		// C
-			nCode = 0x43;
-			break;
-		case 0x4d:		// M
+		case 78:		// N
 			nCode = 0x44;
 			break;
-		case 0x57:		// W
-			nCode = 0x45;
+		case 86:		// V
+			nCode = 0x43;
+			break;
+		case 88:		// X
+			nCode = 0x42;
+			break;
+		case 27:		// RUN/STOP
+			nCode = 0x40;
 			break;
 
 	// row 5
-		case 0x5e:		// UP
-			nCode = 0x50;
+		case 59:		// ;
+			nCode = 0x56;
 			break;
-		case 0xf2:		// COPY
-			nCode = 0x51;
+		case 76:		// L
+			nCode = 0x55;
 			break;
-		case 0x38:		// 8
-			nCode = 0x52;
-			break;
-		case 0x42:		// B
-			nCode = 0x53;
-			break;
-		case 0x4c:		// L
+		case 74:		// J
 			nCode = 0x54;
 			break;
-		case 0x56:		// V
-			nCode = 0x55;
+		case 71:		// G
+			nCode = 0x53;
+			break;
+		case 68:		// D
+			nCode = 0x52;
+			break;
+		case 65:		// A
+			nCode = 0x51;
 			break;
 
 	// row 6
-		case 0x5d:		// ]
-			nCode = 0x60;
+		case 13:		// RET
+			nCode = 0x67;
 			break;
-		case 0x0d:		// RETURN
-			nCode = 0x61;
+		case 42:		// *
+			nCode = 0x66;
 			break;
-		case 0x37:		// 7
-			nCode = 0x62;
-			break;
-		case 0x41:		// A
-			nCode = 0x63;
-			break;
-		case 0x4b:		// K
-			nCode = 0x64;
-			break;
-		case 0x55:		// U
+		case 80:		// P
 			nCode = 0x65;
 			break;
+		case 73:		// I
+			nCode = 0x64;
+			break;
+		case 89:		// Y
+			nCode = 0x63;
+			break;
+		case 82:		// R
+			nCode = 0x62;
+			break;
+		case 87:		// W
+			nCode = 0x61;
+			break;
+
 
 	// row 7
-		case 0x5c:		// \
-			nCode = 0x70;
+		case 8:		// INST/DEL
+			nCode = 0x77;
 			break;
-		case 0x36:		// 6
-			nCode = 0x72;
-			break;
-		case 0x40:		// @
-			nCode = 0x73;
-			break;
-		case 0x4a:		// J
-			nCode = 0x74;
-			break;
-		case 0x54:		// T
+		case 43:		// +
 			nCode = 0x75;
 			break;
-
-	// row 8
-		case 0x5b:		// [
-			nCode = 0x80;
+		case 57:		// 9
+			nCode = 0x74;
 			break;
-		case 0x35:		// 5
-			nCode = 0x82;
+		case 55:		// 7
+			nCode = 0x73;
 			break;
-		case 0x2f:		// /
-			nCode = 0x83;
+		case 53:		// 5
+			nCode = 0x72;
 			break;
-		case 0x49:		// I
-			nCode = 0x84;
+		case 51:		// 3
+			nCode = 0x71;
 			break;
-		case 0x53:		// S
-			nCode = 0x85;
-			break;
-
-	// row 9
-		case 0x20:		// SPACE
-			nCode = 0x90;
-			break;
-		case 0x34:		// 4
-			nCode = 0x92;
-			break;
-		case 0x2e:		// .
-			nCode = 0x93;
-			break;
-		case 0x48:		// H
-			nCode = 0x94;
-			break;
-		case 0x52:		// R
-			nCode = 0x95;
+		case 49:		// 1
+			nCode = 0x70;
 			break;
 	}
 
