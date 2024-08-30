@@ -3197,6 +3197,7 @@ mloop:
 evlp1:
 	jsr evnt10 		; called once per main loop.
 	jsr pspr 		; process sprites.
+lda $7fff
 
 ; Main loop events.
 
@@ -5086,51 +5087,6 @@ joy2:
 	jmp joyret 		; store the value.
 
 ;---------------------------------------------------------------
-; Getkey in column,row format
-;
-; Output:
-;  A = high nibble=row and low nibble=column key in matrix
-;---------------------------------------------------------------
-;
-;kget:
-;	lda #ScrMode		; high-mono mode.
-;	sta ScrSelAddr		; screen select port
-;	stx xtmp
-;kget4:
-;	jsr READKEY		; read key until pressed
-;	cpy #255
-;	beq kget4
-;	sta rcol		; save column
-;	stx rrow		; determine row
-;kget3:
-;	jsr READKEY		; wait until key released
-;	cpy #255
-;	bne kget3
-;
-;	sec			; calculate matrix row
-;	lda #10
-;	sbc rrow
-;	asl a
-;	asl a
-;	asl a
-;	asl a
-;	sta rrow
-;
-;	ldy #255		; find column mask
-;kget1:
-;	iny
-;	lda keymask,y
-;	cmp rcol
-;	beq kget2
-;	jmp kget1
-;kget2:
-;	tya			; determine column
-;	clc
-;	adc rrow
-;	ldx xtmp
-;	rts
-
-;---------------------------------------------------------------
 ; Display message.
 ;
 ; Input:
@@ -5372,12 +5328,14 @@ sspri0:
 ;-----------------------------------------------------------------
 
 ssprib:
+	rts
 	jsr gspran 		; get new sprite address.
 	jmp sspri2
 	
 ;-----------------------------------------------------------------
 
 sspric:
+	rts
 	jsr gsprad 		; get old sprite address.
 
 	lda z80_e

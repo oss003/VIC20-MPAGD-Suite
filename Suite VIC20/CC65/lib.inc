@@ -21,13 +21,36 @@
 ;                          	  $9121
 ;          $9120	b7  b6  b5  b4  b3  b2  b1  b0
 ; 	127-0111 1111 	F7  Hom  -   0   8   6   4   2
+;               ASCII   ??  ??  45  48  56  54  52  50
+;                 VIC   07  06  05  04  03  02  01  00
+;
 ; 	191-1011 1111 	F5       @   O   U   T   E   Q
+;               ASCII   ??  ??  64  79  85  84  69  81
+;                 VIC   17  16  15  14  13  12  11  10
+;
 ; 	223-1101 1111 	F3   =   :   K   H   F   S  Com
+;               ASCII   ??  61  58  75  72  70  83  ??
+;                 VIC   27  26  25  24  23  22  21  20
+;
 ; 	239-1110 1111 	F1  RSh  .   M   B   C   Z  Spc
+;               ASCII   ??  ??  46  77  66  67  90  32
+;                 VIC   37  36  35  34  33  32  31  30
+;
 ; 	247-1111 0111	Cur  /   ,   N   V   X  LSh Run
+;               ASCII   ??  47  44  78  86  88  ??  ??
+;                 VIC   47  46  45  44  43  42  41  40
+;
 ; 	251-1111 1011	Cur  ;   L   J   G   D   A  Ctr
+;               ASCII   ??  59  76  74  71  68  65  ??
+;                 VIC   57  56  55  54  53  52  51  50
+;
 ; 	253-1111 1101	Ret  *   P   I   Y   R   W
+;               ASCII   13  42  80  73  89  82  87
+;                 VIC   67  66  65  64  63  62  61  60
+;
 ; 	254-1111 1110	Del Pnd  +   9   7   5   3   1
+;               ASCII   08  ??  43  57  55  53  51  49
+;                 VIC   77  76  75  74  73  72  71  70
 ;
 ;	 P =$65,O=$14,A=$51,Q=$10
 ;	SPC=$30,N=$44,M=$34
@@ -384,7 +407,7 @@ sndskip:
 ; Keyboard test routine.
 ;
 ; Input:
-;  A = key to read, high nibble=col and low nibble=row
+;  A = key to read, high nibble=row and low nibble=col
 ;
 ; Output:
 ;  carry clr = key pressed
@@ -417,6 +440,53 @@ pressed:
 
 colmask:	.byte 127,191,223,239,247,251,253,254
 keymask:	.byte $01,$02,$04,$08,$10,$20,$40,$80
+
+;---------------------------------------------------------------
+; Getkey in column,row format
+;
+; Output:
+;  A = high nibble=row and low nibble=col key in matrix
+;---------------------------------------------------------------
+kget:
+	stx xtmp		; Save x-reg
+kget0:
+	ldx #0			; reset row	
+kget1:
+	lda colmask,x		; Get mask
+	sta KeyColAddr		; Set row
+	lda KeyRowAddr		; Read columns
+	sta tmp			; Save colums
+	cmp #$ff		; Key pressed?
+	bne kget2		; Yes, skip
+	inx			; Next row
+	cpx #8			; All rows scanned?
+	bne kget1		; No, repeat
+	jmp kget0		; No key pressed, a=$ff
+kget2:
+	ldy #0			; Reset column
+kget3:
+	lsr tmp			; Test bit
+	bcc kget4		; If clear, key pressed
+	iny			; Next column
+	jmp kget3		; Repeat
+kget4:
+	stx tmp			; Get row
+	asl tmp			; Make high nibble
+	asl tmp
+	asl tmp
+	asl tmp
+	tya			; Get column
+	clc
+	adc tmp			; Add row as low nibble
+	sta tmp
+kget5:
+	lda KeyRowAddr		; Read columns
+	cmp #$ff
+	bne kget5
+
+	lda tmp			; Return keycode
+	ldx xtmp		; Restore X-reg
+	rts			; Return
 
 ;-------------------------------------------------------------
 ; JOY1SCAN, scan joystick1 and return key in z80_e
@@ -556,10 +626,6 @@ slotfound:
 	lda objnr			; get object nr
 	sta objslots,x			; store in slot
 	stx curobjslot
-sta $7fff
-nop
-nop
-nop
 	clc				; Slot set, clear carry
 	rts
 
