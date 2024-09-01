@@ -1601,7 +1601,7 @@ void CreateSprites( void )
 {
 	short int nDataMax;
 	short int nData;
-	unsigned char *cSrc;								/* source pointer. */
+	unsigned char *cSrc;									/* source pointer. */
 	short int nCounter = 0;
 	short int nFrame = 0;
 	short int nShifts = 0;
@@ -1609,6 +1609,8 @@ void CreateSprites( void )
 	short int nLoop = 0;
 	unsigned char cByte[ 3 ];
 	char cFrames[ 256 ];
+	int i;
+	char sprarray[32];
 
 	/* define max sprite value upon flagB */
 	if (flagB)
@@ -1628,6 +1630,7 @@ void CreateSprites( void )
 	{
 		nShiftsMax = 4;
 	}
+
 
 	/* Set up source address. */
 	cSrc = cBufPos;
@@ -1650,15 +1653,16 @@ void CreateSprites( void )
 			for ( nShifts = 0; nShifts < nShiftsMax; nShifts++ )
 			{
 				cSrc = cBufPos;
-				WriteText( "\n        .byte " );			/* start of text message */
+				WriteText( "\n        .byte " );						/* start of text message */
 				nData = 0;
+				i=0;
 				while ( nData++ < nDataMax )
 				{
 					cByte[ 0 ] = *cSrc++;
 					cByte[ 1 ] = *cSrc++;
 					cByte[ 2 ] = 0;
 
-					for( nLoop = 0; nLoop < nShifts; nLoop++ )	/* pre-shift the sprite */
+					for( nLoop = 0; nLoop < nShifts; nLoop++ )		/* pre-shift the sprite */
 					{
 						cByte[ 2 ] = cByte[ 1 ] << 6;
 						cByte[ 1 ] >>= 2;
@@ -1667,12 +1671,22 @@ void CreateSprites( void )
 						cByte[ 0 ] |= cByte[ 2 ];
 					}
 
-					WriteNumber( cByte[ 0 ] );			/* write byte of data */
-					WriteText( "," );				/* put a comma */
-					WriteNumber( cByte[ 1 ] );			/* write byte of data */
-					if ( nData < nDataMax )
+//					WriteNumber( cByte[ 0 ] );						/* write byte of data */
+//					WriteText( "," );								/* put a comma */
+//					WriteNumber( cByte[ 1 ] );						/* write byte of data */
+//					if ( nData < nDataMax )
+//					{
+//						WriteText( "," );							/* more to come; put a comma */
+//					}
+					sprarray[i]=(cByte[0]) ;
+					sprarray[i+16]=(cByte[1]) ;
+					i++;
+				}
+				for (i = 0; i < 32; i++){
+					WriteNumber( sprarray[i] & 0xff );						/* write byte of data */
+					if ( i < 31 )
 					{
-						WriteText( "," );			/* more to come; put a comma */
+						WriteText( "," );							/* more to come; put a comma */
 					}
 				}
 			}
