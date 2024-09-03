@@ -1151,6 +1151,7 @@ gspran:
 	ldy #7
 	clc
 	adc (z80_ix),y 			; new add frame number.
+	sta frmnr			; store frame number
 	jmp gspra0
 
 ; Address of each sprite type's routine.
@@ -1173,6 +1174,10 @@ evtyp8:	.word evnt08
 ;--------------------------------------------------------------
 
 dspr:
+	jsr findfreesprslot		; find free sprite slot
+	bcc :+
+	rts
+:
 	lda #(NUMSPR/2)			; number of sprites to display.
 	sta sprcnt
 dspr0:
@@ -2051,6 +2056,7 @@ iniob0:
 	bne iniob0
 
 	jsr clrobjslots		; Clear objslots
+	jsr clrsprslots		; Clear sprslots
 
 	rts
 
@@ -5215,6 +5221,8 @@ gsprad:
 	ldy #2
 	clc
 	adc (z80_ix),y 		; add frame number.
+	sta frmnr		; store frame number
+
 gspra0:
 	lsr a	  		; multiply by 128.
 	sta z80_d 		; store in d.

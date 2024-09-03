@@ -610,16 +610,15 @@ clrobjloop:
 	bpl clrobjloop
 	rts
 
-; Find a free Object slot and save obj nr in it
+; Find a free Object slot and save objnr in it
 
 findfreeslot:
-	ldx #0
+	ldx #5
 findobjloop:
 	lda objslots,x			; Get slot vale
 	bmi slotfound			; Jump if free
-	inx				; Point to next slot
-	cpx #6
-	bne findobjloop			; Repeat
+	dex				; Point to next slot
+	bpl findobjloop			; Repeat
 	sec				; No slot free, set carry
 	rts
 slotfound:
@@ -731,7 +730,6 @@ displayobj:
 	rts
 
 ; Erase sprite
-; TODO -> RESTORE BACKGROUND
 
 eraseobj:
 	jsr getoffset			; Calculate screen address
@@ -791,6 +789,7 @@ eraseobj:
 ; Object slots for objects on screen
 
 objnr:		.byte 0
+objcol:		.byte 0
 charnr:		.byte 0
 
 curobjslot:	.byte 0
@@ -817,4 +816,41 @@ objaddr_hb:
 		.byte >(CharAddress + (OBJCHAR*8 + i*32))
 	.endrepeat
 
-objcol:	.byte 0
+
+;-------------------------------------------------------------
+; Sprite routines
+;-------------------------------------------------------------
+
+; Clear all 6 Sprite slots
+
+clrsprslots:
+	ldx #5
+	lda #$ff			; Mark slot is free
+clrsprloop:
+	sta sprslots,x
+	dex
+	bpl clrsprloop
+	rts
+
+; Find a free Sprite slot and save sprnr in it
+
+findfreesprslot:
+	ldx #5
+findsprloop:
+	lda sprslots,x			; Get slot value
+	bmi sprslotfound		; Jump if free
+	dex				; Point to next slot
+	bpl findsprloop			; Repeat
+	sec				; No slot free, set carry
+	rts
+sprslotfound:
+	lda frmnr			; get frame nr
+	sta sprslots,x			; store in slot
+	stx cursprslot
+	clc				; Slot set, clear carry
+	rts
+
+frmnr:		.byte 0
+
+cursprslot:	.byte 0
+sprslots:	.byte 0,0,0,0,0,0
