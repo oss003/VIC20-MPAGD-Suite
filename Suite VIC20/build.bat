@@ -21,12 +21,12 @@ rem Copy AGD file to AGD dir
  echo.
  echo Copy %1.agd to compiler directory ...
  copy AGDsources\%1.agd agd >nul
- if errorlevel 1 goto error
  cd AGD
 
 rem Compile AGD file
  echo Compiling %1.agd
  AGD %1
+ if errorlevel 1 goto error
  copy %1.inc ..\cc65\ >nul
  copy game.cfg ..\cc65\ >nul
  del %1.*

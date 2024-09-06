@@ -6,12 +6,12 @@ rem Build asm file
 
 rem Conditional assemble game
  echo Assemble: AGDgame.prg
- ca65 -l game.lst -o %1.o game.asm  
+ ca65 -l game.lst -o %1.o game.asm  -D modelflag=%2 
  if not "%errorlevel%" == "0" goto failed
 
 rem Linking
  echo Linking: %1
- ld65  %1.o -C vic20.cfg -o %1.prg 
+ ld65 %1.o -C vic20.cfg -o %1.prg 
  if not "%errorlevel%" == "0" goto failed
 
 rem Copying

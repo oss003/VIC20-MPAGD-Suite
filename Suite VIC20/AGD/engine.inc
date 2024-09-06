@@ -1174,10 +1174,6 @@ evtyp8:	.word evnt08
 ;--------------------------------------------------------------
 
 dspr:
-	jsr findfreesprslot		; find free sprite slot
-	bcc :+
-	rts
-:
 	lda #(NUMSPR/2)			; number of sprites to display.
 	sta sprcnt
 dspr0:
