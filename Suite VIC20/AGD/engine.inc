@@ -1466,8 +1466,6 @@ prsrelease:
 ;----------------------------------------------------
 
 pspr:
-	rts
-
 	lda #NUMSPR		; sprites to process.
 	sta sprptr
 
@@ -3199,7 +3197,6 @@ mloop:
 evlp1:
 	jsr evnt10 		; called once per main loop.
 	jsr pspr 		; process sprites.
-lda $7fff
 
 ; Main loop events.
 
@@ -5260,11 +5257,12 @@ gspra0:
 ;------------------------------------------------------------------
 
 scadd:
-	ldx dispy
-	cpx #192
-	bcc :+
-	ldx #192
-:
+	lda dispy
+	lsr a
+	lsr a
+	lsr a
+	tax
+
 	lda dispx
 	lsr a
 	lsr a
@@ -5273,6 +5271,9 @@ scadd:
 	adc SCROFF_lb,x
 	sta scraddr
 	lda SCROFF_hb,x
+	sta scraddr+1
+	clc
+	adc #$10
 	sta scraddr+1
 	rts
 
@@ -5304,154 +5305,33 @@ tmp2:	.byte 0
 ;-----------------------------------------------------------------
 
 sspria:
-	rts
-
 	jsr gsprad		; get old sprite address.
 
 sspri2:
-	lda z80_e
-	sta dline1+1		; Set spritedata address
-	sta dline2+1
-	lda z80_d
-	sta dline1+2
-	sta dline2+2
 
-	stx xtmp
-	ldx #0			; vertical lines.
-sspri0:
-	jsr dline		; draw a line.
-	cpx #16			; detect block boundery
-	bne :+			; skip if not
-	inc scraddr+1		; jump to next blockline
-:
-	cpx #32			; check finished
-	bne sspri0		; no, repeat
-	ldx xtmp
+	;---------------------
+	; Erase sprite code
+	;---------------------
+
 	rts
 
 ;-----------------------------------------------------------------
 
 ssprib:
-	rts
 	jsr gspran 		; get new sprite address.
-	jmp sspri2
+
+	;---------------------
+	; Display sprite code
+	;---------------------
+
+	rts
 	
 ;-----------------------------------------------------------------
 
 sspric:
+	jsr sspria
+	jsr ssprib
 	rts
-	jsr gsprad 		; get old sprite address.
-
-	lda z80_e
-	sta ddline1+1		; Set spritedata address
-	sta ddline2+1
-	lda z80_d
-	sta ddline1+2
-	sta ddline2+2
-	jsr exx  		; store addresses.
-
-	jsr gspran 		; get new sprite addresses.
-	lda z80_e
-	sta dline1+1		; Set spritedata address
-	sta dline2+1
-	lda z80_d
-	sta dline1+2
-	sta dline2+2
-
-	stx xtmp
-	ldx #0			; vertical lines.
-lloop:
-	jsr dline 		; erase old sprite line
-	dex
-	dex
-	jsr ddline 		; display new sprite line
-	cpx #16			; detect block boundery
-	bne :+			; skip if not
-	inc scraddr+1		; jump to next blockline
-	inc z80_hlp+1		; jump to next blockline
-:
-	cpx #32			; check finished
-	bne lloop		; no, repeat
-	ldx xtmp
-	rts
-
-
-;-------------------------------------------------------------
-; Line drawn, now work out next target address.
-;
-; Input:
-;  BP  = right mask
-;  CP  = left mask
-;  DEP = spriteaddress
-;  z80_hlp = screen address
-;-------------------------------------------------------------
-
-
-ddummy:	.byte 0,0
-
-dline:
-	ldy sprline,x		; point to screenleft
-dline1:
-	lda objdta,x		; fetch spriteleft byte
-	sta z80_a		; save spriteright byte
-	lda z80_a
-	and z80_c		; mask left
-	eor (scraddr),y		; merge with screenleft
-	sta (scraddr),y		; write screenleft
-sline:
-	inx			; next spritebyte
-	iny			; point to screenmiddle
-dline2:
-	lda objdta,x		; fetch spritemiddle byte
-	eor (scraddr),y		; merge with screenmiddle
-	sta (scraddr),y		; write screenmiddle
-sline2:
-	iny			; point to screenright
-	lda z80_a		; fetch spriteright byte
-	and z80_b		; mask right
-	eor (scraddr),y		; merge with screenright
-	sta (scraddr),y		; write screenright
-sline3:
-	inx			; next spritebyte
-
-	rts
-
-;-----------------------------------------------------------------
-; 2 Lines drawn, erase old sprite and display new sprite.
-;-----------------------------------------------------------------
-
-ddline:
-	ldy sprline,x		; point to screenleft
-ddline1:
-	lda objdta,x		; fetch spriteleft byte
-	sta z80_a		; save spriteright byte
-	lda z80_a
-	and z80_cp		; mask left
-	eor (z80_hlp),y		; merge with screenleft
-	sta (z80_hlp),y		; write screenleft
-dsline:
-	inx			; next spritebyte
-	iny			; point to screenmiddle
-ddline2:
-	lda objdta,x		; fetch spritemiddle byte
-	eor (z80_hlp),y		; merge with screenmiddle
-	sta (z80_hlp),y		; write screenmiddle
-dsline2:
-	iny			; point to screenright
-	lda z80_a		; fetch spriteright byte
-	and z80_bp		; mask right
-	eor (z80_hlp),y		; merge with screenright
-	sta (z80_hlp),y		; write screenright
-dsline3:
-	inx			; next spritebyte
-
-	rts
-
-sprline:
-	.byte $00,$01,$20,$21,$40,$41,$60,$61
-	.byte $80,$81,$a0,$a1,$c0,$c1,$e0,$e1
-	.byte $00,$01,$20,$21,$40,$41,$60,$61
-	.byte $80,$81,$a0,$a1,$c0,$c1,$e0,$e1
 
 ;-------------------------------------
 ; Clear the play area window.
