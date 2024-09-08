@@ -112,14 +112,14 @@
 ;------------------------------------------------------------
 
 .if modelflag
-	SrcWidth	= 24	; PAL settings
+	ScrWidth	= 24	; PAL settings
 	ScrHeight	= 24
 	CentreX		= 10
 	CentreY		= 33
 	timervalue	= 43450	; = 40000 * 1,108/1,02
 	.out "- PAL" 
 .else
-	SrcWidth	= 24	; NTSC settings
+	ScrWidth	= 24	; NTSC settings
 	ScrHeight	= 24
 	CentreX		= 2
 	CentreY		= 24
@@ -171,6 +171,251 @@
 
 	NUMSHR 		= 55		; pieces of shrapnel.
 	SHRSIZ 		= 6		; bytes per particle.
+
+;============================================================
+; PLATFORM MACROS
+;============================================================
+
+
+SLOT_NUM = $80
+POS_X_CHAR = $81
+POS_Y_CHAR = $82
+OFFSET_X = $83
+OFFSET_Y = $84
+TEMP_PTR = $85
+;TEMP_PTR+1 = $86
+SPRITE_PTR = $87
+;SPRITE_PTR+1 = $88
+CHAR_RAM_PTR = $89
+;CHAR_RAM_PTR+1 = $8a
+
+
+.macro  AddTo16bitPtrValue toAdd, pointer
+    clc
+    lda pointer
+    adc toAdd
+    sta pointer
+    bcc :+
+    inc pointer+1
+:
+.endmacro
+
+.macro  AddTo16bitPtrValueDest toAdd, sourcePtr, destPtr
+    clc
+    lda sourcePtr
+    adc toAdd
+    sta destPtr
+    lda sourcePtr+1
+    adc #$00
+    sta destPtr+1
+.endmacro
+
+.macro  AddTo16bitPtrDest AddValuePtr, SourcePtr, DestPtr
+    clc
+    lda SourcePtr
+    adc AddValuePtr
+    sta DestPtr
+    lda SourcePtr+1
+    adc AddValuePtr+1
+    sta DestPtr+1
+.endmacro
+
+
+.macro  SubFrom16bitPtrValue toSub, pointer
+    sec
+    lda pointer
+    sbc toSub
+    sta pointer
+    bcs :+
+    dec pointer+1
+:
+.endmacro
+
+.macro MS_SET_CHAR_RAM_PTR
+    ; Set char ram to be used by the current sprite
+    lda SLOT_NUM
+    asl ; multiply by two
+    tay ; move to y
+    lda SpritesPosCharRam,y ; Points to the ram for each slot
+    sta CHAR_RAM_PTR
+    lda SpritesPosCharRam+1,y
+    sta CHAR_RAM_PTR+1
+.endmacro
+
+.macro MS_POS_CHAR_ON_SCREEN
+    ; Check position of the sprite on screen
+    lda dispx
+    lsr
+    lsr
+    lsr ; Divide by 8
+    sta POS_X_CHAR
+
+    lda dispx
+    lsr
+    and #%00000011
+    sta OFFSET_X
+
+    lda dispy
+    lsr
+    lsr
+    lsr ; Divide by 8
+    sta POS_Y_CHAR
+
+    lda dispy
+    and #%00000110
+    sta OFFSET_Y
+.endmacro
+
+.macro MS_CLEAN_SPRITE_RAM
+    ;Find background element
+    ; ldx POS_X_CHAR
+    ; ldy POS_Y_CHAR
+    ; jsr findElementInBackground
+
+    ; ldy #0
+    ; lda (TABLE_BKG_PTR),y
+
+    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
+
+    ; ldy #24
+    ; lda (TABLE_BKG_PTR),y
+
+    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
+
+    ; ldy #48
+    ; lda (TABLE_BKG_PTR),y
+
+    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
+
+    ; ldy #1
+    ; lda (TABLE_BKG_PTR),y
+
+    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
+
+    ; ldy #25
+    ; lda (TABLE_BKG_PTR),y
+
+    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
+
+    ; ldy #49
+    ; lda (TABLE_BKG_PTR),y
+
+    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
+
+    ; ldy #2
+    ; lda (TABLE_BKG_PTR),y
+
+    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
+
+    ; ldy #26
+    ; lda (TABLE_BKG_PTR),y
+
+    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
+
+    ; ldy #50
+    ; lda (TABLE_BKG_PTR),y
+
+    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
+
+    ; SubFrom16bitPtrValue #72, CHAR_SPRITE_PTR
+
+	ldy #0
+	lda #0
+:
+	sta (CHAR_RAM_PTR),y
+	iny
+	cpy #72
+	bne :-
+.endmacro
+
+.macro MS_COPY_SPRITE_CHAR_RAM
+    ; Copy selected sprite from table to char ram
+    ; moved to the right position in the 3x3 sprite char
+    ; and merged with background
+
+    ; First column (uses the left side of the sprite)
+    AddTo16bitPtrValueDest OFFSET_Y, CHAR_RAM_PTR, TEMP_PTR
+    MS_COPY_8x24_SPRITE_CHAR_RAM z80_c
+
+    ; Third column (uses the left side of the sprite - different filter)
+    AddTo16bitPtrValue #48, TEMP_PTR
+    MS_COPY_8x24_SPRITE_CHAR_RAM z80_b      
+
+    ; Second column (uses the right side of the sprite no filter)
+    AddTo16bitPtrValue #16, SPRITE_PTR
+    SubFrom16bitPtrValue #24, TEMP_PTR
+    MS_COPY_8x24_SPRITE_CHAR_RAM_NO_FILTER  
+.endmacro
+
+.macro MS_COPY_8x24_SPRITE_CHAR_RAM FILTER_SPRITE
+    ldy #$0f
+:  
+    lda (SPRITE_PTR),y
+    and FILTER_SPRITE
+    ora (TEMP_PTR),y    
+    sta (TEMP_PTR),y
+    dey
+    bpl :-
+.endmacro
+
+.macro MS_COPY_8x24_SPRITE_CHAR_RAM_NO_FILTER
+    ldy #$0f
+:  
+    lda (SPRITE_PTR),y
+    ora (TEMP_PTR),y
+    sta (TEMP_PTR),y
+    dey
+    bpl :-
+.endmacro
+
+.macro MS_DRAW_SPRITE_ON_SCREEN
+    ; Draw the entire sprite on screen
+
+    lda SLOT_NUM    ; Load the number into the accumulator
+    asl         ; Shift left (multiply by 2)
+    asl         ; Shift left (multiply by 4)
+    asl         ; Shift left (multiply by 8)
+    clc         ; Clear the carry flag
+    adc SLOT_NUM    ; Add the original number
+    tax         ; Store the result in x
+
+    lda SpriteSlotPositionCharRam,x
+    inx
+    ldy #0
+    sta (scraddr),y
+    lda SpriteSlotPositionCharRam,x
+    inx
+    iny
+    sta (scraddr),y
+    lda SpriteSlotPositionCharRam,x
+    inx
+    iny
+    sta (scraddr),y
+    lda SpriteSlotPositionCharRam,x
+    inx
+    ldy #24
+    sta (scraddr),y
+    lda SpriteSlotPositionCharRam,x
+    inx
+    iny
+    sta (scraddr),y
+    lda SpriteSlotPositionCharRam,x
+    inx
+    iny
+    sta (scraddr),y
+    lda SpriteSlotPositionCharRam,x
+    inx
+    ldy #48
+    sta (scraddr),y
+    lda SpriteSlotPositionCharRam,x
+    inx
+    iny
+    sta (scraddr),y
+    lda SpriteSlotPositionCharRam,x
+    inx
+    iny
+    sta (scraddr),y
+.endmacro
 
 ;===============================================================
 ; Game starts here
@@ -1177,6 +1422,7 @@ dspr:
 	lda #(NUMSPR/2)			; number of sprites to display.
 	sta sprcnt
 dspr0:
+lda $7fff
 	ldy #0
 	lda (z80_ix),y 			; get sprite type.
 	cmp #255 			; is it enabled?
@@ -1266,98 +1512,98 @@ dspr3:
 ; Bubble sort.
 ;-----------------------------------------------------------
 
-bsort:
-	lda #NUMSPR - 1			; sprites to swap.
-	sta qscnt
+;bsort:
+;	lda #NUMSPR - 1			; sprites to swap.
+;	sta qscnt
 
-	lda #<sprtab 			; sprite table.
-	sta z80_x
-	lda #>sprtab
-	sta z80_i
-bsort0:
-	ldy #0
-	lda (z80_ix),y 			; first sprite type.
-	cmp #255 			; is it switched off?
-	beq swemp			; yes, may need to switch another in here.
+;	lda #<sprtab 			; sprite table.
+;	sta z80_x
+;	lda #>sprtab
+;	sta z80_i
+;bsort0:
+;	ldy #0
+;	lda (z80_ix),y 			; first sprite type.
+;	cmp #255 			; is it switched off?
+;	beq swemp			; yes, may need to switch another in here.
 
-	ldy #TABSIZ
-	lda (z80_ix),y 			; check next slot exists.
-	cmp #255 			; is it enabled?
-	beq bsort2 			; no, nothing to swap.
+;	ldy #TABSIZ
+;	lda (z80_ix),y 			; check next slot exists.
+;	cmp #255 			; is it enabled?
+;	beq bsort2 			; no, nothing to swap.
 
-	ldy #TABSIZ+3
-	lda (z80_ix),y 			; fetch next sprite's coordinate.
-	ldy #3
-	cmp (z80_ix),y 			; compare with this x coordinate.
-	bcc bsort1			; next sprite is higher - may need to switch.
-bsort2:
-	clc
-	lda z80_x
-	adc #TABSIZ 			; distance to next odd/even entry.
-	sta z80_x
-	bcc :+
-	inc z80_i
-:
-	dec qscnt 
-	bne bsort0			; repeat for remaining sprites.
-	rts
+;	ldy #TABSIZ+3
+;	lda (z80_ix),y 			; fetch next sprite's coordinate.
+;	ldy #3
+;	cmp (z80_ix),y 			; compare with this x coordinate.
+;	bcc bsort1			; next sprite is higher - may need to switch.
+;bsort2:
+;	clc
+;	lda z80_x
+;	adc #TABSIZ 			; distance to next odd/even entry.
+;	sta z80_x
+;	bcc :+
+;	inc z80_i
+;:
+;	dec qscnt 
+;	bne bsort0			; repeat for remaining sprites.
+;	rts
 
 ;qscnt:	.byte 0
 
-bsort1:
-	ldy #TABSIZ
-	lda (z80_ix),y			; sprite on/off flag.
-	cmp #255			; is it enabled?
-	beq bsort2			; no, nothing to swap.
-	jsr swspr			; swap positions.
-	jmp bsort2
-swemp:
-	ldy #TABSIZ
-	lda (z80_ix),y			; next table entry.
-	cmp #255			; is that one on?
-	beq bsort2			; no, nothing to swap.
-	jsr swspr			; swap positions.
-	jmp bsort2
+;bsort1:
+;	ldy #TABSIZ
+;	lda (z80_ix),y			; sprite on/off flag.
+;	cmp #255			; is it enabled?
+;	beq bsort2			; no, nothing to swap.
+;	jsr swspr			; swap positions.
+;	jmp bsort2
+;swemp:
+;	ldy #TABSIZ
+;	lda (z80_ix),y			; next table entry.
+;	cmp #255			; is that one on?
+;	beq bsort2			; no, nothing to swap.
+;	jsr swspr			; swap positions.
+;	jmp bsort2
 
 ; Swap sprites.
 
-swspr:
-	lda z80_x			; table address 
-	sta z80_e			; copy to de pair.
-	sta z80_l			; copy to hl pair.
-	lda z80_i
-	sta z80_h
-	sta z80_d
+;swspr:
+;	lda z80_x			; table address 
+;	sta z80_e			; copy to de pair.
+;	sta z80_l			; copy to hl pair.
+;	lda z80_i
+;	sta z80_h
+;	sta z80_d
 
-	clc
-	lda z80_l
-	adc #TABSIZ			; distance to second entry.
-	sta z80_l
-	bcc :+
-	inc z80_h
-:
-	lda #TABSIZ			; bytes to swap.
-	sta z80_b
-	ldy #0
-swspr0:
-	lda (z80_hl),y			; fetch second byte.
-	pha
-	lda (z80_de),y 			; fetch first byte.
-	sta (z80_hl),y 			; copy to second.
-	pla
-	sta (z80_de),y 			; copy to first sprite entry.
+;	clc
+;	lda z80_l
+;	adc #TABSIZ			; distance to second entry.
+;	sta z80_l
+;	bcc :+
+;	inc z80_h
+;:
+;	lda #TABSIZ			; bytes to swap.
+;	sta z80_b
+;	ldy #0
+;swspr0:
+;	lda (z80_hl),y			; fetch second byte.
+;	pha
+;	lda (z80_de),y 			; fetch first byte.
+;	sta (z80_hl),y 			; copy to second.
+;	pla
+;	sta (z80_de),y 			; copy to first sprite entry.
 
-	inc z80_e 			; next byte.
-	bne :+	
-	inc z80_d
-:
-	inc z80_l 			; next byte.
-	bne :+
-	inc z80_h
-:
-	dec z80_b
-	bne swspr0 			; swap all bytes in table entry.
-	rts
+;	inc z80_e 			; next byte.
+;	bne :+	
+;	inc z80_d
+;:
+;	inc z80_l 			; next byte.
+;	bne :+
+;	inc z80_h
+;:
+;	dec z80_b
+;	bne swspr0 			; swap all bytes in table entry.
+;	rts
 
 ;--------------------------------------------------------------
 ; Get messagenr x in hl
@@ -4143,8 +4389,11 @@ pradd:
 	jsr getoffset
 
 	clc
+	lda bufaddr
+	adc #<MAP
+	sta bufaddr
 	lda bufaddr+1
-	adc #>MapAddr
+	adc #>MAP
 	sta bufaddr+1
 	rts
 
@@ -4160,6 +4409,9 @@ gaadd:
 	jsr getoffset
 
 	clc
+	lda bufaddr
+	adc #<ColorAttr
+	sta bufaddr
 	lda bufaddr+1
 	adc #>ColorAttr
 	sta bufaddr+1
@@ -4593,7 +4845,7 @@ cangh1:
 	pha
 	clc
 	lda bufaddr
-	adc #32			; look down.
+	adc #ScrWidth			; look down.
 	sta bufaddr
 	bcc :+
 	inc bufaddr+1
@@ -4918,39 +5170,32 @@ tded1:
 
 tstbl:
 	lda dispy 		; fetch y coord.
+	pha
 	lsr a			; bufaddr = y/8
 	lsr a
 	lsr a
-	sta chary
-
-	sta bufaddr
-	lda #0
-	sta bufaddr+1
-
-	asl bufaddr  		; bufaddr = y/8 * 32
-	rol bufaddr+1
-	asl bufaddr
-	rol bufaddr+1
-	asl bufaddr
-	rol bufaddr+1
-	asl bufaddr
-	rol bufaddr+1
-	asl bufaddr
-	rol bufaddr+1
+	sta dispy
 
 	lda dispx		; x/8
+	pha
 	lsr a
 	lsr a
 	lsr a
-	sta charx
+	sta dispx
 
-	clc			; bufaddr = MAP + x/8 + y/8*32
-	adc bufaddr
+	jsr getoffset
+	clc
+	lda bufaddr
 	adc #<MAP
 	sta bufaddr
 	lda bufaddr+1
 	adc #>MAP
 	sta bufaddr+1
+
+	pla
+	sta dispx
+	pla
+	sta dispy
 
 	ldy #0
 	lda (bufaddr),y 	; fetch byte there.
@@ -5257,22 +5502,32 @@ gspra0:
 ;------------------------------------------------------------------
 
 scadd:
+
 	lda dispy
+	pha
 	lsr a
 	lsr a
 	lsr a
-	tax
+	sta dispy
 
 	lda dispx
+	pha
 	lsr a
 	lsr a
 	lsr a
-	clc
-	adc SCROFF_lb,x
+	sta dispx
+
+	jsr getoffset
+
+	pla
+	sta dispx
+	pla
+	sta dispy
+
+	lda bufaddr
 	sta scraddr
-	lda SCROFF_hb,x
-	sta scraddr+1
 	clc
+	lda bufaddr+1
 	adc #$10
 	sta scraddr+1
 	rts
@@ -5309,20 +5564,76 @@ sspria:
 
 sspri2:
 
-	;---------------------
-	; Erase sprite code
-	;---------------------
+	ldy #0
+	lda #0
+:
+	sta (scraddr),y
+	iny
+	cpy #3
+	bne :-
+
+	ldy #24
+	lda #0
+:
+	sta (scraddr),y
+	iny
+	cpy #27
+	bne :-
+
+	ldy #48
+	lda #0
+:
+	sta (scraddr),y
+	iny
+	cpy #(48+3)
+	bne :-
+
 
 	rts
 
 ;-----------------------------------------------------------------
 
+SpriteSlotPositionCharRam:
+    .byte 201, 204, 207, 202, 205, 208, 203, 206, 209
+    .byte 210, 213, 216, 211, 214, 217, 212, 215, 218
+    .byte 219, 222, 225, 220, 223, 226, 221, 224, 227
+    .byte 228, 231, 234, 229, 232, 235, 230, 233, 236
+    .byte 237, 240, 243, 238, 241, 244, 239, 242, 245
+    .byte 246, 249, 252, 247, 250, 253, 248, 251, 254 
+
+; Starting from $18 (3 background chars * 8 bytes -> 48)
+; Increased by $48 (9 chars * 8 bytes -> 72)
+SpritesPosCharRam:
+    .word $1a48, $1a90, $1ad8, $1b20, $1b68, $1bb0
+
+
 ssprib:
 	jsr gspran 		; get new sprite address.
 
-	;---------------------
-	; Display sprite code
-	;---------------------
+	lda frmnr
+	sta SLOT_NUM
+
+	lda z80_de
+	sta SPRITE_PTR
+	lda z80_de+1
+	sta SPRITE_PTR+1
+
+    ; Set char ram to be used by the current sprite
+    MS_SET_CHAR_RAM_PTR
+
+    ; Check position of the sprite on screen
+    MS_POS_CHAR_ON_SCREEN
+
+    ; clean sprite in char ram
+    MS_CLEAN_SPRITE_RAM ; cpu intensive
+
+    ; Copy selected sprite from table to char ram
+    ; moved to the right position in the 3x3 sprite char
+    ; and merged with background
+    MS_COPY_SPRITE_CHAR_RAM 
+
+	; Draw the entire sprite on screen
+    MS_DRAW_SPRITE_ON_SCREEN
 
 	rts
 	
@@ -5332,6 +5643,7 @@ sspric:
 	jsr sspria
 	jsr ssprib
 	rts
+
 
 ;-------------------------------------
 ; Clear the play area window.

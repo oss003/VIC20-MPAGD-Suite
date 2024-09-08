@@ -166,13 +166,13 @@ Init:
 ; max num of columns 24
 	lda Reg2
 	and #%10000000
-	ora #SrcWidth
+	ora #ScrWidth
 	sta Reg2
 
 ; max num of lines (mult by 2 - 24) for 8x8 chars
 	lda Reg3
 	and #%01000001
-	ora #SrcWidth*2		; number of rows multipled by two
+	ora #ScrWidth*2		; number of rows multipled by two
 	sta Reg3
 
 ; horizontal and vertical position must be set for 
