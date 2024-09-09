@@ -172,251 +172,6 @@
 	NUMSHR 		= 55		; pieces of shrapnel.
 	SHRSIZ 		= 6		; bytes per particle.
 
-;============================================================
-; PLATFORM MACROS
-;============================================================
-
-
-SLOT_NUM = $80
-POS_X_CHAR = $81
-POS_Y_CHAR = $82
-OFFSET_X = $83
-OFFSET_Y = $84
-TEMP_PTR = $85
-;TEMP_PTR+1 = $86
-SPRITE_PTR = $87
-;SPRITE_PTR+1 = $88
-CHAR_RAM_PTR = $89
-;CHAR_RAM_PTR+1 = $8a
-
-
-.macro  AddTo16bitPtrValue toAdd, pointer
-    clc
-    lda pointer
-    adc toAdd
-    sta pointer
-    bcc :+
-    inc pointer+1
-:
-.endmacro
-
-.macro  AddTo16bitPtrValueDest toAdd, sourcePtr, destPtr
-    clc
-    lda sourcePtr
-    adc toAdd
-    sta destPtr
-    lda sourcePtr+1
-    adc #$00
-    sta destPtr+1
-.endmacro
-
-.macro  AddTo16bitPtrDest AddValuePtr, SourcePtr, DestPtr
-    clc
-    lda SourcePtr
-    adc AddValuePtr
-    sta DestPtr
-    lda SourcePtr+1
-    adc AddValuePtr+1
-    sta DestPtr+1
-.endmacro
-
-
-.macro  SubFrom16bitPtrValue toSub, pointer
-    sec
-    lda pointer
-    sbc toSub
-    sta pointer
-    bcs :+
-    dec pointer+1
-:
-.endmacro
-
-.macro MS_SET_CHAR_RAM_PTR
-    ; Set char ram to be used by the current sprite
-    lda SLOT_NUM
-    asl ; multiply by two
-    tay ; move to y
-    lda SpritesPosCharRam,y ; Points to the ram for each slot
-    sta CHAR_RAM_PTR
-    lda SpritesPosCharRam+1,y
-    sta CHAR_RAM_PTR+1
-.endmacro
-
-.macro MS_POS_CHAR_ON_SCREEN
-    ; Check position of the sprite on screen
-    lda dispx
-    lsr
-    lsr
-    lsr ; Divide by 8
-    sta POS_X_CHAR
-
-    lda dispx
-    lsr
-    and #%00000011
-    sta OFFSET_X
-
-    lda dispy
-    lsr
-    lsr
-    lsr ; Divide by 8
-    sta POS_Y_CHAR
-
-    lda dispy
-    and #%00000110
-    sta OFFSET_Y
-.endmacro
-
-.macro MS_CLEAN_SPRITE_RAM
-    ;Find background element
-    ; ldx POS_X_CHAR
-    ; ldy POS_Y_CHAR
-    ; jsr findElementInBackground
-
-    ; ldy #0
-    ; lda (TABLE_BKG_PTR),y
-
-    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
-
-    ; ldy #24
-    ; lda (TABLE_BKG_PTR),y
-
-    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
-
-    ; ldy #48
-    ; lda (TABLE_BKG_PTR),y
-
-    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
-
-    ; ldy #1
-    ; lda (TABLE_BKG_PTR),y
-
-    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
-
-    ; ldy #25
-    ; lda (TABLE_BKG_PTR),y
-
-    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
-
-    ; ldy #49
-    ; lda (TABLE_BKG_PTR),y
-
-    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
-
-    ; ldy #2
-    ; lda (TABLE_BKG_PTR),y
-
-    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
-
-    ; ldy #26
-    ; lda (TABLE_BKG_PTR),y
-
-    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
-
-    ; ldy #50
-    ; lda (TABLE_BKG_PTR),y
-
-    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
-
-    ; SubFrom16bitPtrValue #72, CHAR_SPRITE_PTR
-
-	ldy #0
-	lda #0
-:
-	sta (CHAR_RAM_PTR),y
-	iny
-	cpy #72
-	bne :-
-.endmacro
-
-.macro MS_COPY_SPRITE_CHAR_RAM
-    ; Copy selected sprite from table to char ram
-    ; moved to the right position in the 3x3 sprite char
-    ; and merged with background
-
-    ; First column (uses the left side of the sprite)
-    AddTo16bitPtrValueDest OFFSET_Y, CHAR_RAM_PTR, TEMP_PTR
-    MS_COPY_8x24_SPRITE_CHAR_RAM z80_c
-
-    ; Third column (uses the left side of the sprite - different filter)
-    AddTo16bitPtrValue #48, TEMP_PTR
-    MS_COPY_8x24_SPRITE_CHAR_RAM z80_b      
-
-    ; Second column (uses the right side of the sprite no filter)
-    AddTo16bitPtrValue #16, SPRITE_PTR
-    SubFrom16bitPtrValue #24, TEMP_PTR
-    MS_COPY_8x24_SPRITE_CHAR_RAM_NO_FILTER  
-.endmacro
-
-.macro MS_COPY_8x24_SPRITE_CHAR_RAM FILTER_SPRITE
-    ldy #$0f
-:  
-    lda (SPRITE_PTR),y
-    and FILTER_SPRITE
-    ora (TEMP_PTR),y    
-    sta (TEMP_PTR),y
-    dey
-    bpl :-
-.endmacro
-
-.macro MS_COPY_8x24_SPRITE_CHAR_RAM_NO_FILTER
-    ldy #$0f
-:  
-    lda (SPRITE_PTR),y
-    ora (TEMP_PTR),y
-    sta (TEMP_PTR),y
-    dey
-    bpl :-
-.endmacro
-
-.macro MS_DRAW_SPRITE_ON_SCREEN
-    ; Draw the entire sprite on screen
-
-    lda SLOT_NUM    ; Load the number into the accumulator
-    asl         ; Shift left (multiply by 2)
-    asl         ; Shift left (multiply by 4)
-    asl         ; Shift left (multiply by 8)
-    clc         ; Clear the carry flag
-    adc SLOT_NUM    ; Add the original number
-    tax         ; Store the result in x
-
-    lda SpriteSlotPositionCharRam,x
-    inx
-    ldy #0
-    sta (scraddr),y
-    lda SpriteSlotPositionCharRam,x
-    inx
-    iny
-    sta (scraddr),y
-    lda SpriteSlotPositionCharRam,x
-    inx
-    iny
-    sta (scraddr),y
-    lda SpriteSlotPositionCharRam,x
-    inx
-    ldy #24
-    sta (scraddr),y
-    lda SpriteSlotPositionCharRam,x
-    inx
-    iny
-    sta (scraddr),y
-    lda SpriteSlotPositionCharRam,x
-    inx
-    iny
-    sta (scraddr),y
-    lda SpriteSlotPositionCharRam,x
-    inx
-    ldy #48
-    sta (scraddr),y
-    lda SpriteSlotPositionCharRam,x
-    inx
-    iny
-    sta (scraddr),y
-    lda SpriteSlotPositionCharRam,x
-    inx
-    iny
-    sta (scraddr),y
-.endmacro
-
 ;===============================================================
 ; Game starts here
 ;===============================================================
@@ -5606,17 +5361,64 @@ SpriteSlotPositionCharRam:
 SpritesPosCharRam:
     .word $1a48, $1a90, $1ad8, $1b20, $1b68, $1bb0
 
+SpriteNumTable:
+	.word sprtab, sprtab+17, sprtab+34, sprtab+51
+	.word sprtab+68, sprtab+85
+
+MemoryCharLow:
+    .byte $00, $08, $10, $18, $20, $28, $30, $38, $40, $48, $50, $58, $60, $68, $70, $78
+    .byte $80, $88, $90, $98, $A0, $A8, $B0, $B8, $C0, $C8, $D0, $D8, $E0, $E8, $F0, $F8
+    .byte $00, $08, $10, $18, $20, $28, $30, $38, $40, $48, $50, $58, $60, $68, $70, $78
+    .byte $80, $88, $90, $98, $A0, $A8, $B0, $B8, $C0, $C8, $D0, $D8, $E0, $E8, $F0, $F8
+    .byte $00, $08, $10, $18, $20, $28, $30, $38, $40, $48, $50, $58, $60, $68, $70, $78
+    .byte $80, $88, $90, $98, $A0, $A8, $B0, $B8, $C0, $C8, $D0, $D8, $E0, $E8, $F0, $F8
+    .byte $00, $08, $10, $18, $20, $28, $30, $38, $40, $48, $50, $58, $60, $68, $70, $78
+    .byte $80, $88, $90, $98, $A0, $A8, $B0, $B8, $C0, $C8, $D0, $D8, $E0, $E8, $F0, $F8
+    .byte $00, $08, $10, $18, $20, $28, $30, $38, $40, $48, $50, $58, $60, $68, $70, $78
+    .byte $80, $88, $90, $98, $A0, $A8, $B0, $B8, $C0, $C8, $D0, $D8, $E0, $E8, $F0, $F8
+    .byte $00, $08, $10, $18, $20, $28, $30, $38, $40, $48, $50, $58, $60, $68, $70, $78
+    .byte $80, $88, $90, $98, $A0, $A8, $B0, $B8, $C0, $C8, $D0, $D8, $E0, $E8, $F0, $F8
+    .byte $00, $08, $10, $18, $20, $28, $30, $38, $40, $48, $50, $58, $60, $68, $70, $78
+    .byte $80, $88, $90, $98, $A0, $A8, $B0, $B8, $C0, $C8, $D0, $D8, $E0, $E8, $F0, $F8
+    .byte $00, $08, $10, $18, $20, $28, $30, $38, $40, $48, $50, $58, $60, $68, $70, $78
+    .byte $80, $88, $90, $98, $A0, $A8, $B0, $B8, $C0, $C8, $D0, $D8, $E0, $E8, $F0, $F8
+
+MemoryCharHigh:
+    .byte $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14
+    .byte $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14
+    .byte $15, $15, $15, $15, $15, $15, $15, $15, $15, $15, $15, $15, $15, $15, $15, $15
+    .byte $15, $15, $15, $15, $15, $15, $15, $15, $15, $15, $15, $15, $15, $15, $15, $15
+    .byte $16, $16, $16, $16, $16, $16, $16, $16, $16, $16, $16, $16, $16, $16, $16, $16
+    .byte $16, $16, $16, $16, $16, $16, $16, $16, $16, $16, $16, $16, $16, $16, $16, $16
+    .byte $17, $17, $17, $17, $17, $17, $17, $17, $17, $17, $17, $17, $17, $17, $17, $17
+    .byte $17, $17, $17, $17, $17, $17, $17, $17, $17, $17, $17, $17, $17, $17, $17, $17
+    .byte $18, $18, $18, $18, $18, $18, $18, $18, $18, $18, $18, $18, $18, $18, $18, $18
+    .byte $18, $18, $18, $18, $18, $18, $18, $18, $18, $18, $18, $18, $18, $18, $18, $18
+    .byte $19, $19, $19, $19, $19, $19, $19, $19, $19, $19, $19, $19, $19, $19, $19, $19
+    .byte $19, $19, $19, $19, $19, $19, $19, $19, $19, $19, $19, $19, $19, $19, $19, $19
+    .byte $1A, $1A, $1A, $1A, $1A, $1A, $1A, $1A, $1A, $1A, $1A, $1A, $1A, $1A, $1A, $1A
+    .byte $1A, $1A, $1A, $1A, $1A, $1A, $1A, $1A, $1A, $1A, $1A, $1A, $1A, $1A, $1A, $1A
+    .byte $1B, $1B, $1B, $1B, $1B, $1B, $1B, $1B, $1B, $1B, $1B, $1B, $1B, $1B, $1B, $1B
+    .byte $1B, $1B, $1B, $1B, $1B, $1B, $1B, $1B, $1B, $1B, $1B, $1B, $1B, $1B, $1B, $1B
+
+BackgroundTableLow:
+    .byte $00, $18, $30, $48, $60, $78, $90, $A8, $C0, $D8, $F0 
+    .byte $08, $20, $38, $50, $68, $80, $98, $B0, $C8, $E0, $F8
+    .byte $10, $18, $30
+BackgroundTableHigh:
+    .byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    .byte $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01
+    .byte $02, $02, $02	
 
 ssprib:
 	jsr gspran 		; get new sprite address.
 
-	lda frmnr
-	sta SLOT_NUM
+	; Find the correct slot for the sprite
+	; It is based on the position of the z80_ix in the
+	; sprite variables table
+	MS_FIND_SPRITE_SLOT
 
-	lda z80_de
-	sta SPRITE_PTR
-	lda z80_de+1
-	sta SPRITE_PTR+1
+	MS_SET_INITIAL_SPRITE_PTR
 
     ; Set char ram to be used by the current sprite
     MS_SET_CHAR_RAM_PTR

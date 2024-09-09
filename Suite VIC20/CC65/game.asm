@@ -29,6 +29,7 @@ load:   .word @end
 
 .segment "CODE"
 main:
+	.include "macros.inc"
 	.include "game.inc"
 	.include "lib.inc"
 	.include "z80.asm"
