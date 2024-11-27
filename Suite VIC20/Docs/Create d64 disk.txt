@@ -1,0 +1,7 @@
+Create disk image:
+
+	c1541 -format diskname,id d64 agdgame.d64
+
+Add files to diskimage:
+
+	c1541 -attach agdgame.d64 -write title.prg title.prg

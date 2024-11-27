@@ -1,0 +1,730 @@
+ca65 V2.13.3 - (C) Copyright 1998-2012 Ullrich von Bassewitz
+Main file   : turboload.asm
+Current file: turboload.asm
+
+000000r 1               ;----------------------------------------------
+000000r 1               ; Turboloader VIC20
+000000r 1               ; CC65 conversion by Mauro 2024
+000000r 1               ;----------------------------------------------
+000000r 1               
+000000r 1               ;----------------------------------------------
+000000r 1               ; Header
+000000r 1               ;----------------------------------------------
+000000r 1               
+000000r 1               .org $a400-2
+00A3FE  1               
+00A3FE  1  00 A4        	.word main
+00A400  1               main:
+00A400  1               	.include "turboload.inc"
+00A400  2               ;
+00A400  2               ; Code equates
+00A400  2               ;
+00A400  2               L0006       = $0006
+00A400  2               L0007       = $0007
+00A400  2               L0012       = $0012
+00A400  2               L0013       = $0013
+00A400  2               L0016       = $0016
+00A400  2               L0017       = $0017
+00A400  2               L0018       = $0018
+00A400  2               L0019       = $0019
+00A400  2               L001A       = $001A
+00A400  2               L0024       = $0024
+00A400  2               L0030       = $0030
+00A400  2               L0031       = $0031
+00A400  2               L0032       = $0032
+00A400  2               L0033       = $0033
+00A400  2               L0038       = $0038
+00A400  2               L003A       = $003A
+00A400  2               L003B       = $003B
+00A400  2               L003C       = $003C
+00A400  2               L0044       = $0044
+00A400  2               L0047       = $0047
+00A400  2               L004B       = $004B
+00A400  2               L0085       = $0085
+00A400  2               L0093       = $0093
+00A400  2               L0095       = $0095
+00A400  2               L00A9       = $00A9
+00A400  2               L00AE       = $00AE
+00A400  2               L00AF       = $00AF
+00A400  2               L00B7       = $00B7		; Nr chars in filename
+00A400  2               L00B9       = $00B9		; Current secondary address
+00A400  2               L00BA       = $00BA		; Current device
+00A400  2               L00BB       = $00BB		; Get char filename
+00A400  2               
+00A400  2               L00C3       = $00C3		; KERNAL setup pointer
+00A400  2               L00C4       = $00C4
+00A400  2               
+00A400  2               ; User space
+00A400  2               
+00A400  2               L00FB       = $00FB
+00A400  2               L00FC       = $00FC
+00A400  2               L00FD       = $00FD
+00A400  2               L00FE       = $00FE
+00A400  2               L00FF       = $00FF
+00A400  2               
+00A400  2               L0100       = $0100
+00A400  2               
+00A400  2               L0300       = $0300
+00A400  2               L0301       = $0301
+00A400  2               L0330       = $0330
+00A400  2               L0331       = $0331
+00A400  2               
+00A400  2               L050E       = $050E
+00A400  2               L0562       = $0562
+00A400  2               L0585       = $0585
+00A400  2               L05BA       = $05BA
+00A400  2               
+00A400  2               L063A       = $063A
+00A400  2               L0640       = $0640
+00A400  2               L067C       = $067C
+00A400  2               L0691       = $0691
+00A400  2               
+00A400  2               L1800       = $1800
+00A400  2               L1805       = $1805
+00A400  2               
+00A400  2               L1C00       = $1C00
+00A400  2               L1C01       = $1C01
+00A400  2               L1C0C       = $1C0C
+00A400  2               
+00A400  2               L9111       = $9111
+00A400  2               
+00A400  2               LC1C8       = $C1C8
+00A400  2               LD042       = $D042
+00A400  2               LD945       = $D945
+00A400  2               
+00A400  2               LE742       = $E742		; Print character
+00A400  2               LF549       = $F549
+00A400  2               LF5E9       = $F5E9
+00A400  2               LF8E0       = $F8E0
+00A400  2               LF934       = $F934
+00A400  2               
+00A400  2               LFF93       = $FF93		; SECOND send second address after listen
+00A400  2               LFFA8       = $FFA8		; CIOUT output byte to serial
+00A400  2               LFFAE       = $FFAE		; UNLSN unlisten
+00A400  2               LFFB1       = $FFB1		; LISTEN serial
+00A400  2               ;
+00A400  2               ; Start of code
+00A400  2               ;
+00A400  2               ;           *= $A400
+00A400  2               ;
+00A400  2               
+00A400  2               ;-------------------------------------------------
+00A400  2               ; Entry fastloader
+00A400  2               ;-------------------------------------------------
+00A400  2               
+00A400  2               start:
+00A400  2  18                       clc
+00A401  2  90 18                    bcc LA41B
+00A403  2               
+00A403  2               ; Reset LOAD vector
+00A403  2               
+00A403  2  A9 49                    lda #$49
+00A405  2  8D 30 03                 sta L0330
+00A408  2  A9 F5                    lda #$F5
+00A40A  2  8D 31 03                 sta L0331
+00A40D  2               
+00A40D  2               ; Print text TURBODISK DISABLED
+00A40D  2               
+00A40D  2  A0 00                    ldy #$00
+00A40F  2  B9 29 A4     LA40F:      lda LA429,Y
+00A412  2  F0 06                    beq LA41A
+00A414  2  20 42 E7                 jsr LE742		; Print character
+00A417  2  C8                       iny
+00A418  2  D0 F5                    bne LA40F
+00A41A  2  60           LA41A:      rts
+00A41B  2               
+00A41B  2               ; Set fastload LOAD vector
+00A41B  2               
+00A41B  2               LA41B:
+00A41B  2  A9 54                    lda #<LA454
+00A41D  2  8D 30 03                 sta L0330
+00A420  2  A9 A4                    lda #>LA454
+00A422  2  8D 31 03                 sta L0331
+00A425  2               
+00A425  2               ; Print text TURBODISK ACTIVATED
+00A425  2               
+00A425  2  A0 15                    ldy #$15
+00A427  2  D0 E6                    bne LA40F
+00A429  2               
+00A429  2               ; Message text
+00A429  2               
+00A429  2  0D 54 55 52  LA429:      .byte $0D,"TURBODISK DISABLED",$0D,$00
+00A42D  2  42 4F 44 49  
+00A431  2  53 4B 20 44  
+00A43E  2  0D 54 55 52  LA43F:      .byte $0D,"TURBODISK ACTIVATED",$0D,$00
+00A442  2  42 4F 44 49  
+00A446  2  53 4B 20 41  
+00A454  2               
+00A454  2               
+00A454  2               ;-------------------------------------------------
+00A454  2               ; Fastloader LOAD entry
+00A454  2               ;-------------------------------------------------
+00A454  2               
+00A454  2  85 93        LA454:      sta L0093
+00A456  2  A5 93                    lda L0093
+00A458  2  D0 1E                    bne LA478
+00A45A  2               
+00A45A  2               ; Check for LOAD"$"
+00A45A  2               
+00A45A  2  A0 00                    ldy #$00
+00A45C  2  B1 BB                    lda (L00BB),Y	; Get char filename
+00A45E  2  C9 24                    cmp #$24
+00A460  2  F0 16                    beq LA478
+00A462  2               
+00A462  2  A2 10                    ldx #$10
+00A464  2  A9 A0                    lda #$A0
+00A466  2  9D 94 A7     LA466:      sta LA794,X
+00A469  2  CA                       dex
+00A46A  2  10 FA                    bpl LA466
+00A46C  2               
+00A46C  2               ; Copy filename in buffer
+00A46C  2               
+00A46C  2  B1 BB        LA46C:      lda (L00BB),Y	; Get char filename
+00A46E  2  99 94 A7                 sta LA794,Y
+00A471  2  C8                       iny
+00A472  2  C4 B7                    cpy L00B7		; Nr chars in filename
+00A474  2  90 F6                    bcc LA46C
+00A476  2               ;            bcs LA47D
+00A476  2  B0 2A        	    bcs LA4A2
+00A478  2               
+00A478  2  A5 93        LA478:      lda L0093
+00A47A  2  4C 49 F5                 jmp LF549
+00A47D  2               
+00A47D  2               ; Print text TURBOLOADING...
+00A47D  2               
+00A47D  2               LA47D:
+00A47D  2  A0 00                    ldy #$00
+00A47F  2  B9 8A A4     LA47F:      lda LA48A,Y
+00A482  2  F0 1E                    beq LA4A2
+00A484  2  20 42 E7                 jsr LE742		; Print character
+00A487  2  C8                       iny
+00A488  2  D0 F5                    bne LA47F
+00A48A  2               
+00A48A  2  0D 54 55 52  LA48A:      .byte $0D,"TURBOLOADING...",$0D,$00
+00A48E  2  42 4F 4C 4F  
+00A492  2  41 44 49 4E  
+00A49C  2               
+00A49C  2  4D 2D 57     LA49C:      .byte "M-W"
+00A49F  2  00           LA49F:      .byte $00
+00A4A0  2  00 20        LA4A0:      .byte $00,$20
+00A4A2  2               
+00A4A2  2  A9 10        LA4A2:      lda #$10
+00A4A4  2  85 FF                    sta L00FF
+00A4A6  2               
+00A4A6  2  A9 00                    lda #<LA600
+00A4A8  2  85 FB                    sta L00FB
+00A4AA  2  A9 A6                    lda #>LA600
+00A4AC  2  85 FC                    sta L00FC
+00A4AE  2               
+00A4AE  2  A9 00                    lda #$00
+00A4B0  2  85 FD                    sta L00FD
+00A4B2  2  A9 05                    lda #$05
+00A4B4  2  85 FE                    sta L00FE
+00A4B6  2               
+00A4B6  2  A5 BA        LA4B6:      lda L00BA		; Current device
+00A4B8  2  20 B1 FF                 jsr LFFB1		; LISTEN serial
+00A4BB  2               
+00A4BB  2  A9 6F                    lda #$6F		; Serial byte
+00A4BD  2  20 93 FF                 jsr LFF93		; SECOND send second address after listen
+00A4C0  2  A5 FD                    lda L00FD
+00A4C2  2  A4 FE                    ldy L00FE
+00A4C4  2  8D 9F A4                 sta LA49F		; Set tens in M-Wxx
+00A4C7  2  8C A0 A4                 sty LA4A0		; Set units in M-Wxx
+00A4CA  2               
+00A4CA  2               ; Print text M-Wxx
+00A4CA  2               
+00A4CA  2  A0 00                    ldy #$00
+00A4CC  2  B9 9C A4     LA4CC:      lda LA49C,Y
+00A4CF  2  20 A8 FF                 jsr LFFA8		; CIOUT output byte to serial
+00A4D2  2  C8                       iny
+00A4D3  2  C0 06                    cpy #$06
+00A4D5  2  D0 F5                    bne LA4CC
+00A4D7  2               
+00A4D7  2  A0 00                    ldy #$00
+00A4D9  2  B1 FB        LA4D9:      lda (L00FB),Y
+00A4DB  2  20 A8 FF                 jsr LFFA8		; CIOUT output byte to serial
+00A4DE  2  C8                       iny
+00A4DF  2  C0 20                    cpy #$20
+00A4E1  2  90 F6                    bcc LA4D9
+00A4E3  2               
+00A4E3  2  A5 FB                    lda L00FB
+00A4E5  2  69 1F                    adc #$1F
+00A4E7  2  85 FB                    sta L00FB
+00A4E9  2  A5 FC                    lda L00FC
+00A4EB  2  69 00                    adc #$00
+00A4ED  2  85 FC                    sta L00FC
+00A4EF  2               
+00A4EF  2  A5 FD                    lda L00FD
+00A4F1  2  69 20                    adc #$20
+00A4F3  2  85 FD                    sta L00FD
+00A4F5  2  A5 FE                    lda L00FE
+00A4F7  2  69 00                    adc #$00
+00A4F9  2  85 FE                    sta L00FE
+00A4FB  2               
+00A4FB  2  20 AE FF                 jsr LFFAE		; UNLSN unlisten
+00A4FE  2  C6 FF                    dec L00FF
+00A500  2  D0 B4                    bne LA4B6
+00A502  2               
+00A502  2  A5 BA                    lda L00BA		; Current device
+00A504  2  20 B1 FF                 jsr LFFB1		; LISTEN serial
+00A507  2               
+00A507  2  A9 6F                    lda #$6F		; Serial byte
+00A509  2  20 93 FF                 jsr LFF93		; SECOND send second address after listen
+00A50C  2               
+00A50C  2  A9 55                    lda #$55
+00A50E  2  20 A8 FF                 jsr LFFA8		; CIOUT output byte to serial
+00A511  2               
+00A511  2  A9 43                    lda #$43
+00A513  2  20 A8 FF                 jsr LFFA8		; CIOUT output byte to serial
+00A516  2  20 AE FF                 jsr LFFAE		; UNLSN unlisten
+00A519  2               
+00A519  2  78                       sei
+00A51A  2  20 89 A5                 jsr LA589
+00A51D  2  2C 00 A8                 bit LA800
+00A520  2  30 45                    bmi LA567
+00A522  2               
+00A522  2  A4 C3                    ldy L00C3		; KERNAL setup pointer
+00A524  2  A6 C4                    ldx L00C4
+00A526  2  A5 B9                    lda L00B9		; Current secondary address
+00A528  2  F0 06                    beq LA530
+00A52A  2               
+00A52A  2  AC 02 A8                 ldy LA802
+00A52D  2  AE 03 A8                 ldx LA803
+00A530  2  84 AE        LA530:      sty L00AE
+00A532  2  86 AF                    stx L00AF
+00A534  2               
+00A534  2  A2 04                    ldx #$04
+00A536  2  20 71 A5                 jsr LA571
+00A539  2  20 89 A5     LA539:      jsr LA589
+00A53C  2  AD 00 A8                 lda LA800
+00A53F  2  30 29                    bmi LA56A
+00A541  2  F0 06                    beq LA549
+00A543  2  20 6F A5                 jsr LA56F
+00A546  2  18                       clc
+00A547  2  90 F0                    bcc LA539
+00A549  2               
+00A549  2  A2 02        LA549:      ldx #$02
+00A54B  2  A0 00                    ldy #$00
+00A54D  2  BD 00 A8     LA54D:      lda LA800,X
+00A550  2  91 AE                    sta (L00AE),Y
+00A552  2               ; 	jsr setborder
+00A552  2  C8                       iny
+00A553  2  E8                       inx
+00A554  2  F0 07                    beq LA55D
+00A556  2  EC 01 A8                 cpx LA801
+00A559  2  90 F2                    bcc LA54D
+00A55B  2  F0 F0                    beq LA54D
+00A55D  2               
+00A55D  2  20 7C A5     LA55D:      jsr LA57C
+00A560  2               
+00A560  2  18                       clc
+00A561  2  A6 AE        LA561:      ldx L00AE
+00A563  2  A4 AF                    ldy L00AF
+00A565  2  58                       cli
+00A566  2  60                       rts
+00A567  2               
+00A567  2  A9 04 2C     LA567:      .byte $a9,$04,$2c
+00A56A  2               
+00A56A  2  A9 00        LA56A:      lda #$00
+00A56C  2  38                       sec
+00A56D  2  B0 F2                    bcs LA561
+00A56F  2  A2 02        LA56F:      ldx #$02
+00A571  2               
+00A571  2  A0 00        LA571:      ldy #$00
+00A573  2  BD 00 A8     LA573:      lda LA800,X
+00A576  2  91 AE                    sta (L00AE),Y
+00A578  2               ;	jsr setborder
+00A578  2  C8                       iny
+00A579  2  E8                       inx
+00A57A  2  D0 F7                    bne LA573
+00A57C  2               
+00A57C  2  18           LA57C:      clc
+00A57D  2  98                       tya
+00A57E  2  65 AE                    adc L00AE
+00A580  2  85 AE                    sta L00AE
+00A582  2  A5 AF                    lda L00AF
+00A584  2  69 00                    adc #$00
+00A586  2  85 AF                    sta L00AF
+00A588  2  60                       rts
+00A589  2               
+00A589  2  A0 00        LA589:      ldy #$00
+00A58B  2               
+00A58B  2  A9 80        LA58B:      lda #$80
+00A58D  2  8D 11 91                 sta L9111
+00A590  2  AD 11 91     LA590:      lda L9111
+00A593  2  29 02                    and #$02
+00A595  2  F0 F9                    beq LA590
+00A597  2               
+00A597  2  A9 00                    lda #$00
+00A599  2  8D 11 91                 sta L9111
+00A59C  2               
+00A59C  2               ; Wait loop
+00A59C  2               
+00A59C  2  A2 07                    ldx #$07
+00A59E  2  CA           LA59E:      dex
+00A59F  2  EA                       nop
+00A5A0  2  D0 FC                    bne LA59E
+00A5A2  2               
+00A5A2  2               ; Wait loop
+00A5A2  2               
+00A5A2  2  A2 04                    ldx #$04
+00A5A4  2  AD 11 91     LA5A4:      lda L9111
+00A5A7  2  4A                       lsr A
+00A5A8  2  26 95                    rol L0095
+00A5AA  2  4A                       lsr A
+00A5AB  2  26 95                    rol L0095
+00A5AD  2  EA                       nop
+00A5AE  2  EA                       nop
+00A5AF  2  CA                       dex
+00A5B0  2  D0 F2                    bne LA5A4
+00A5B2  2               
+00A5B2  2  A5 95                    lda L0095
+00A5B4  2  49 FF                    eor #$FF
+00A5B6  2  99 00 A8                 sta LA800,Y
+00A5B9  2  C8                       iny
+00A5BA  2  D0 CF                    bne LA58B
+00A5BC  2  60                       rts
+00A5BD  2               
+00A5BD  2               ;setborder:
+00A5BD  2               ;	sta (L00AE),Y
+00A5BD  2               ;	and #7
+00A5BD  2               ;	sta tmp
+00A5BD  2               ;	lda $900f
+00A5BD  2               ;	and #7
+00A5BD  2               ;	ora tmp
+00A5BD  2               ;	sta $900f
+00A5BD  2               ;	rts
+00A5BD  2               ;
+00A5BD  2               ;tmp:	.byte 0
+00A5BD  2               
+00A5BD  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A5C1  2  00 00 00 00  
+00A5C5  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A5C9  2  00 00 00 00  
+00A5CD  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00
+00A5D1  2  00 00 00     
+00A5D4  2               
+00A5D4  2  00           	    .byte $00
+00A5D5  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A5D9  2  00 00 00 00  
+00A5DD  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A5E1  2  00 00 00 00  
+00A5E5  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A5E9  2  00 00 00 00  
+00A5ED  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A5F1  2  00 00 00 00  
+00A5F5  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A5F9  2  00 00 00 00  
+00A5FD  2  00 00 00                 .byte $00,$00,$00
+00A600  2               
+00A600  2               LA600:
+00A600  2  20 42 D0                 jsr LD042
+00A603  2               
+00A603  2  78                       sei
+00A604  2  A9 12                    lda #$12
+00A606  2  A0 01                    ldy #$01
+00A608  2  8D 00 03                 sta L0300
+00A60B  2  8C 01 03                 sty L0301
+00A60E  2  20 BA 05                 jsr L05BA
+00A611  2  A9 03                    lda #$03
+00A613  2  85 3C                    sta L003C
+00A615  2  A2 00                    ldx #$00
+00A617  2  86 4B                    stx L004B
+00A619  2  F0 29                    beq LA644
+00A61B  2  A0 00        LA61B:      ldy #$00
+00A61D  2  B1 3B                    lda (L003B),Y
+00A61F  2  C9 82                    cmp #$82
+00A621  2  D0 19                    bne LA63C
+00A623  2  C8                       iny
+00A624  2  C8                       iny
+00A625  2  C8                       iny
+00A626  2  B9 91 06     LA626:      lda L0691,Y
+00A629  2  C9 2A                    cmp #$2A
+00A62B  2  F0 3D                    beq LA66A
+00A62D  2  C9 3F                    cmp #$3F
+00A62F  2  F0 04                    beq LA635
+00A631  2  D1 3B                    cmp (L003B),Y
+00A633  2  D0 07                    bne LA63C
+00A635  2  C8           LA635:      iny
+00A636  2  C0 12                    cpy #$12
+00A638  2  F0 30                    beq LA66A
+00A63A  2  D0 EA                    bne LA626
+00A63C  2  E6 4B        LA63C:      inc L004B
+00A63E  2  A6 4B                    ldx L004B
+00A640  2  E0 08                    cpx #$08
+00A642  2  F0 07                    beq LA64B
+00A644  2  BD 62 05     LA644:      lda L0562,X
+00A647  2  85 3B                    sta L003B
+00A649  2  D0 D0                    bne LA61B
+00A64B  2  AD 00 03     LA64B:      lda L0300
+00A64E  2  F0 06                    beq LA656
+00A650  2  AC 01 03                 ldy L0301
+00A653  2  4C 0E 05                 jmp L050E
+00A656  2  A9 FF        LA656:      lda #$FF
+00A658  2  8D 00 03                 sta L0300
+00A65B  2  20 85 05                 jsr L0585
+00A65E  2  58                       cli
+00A65F  2  4C 45 D9                 jmp LD945
+00A662  2               
+00A662  2  02 22 42 62              .byte $02,$22,$42,$62,$82,$A2,$C2,$E2
+00A666  2  82 A2 C2 E2  
+00A66A  2               
+00A66A  2  E6 3B        LA66A:      inc L003B
+00A66C  2  A0 00                    ldy #$00
+00A66E  2  B1 3B                    lda (L003B),Y
+00A670  2  8D 00 03                 sta L0300
+00A673  2  C8                       iny
+00A674  2  B1 3B                    lda (L003B),Y
+00A676  2  8D 01 03                 sta L0301
+00A679  2  20 BA 05     LA679:      jsr L05BA
+00A67C  2  20 85 05                 jsr L0585
+00A67F  2  AD 00 03                 lda L0300
+00A682  2  D0 F5                    bne LA679
+00A684  2  60                       rts
+00A685  2               
+00A685  2  A0 00                    ldy #$00
+00A687  2  B9 00 03     LA687:      lda L0300,Y
+00A68A  2  85 85                    sta L0085
+00A68C  2  2C 00 18     LA68C:      bit L1800
+00A68F  2  10 FB                    bpl LA68C
+00A691  2  A9 10                    lda #$10
+00A693  2  8D 00 18                 sta L1800
+00A696  2  2C 00 18     LA696:      bit L1800
+00A699  2  30 FB                    bmi LA696
+00A69B  2  A2 04                    ldx #$04
+00A69D  2  A9 00        LA69D:      lda #$00
+00A69F  2  06 85                    asl L0085
+00A6A1  2  2A                       rol A
+00A6A2  2  0A                       asl A
+00A6A3  2  06 85                    asl L0085
+00A6A5  2  2A                       rol A
+00A6A6  2  0A                       asl A
+00A6A7  2  8D 00 18                 sta L1800
+00A6AA  2  CA                       dex
+00A6AB  2  D0 F0                    bne LA69D
+00A6AD  2  48                       pha
+00A6AE  2  68                       pla
+00A6AF  2  48                       pha
+00A6B0  2  68                       pla
+00A6B1  2  A9 0F                    lda #$0F
+00A6B3  2  8D 00 18                 sta L1800
+00A6B6  2  C8                       iny
+00A6B7  2  D0 CE                    bne LA687
+00A6B9  2  60                       rts
+00A6BA  2               
+00A6BA  2  AC 01 03                 ldy L0301
+00A6BD  2  84 07                    sty L0007
+00A6BF  2  AD 00 03                 lda L0300
+00A6C2  2  C5 06                    cmp L0006
+00A6C4  2  08                       php
+00A6C5  2  85 06                    sta L0006
+00A6C7  2  28                       plp
+00A6C8  2  F0 10                    beq LA6DA
+00A6CA  2  A9 B0                    lda #$B0
+00A6CC  2  85 00                    sta $00
+00A6CE  2  58                       cli
+00A6CF  2  24 00        LA6CF:      bit $00
+00A6D1  2  30 FC                    bmi LA6CF
+00A6D3  2  78                       sei
+00A6D4  2  A5 00                    lda $00
+00A6D6  2  C9 01                    cmp #$01
+00A6D8  2  D0 4E                    bne LA728
+00A6DA  2  A9 EE        LA6DA:      lda #$EE
+00A6DC  2  8D 0C 1C                 sta L1C0C
+00A6DF  2  A9 06                    lda #$06
+00A6E1  2  85 32                    sta L0032
+00A6E3  2  A9 00                    lda #$00
+00A6E5  2  85 33                    sta L0033
+00A6E7  2  85 30                    sta L0030
+00A6E9  2  A9 03                    lda #$03
+00A6EB  2  85 31                    sta L0031
+00A6ED  2  20 3A 06                 jsr L063A
+00A6F0  2  50 FE        LA6F0:      bvc LA6F0
+00A6F2  2  B8                       clv
+00A6F3  2  AD 01 1C                 lda L1C01
+00A6F6  2  99 00 03                 sta L0300,Y
+00A6F9  2  C8                       iny
+00A6FA  2  D0 F4                    bne LA6F0
+00A6FC  2               
+00A6FC  2  A0 BA                    ldy #$BA
+00A6FE  2  50 FE        LA6FE:      bvc LA6FE
+00A700  2  B8                       clv
+00A701  2  AD 01 1C                 lda L1C01
+00A704  2  99 00 01                 sta L0100,Y
+00A707  2  C8                       iny
+00A708  2  D0 F4                    bne LA6FE
+00A70A  2  20 E0 F8                 jsr LF8E0
+00A70D  2  A5 38                    lda L0038
+00A70F  2  C5 47                    cmp L0047
+00A711  2  F0 04                    beq LA717
+00A713  2  A9 22                    lda #$22
+00A715  2  D0 14                    bne LA72B
+00A717  2  20 E9 F5     LA717:      jsr LF5E9
+00A71A  2  C5 3A                    cmp L003A
+00A71C  2  F0 04                    beq LA722
+00A71E  2  A9 23                    lda #$23
+00A720  2  D0 09                    bne LA72B
+00A722  2  A9 EC        LA722:      lda #$EC
+00A724  2  8D 0C 1C                 sta L1C0C
+00A727  2  60                       rts
+00A728  2               
+00A728  2  18           LA728:      clc
+00A729  2  69 18                    adc #$18
+00A72B  2  85 44        LA72B:      sta L0044
+00A72D  2  A9 FF                    lda #$FF
+00A72F  2  8D 00 03                 sta L0300
+00A732  2  20 85 05                 jsr L0585
+00A735  2  A5 44                    lda L0044
+00A737  2  4C C8 C1                 jmp LC1C8
+00A73A  2  20 40 06                 jsr L0640
+00A73D  2  4C 7C 06                 jmp L067C
+00A740  2  A5 12                    lda L0012
+00A742  2  85 16                    sta L0016
+00A744  2  A5 13                    lda L0013
+00A746  2  85 17                    sta L0017
+00A748  2  A5 06                    lda L0006
+00A74A  2  85 18                    sta L0018
+00A74C  2  A5 07                    lda L0007
+00A74E  2  85 19                    sta L0019
+00A750  2  A9 00                    lda #$00
+00A752  2  45 16                    eor L0016
+00A754  2  45 17                    eor L0017
+00A756  2  45 18                    eor L0018
+00A758  2  45 19                    eor L0019
+00A75A  2  85 1A                    sta L001A
+00A75C  2  20 34 F9                 jsr LF934
+00A75F  2  A2 5A                    ldx #$5A
+00A761  2  20 7C 06     LA761:      jsr L067C
+00A764  2  50 FE        LA764:      bvc LA764
+00A766  2  B8                       clv
+00A767  2  AD 01 1C                 lda L1C01
+00A76A  2  D9 24 00                 cmp L0024,Y
+00A76D  2  D0 06                    bne LA775
+00A76F  2  C8                       iny
+00A770  2  C0 08                    cpy #$08
+00A772  2  D0 F0                    bne LA764
+00A774  2  60                       rts
+00A775  2               
+00A775  2  CA           LA775:      dex
+00A776  2  D0 E9                    bne LA761
+00A778  2  A9 20                    lda #$20
+00A77A  2  D0 AF                    bne LA72B
+00A77C  2  A9 D0                    lda #$D0
+00A77E  2  8D 05 18                 sta L1805
+00A781  2  A9 21                    lda #$21
+00A783  2  2C 05 18     LA783:      bit L1805
+00A786  2  10 A3                    bpl LA72B
+00A788  2  2C 00 1C                 bit L1C00
+00A78B  2  30 F6                    bmi LA783
+00A78D  2  AD 01 1C                 lda L1C01
+00A790  2  B8                       clv
+00A791  2  A0 00                    ldy #$00
+00A793  2  60                       rts
+00A794  2               
+00A794  2               ; Load data
+00A794  2               
+00A794  2  A0 A0 A0 A0  LA794:      .byte $A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0
+00A798  2  A0 A0 A0 A0  
+00A79C  2  A0 A0 A0 A0              .byte $A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0
+00A7A0  2  A0 A0 A0 A0  
+00A7A4  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A7A8  2  00 00 00 00  
+00A7AC  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A7B0  2  00 00 00 00  
+00A7B4  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A7B8  2  00 00 00 00  
+00A7BC  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A7C0  2  00 00 00 00  
+00A7C4  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A7C8  2  00 00 00 00  
+00A7CC  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A7D0  2  00 00 00 00  
+00A7D4  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A7D8  2  00 00 00 00  
+00A7DC  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A7E0  2  00 00 00 00  
+00A7E4  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A7E8  2  00 00 00 00  
+00A7EC  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A7F0  2  00 00 00 00  
+00A7F4  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A7F8  2  00 00 00 00  
+00A7FC  2  00 00 00 00              .byte $00,$00,$00,$00
+00A800  2               
+00A800  2               ;-------------------------------------------------
+00A800  2               ; 256 bytes buffer
+00A800  2               ;-------------------------------------------------
+00A800  2               
+00A800  2  00           LA800:      .byte $00
+00A801  2  00           LA801:      .byte $00
+00A802  2  00           LA802:      .byte $00
+00A803  2  00 00 00 00  LA803:      .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A807  2  00 00 00 00  
+00A80B  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A80F  2  00 00 00 00  
+00A813  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A817  2  00 00 00 00  
+00A81B  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A81F  2  00 00 00 00  
+00A823  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A827  2  00 00 00 00  
+00A82B  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A82F  2  00 00 00 00  
+00A833  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A837  2  00 00 00 00  
+00A83B  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A83F  2  00 00 00 00  
+00A843  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A847  2  00 00 00 00  
+00A84B  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A84F  2  00 00 00 00  
+00A853  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A857  2  00 00 00 00  
+00A85B  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A85F  2  00 00 00 00  
+00A863  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A867  2  00 00 00 00  
+00A86B  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A86F  2  00 00 00 00  
+00A873  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A877  2  00 00 00 00  
+00A87B  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A87F  2  00 00 00 00  
+00A883  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A887  2  00 00 00 00  
+00A88B  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A88F  2  00 00 00 00  
+00A893  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A897  2  00 00 00 00  
+00A89B  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A89F  2  00 00 00 00  
+00A8A3  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A8A7  2  00 00 00 00  
+00A8AB  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A8AF  2  00 00 00 00  
+00A8B3  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A8B7  2  00 00 00 00  
+00A8BB  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A8BF  2  00 00 00 00  
+00A8C3  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A8C7  2  00 00 00 00  
+00A8CB  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A8CF  2  00 00 00 00  
+00A8D3  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A8D7  2  00 00 00 00  
+00A8DB  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A8DF  2  00 00 00 00  
+00A8E3  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A8E7  2  00 00 00 00  
+00A8EB  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A8EF  2  00 00 00 00  
+00A8F3  2  00 00 00 00              .byte $00,$00,$00,$00,$00,$00,$00,$00
+00A8F7  2  00 00 00 00  
+00A8FB  2  00 00 00 00              .byte $00,$00,$00,$00,$00
+00A8FF  2  00           
+00A900  2               
+00A900  1               
+00A900  1               eind_asm:
+00A900  1               
+00A900  1               .out .sprintf("Musicplayer size = %d bytes, free space = %d bytes", (eind_asm - main),(8192-eind_asm + main))
+00A900  1               

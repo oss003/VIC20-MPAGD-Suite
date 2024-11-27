@@ -1,0 +1,3820 @@
+
+DEFINEWINDOW    1 1 21 30
+
+DEFINECONTROLS  'Q' 'A' 'O' 'P' 32 'Z' 'R' '1' '2' '3' '4'
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 255 255 255 255 255 255 255 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 255 255 255 255 255 255 255 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 0 0 0 96
+
+DEFINEBLOCK     PLATFORMBLOCK
+                175 119 119 82 96 66 32 2 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                7 3 5 2 5 0 1 0 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                224 192 160 64 160 0 128 0 96
+
+DEFINEBLOCK     PLATFORMBLOCK
+                249 118 119 115 55 66 33 64 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 255 255 255 255 255 245 64 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 189 219 231 231 219 189 255 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                192 128 224 128 224 128 192 128 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 0 0 0 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                3 1 7 1 7 1 3 1 96
+
+DEFINEBLOCK     COLLECTABLE
+                0 24 60 60 126 126 126 60 96
+
+DEFINEBLOCK     COLLECTABLE
+                0 24 60 60 126 126 126 60 96
+
+DEFINEBLOCK     COLLECTABLE
+                0 24 60 60 126 126 126 60 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                114 34 0 0 0 0 0 0 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 0 32 171 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 255 231 195 130 65 128 1 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                1 128 65 130 195 231 255 255 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                128 64 128 64 128 64 128 64 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                1 2 1 2 1 2 1 2 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 255 255 255 255 255 255 36 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 2 137 149 135 254 124 240 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 64 145 169 225 127 62 15 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                7 156 242 244 250 253 254 255 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 127 63 63 31 159 79 135 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                1 2 4 4 4 4 2 1 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 0 0 0 0 0 0 255 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 0 128 128 128 128 0 255 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 0 192 192 192 192 0 255 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 0 224 224 224 224 0 255 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 0 240 240 240 240 0 255 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 0 248 248 248 248 0 255 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 0 252 252 252 252 0 255 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 0 254 254 254 254 0 255 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                128 64 32 32 32 32 64 128 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                254 248 234 212 160 80 128 0 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                127 31 87 43 5 10 1 0 96
+
+DEFINEBLOCK     WALLBLOCK
+                254 253 250 245 234 213 170 85 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 189 219 231 231 219 189 255 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 1 0 5 2 1 3 7 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 128 0 160 64 160 192 224 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 128 80 160 212 234 248 255 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 1 10 5 43 87 31 255 96
+
+DEFINEBLOCK     WALLBLOCK
+                0 168 253 255 255 255 255 255 96
+
+DEFINEBLOCK     PLATFORMBLOCK
+                255 239 239 185 252 119 117 64 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 255 255 255 255 255 245 64 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 16 16 16 255 66 2 2 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 254 253 250 255 214 170 82 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 127 63 31 15 7 3 1 96
+
+DEFINEBLOCK     WALLBLOCK
+                192 0 0 0 248 64 0 0 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 160 80 160 255 162 82 162 96
+
+DEFINEBLOCK     WALLBLOCK
+                82 170 214 255 250 253 254 255 96
+
+DEFINEBLOCK     WALLBLOCK
+                1 3 7 15 31 63 127 255 96
+
+DEFINEBLOCK     WALLBLOCK
+                85 170 213 234 245 250 253 254 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 16 16 16 255 2 170 87 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 255 255 215 255 66 2 2 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 189 219 231 231 219 189 255 96
+
+DEFINEBLOCK     WALLBLOCK
+                96 129 113 233 73 168 220 255 96
+
+DEFINEBLOCK     WALLBLOCK
+                6 129 142 151 146 21 59 255 96
+
+DEFINEBLOCK     WALLBLOCK
+                219 219 219 219 219 219 219 219 96
+
+DEFINEBLOCK     WALLBLOCK
+                153 153 153 153 153 153 153 153 96
+
+DEFINEBLOCK     WALLBLOCK
+                85 85 85 85 85 85 85 85 96
+
+DEFINEBLOCK     WALLBLOCK
+                185 239 69 239 255 187 255 239 96
+
+DEFINEBLOCK     WALLBLOCK
+                247 255 247 247 247 231 227 231 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 251 241 251 223 143 223 255 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 129 173 165 161 189 129 255 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 223 143 223 251 241 251 255 96
+
+DEFINEBLOCK     WALLBLOCK
+                31 31 63 63 127 127 63 19 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                240 248 252 252 252 252 252 248 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 189 219 231 231 219 189 255 96
+
+DEFINEBLOCK     WALLBLOCK
+                85 34 51 170 85 136 204 170 96
+
+DEFINEBLOCK     WALLBLOCK
+                203 213 139 23 47 95 191 223 96
+
+DEFINEBLOCK     WALLBLOCK
+                211 171 209 232 244 250 253 251 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 250 245 234 208 161 211 167 96
+
+DEFINEBLOCK     WALLBLOCK
+                251 241 243 229 226 197 203 213 96
+
+DEFINEBLOCK     WALLBLOCK
+                223 143 207 167 71 163 211 171 96
+
+DEFINEBLOCK     WALLBLOCK
+                101 152 8 13 159 255 255 255 96
+
+DEFINEBLOCK     WALLBLOCK
+                119 34 34 34 17 136 136 136 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 255 255 249 176 16 25 166 96
+
+DEFINEBLOCK     WALLBLOCK
+                215 255 190 13 0 0 242 173 96
+
+DEFINEBLOCK     WALLBLOCK
+                227 198 99 214 107 70 227 83 96
+
+DEFINEBLOCK     WALLBLOCK
+                243 215 186 245 104 84 233 211 96
+
+DEFINEBLOCK     WALLBLOCK
+                175 255 27 14 7 66 163 210 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 247 255 221 255 107 123 85 96
+
+DEFINEBLOCK     WALLBLOCK
+                239 187 17 187 239 69 135 129 96
+
+DEFINEBLOCK     WALLBLOCK
+                231 199 231 239 239 239 255 239 96
+
+DEFINEBLOCK     WALLBLOCK
+                239 239 239 239 255 239 255 239 96
+
+DEFINEBLOCK     WALLBLOCK
+                185 217 173 221 229 247 227 179 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 32 80 32 255 161 161 161 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                19 31 31 15 15 7 3 1 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                159 159 255 255 255 255 254 248 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 250 245 170 233 84 168 85 96
+
+DEFINEBLOCK     WALLBLOCK
+                247 237 90 180 98 33 16 15 96
+
+DEFINEBLOCK     WALLBLOCK
+                127 183 95 45 86 163 66 129 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 0 0 0 96
+
+DEFINEBLOCK     DEADLYBLOCK
+                0 64 64 64 96 36 36 50 96
+
+DEFINEBLOCK     DEADLYBLOCK
+                0 1 0 2 2 4 36 36 96
+
+DEFINEBLOCK     DEADLYBLOCK
+                0 128 0 64 64 32 36 36 96
+
+DEFINEBLOCK     DEADLYBLOCK
+                0 2 2 2 6 36 36 76 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 85 255 255 255 255 255 96
+
+DEFINEBLOCK     WALLBLOCK
+                0 224 248 252 254 238 247 251 96
+
+DEFINEBLOCK     WALLBLOCK
+                191 206 193 236 241 254 252 255 96
+
+DEFINEBLOCK     WALLBLOCK
+                253 115 131 55 143 127 63 255 96
+
+DEFINEBLOCK     WALLBLOCK
+                234 209 96 234 245 184 223 253 96
+
+DEFINEBLOCK     WALLBLOCK
+                211 161 67 6 15 27 241 187 96
+
+DEFINEBLOCK     WALLBLOCK
+                161 193 160 121 128 5 57 69 96
+
+DEFINEBLOCK     WALLBLOCK
+                163 211 163 211 231 199 231 199 96
+
+DEFINEBLOCK     WALLBLOCK
+                211 185 161 219 231 239 255 239 96
+
+DEFINEBLOCK     WALLBLOCK
+                131 65 33 195 125 163 213 171 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 32 80 32 255 161 161 161 96
+
+DEFINEBLOCK     WALLBLOCK
+                252 205 143 153 243 254 156 61 96
+
+DEFINEBLOCK     WALLBLOCK
+                191 51 241 249 207 111 57 188 96
+
+DEFINEBLOCK     WALLBLOCK
+                245 185 246 237 169 216 245 104 96
+
+DEFINEBLOCK     WALLBLOCK
+                8 20 36 66 193 33 38 28 96
+
+DEFINEBLOCK     WALLBLOCK
+                17 16 32 193 39 25 16 32 96
+
+DEFINEBLOCK     WALLBLOCK
+                1 225 146 14 9 8 144 96 96
+
+DEFINEBLOCK     WALLBLOCK
+                95 183 47 87 139 69 171 18 96
+
+DEFINEBLOCK     DEADLYBLOCK
+                50 179 27 159 95 127 63 127 96
+
+DEFINEBLOCK     DEADLYBLOCK
+                76 200 217 208 242 244 252 254 96
+
+DEFINEBLOCK     DEADLYBLOCK
+                50 19 155 11 79 47 63 127 96
+
+DEFINEBLOCK     DEADLYBLOCK
+                76 205 216 249 250 254 252 254 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                15 31 63 63 63 63 63 31 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                248 248 252 252 254 254 252 200 96
+
+DEFINEBLOCK     WALLBLOCK
+                175 126 175 123 175 126 175 123 96
+
+DEFINEBLOCK     WALLBLOCK
+                245 126 245 222 245 126 245 222 96
+
+DEFINEBLOCK     WALLBLOCK
+                128 1 17 1 17 0 16 16 96
+
+DEFINEBLOCK     WALLBLOCK
+                241 248 120 248 112 224 112 248 96
+
+DEFINEBLOCK     WALLBLOCK
+                143 31 30 31 14 7 14 31 96
+
+DEFINEBLOCK     WALLBLOCK
+                1 128 136 128 136 0 8 8 96
+
+DEFINEBLOCK     WALLBLOCK
+                1 6 10 12 16 224 160 224 96
+
+DEFINEBLOCK     WALLBLOCK
+                128 96 80 48 8 7 5 7 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 255 231 195 130 65 128 1 96
+
+DEFINEBLOCK     WALLBLOCK
+                53 148 254 251 155 143 205 252 96
+
+DEFINEBLOCK     WALLBLOCK
+                176 57 111 207 217 241 179 63 96
+
+DEFINEBLOCK     WALLBLOCK
+                253 232 212 225 174 88 136 100 96
+
+DEFINEBLOCK     WALLBLOCK
+                36 34 65 193 65 34 156 8 96
+
+DEFINEBLOCK     WALLBLOCK
+                64 128 128 64 32 17 14 4 96
+
+DEFINEBLOCK     WALLBLOCK
+                32 64 64 225 158 8 8 4 96
+
+DEFINEBLOCK     WALLBLOCK
+                53 170 69 195 69 34 157 10 96
+
+DEFINEBLOCK     WALLBLOCK
+                254 127 117 232 80 224 80 232 96
+
+DEFINEBLOCK     WALLBLOCK
+                214 252 28 14 4 2 4 2 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 254 252 252 248 249 242 225 96
+
+DEFINEBLOCK     WALLBLOCK
+                224 57 79 47 95 191 127 255 96
+
+DEFINEBLOCK     WALLBLOCK
+                249 249 255 255 255 255 127 31 96
+
+DEFINEBLOCK     WALLBLOCK
+                200 248 248 240 240 224 192 128 96
+
+DEFINEBLOCK     WALLBLOCK
+                0 128 0 64 64 32 36 36 96
+
+DEFINEBLOCK     WALLBLOCK
+                0 2 2 2 6 36 36 76 96
+
+DEFINEBLOCK     WALLBLOCK
+                17 17 17 17 57 31 17 17 96
+
+DEFINEBLOCK     WALLBLOCK
+                252 254 251 249 249 249 251 251 96
+
+DEFINEBLOCK     WALLBLOCK
+                63 127 223 159 159 159 223 223 96
+
+DEFINEBLOCK     WALLBLOCK
+                136 136 136 136 156 248 136 136 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 129 173 165 161 189 129 255 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 255 255 215 255 66 2 2 96
+
+DEFINEBLOCK     WALLBLOCK
+                1 128 65 130 195 231 255 255 96
+
+DEFINEBLOCK     WALLBLOCK
+                206 239 252 102 227 62 55 223 96
+
+DEFINEBLOCK     WALLBLOCK
+                115 247 127 102 199 124 236 251 96
+
+DEFINEBLOCK     WALLBLOCK
+                172 84 168 216 245 235 246 251 96
+
+DEFINEBLOCK     WALLBLOCK
+                72 8 151 32 192 64 32 16 96
+
+DEFINEBLOCK     WALLBLOCK
+                4 4 10 145 96 32 16 15 96
+
+DEFINEBLOCK     WALLBLOCK
+                4 4 8 24 165 67 66 129 96
+
+DEFINEBLOCK     WALLBLOCK
+                137 10 151 43 215 107 119 191 96
+
+DEFINEBLOCK     WALLBLOCK
+                190 99 237 110 209 195 224 219 96
+
+DEFINEBLOCK     WALLBLOCK
+                90 28 110 238 6 134 12 158 96
+
+DEFINEBLOCK     WALLBLOCK
+                244 212 128 128 170 254 252 0 96
+
+DEFINEBLOCK     WALLBLOCK
+                244 212 128 128 168 248 248 48 96
+
+DEFINEBLOCK     WALLBLOCK
+                47 43 1 1 41 61 31 14 96
+
+DEFINEBLOCK     WALLBLOCK
+                47 43 1 1 85 127 63 0 96
+
+DEFINEBLOCK     WALLBLOCK
+                50 19 155 11 79 47 63 127 96
+
+DEFINEBLOCK     WALLBLOCK
+                76 205 216 249 250 254 252 254 96
+
+DEFINEBLOCK     WALLBLOCK
+                17 16 16 16 0 16 0 145 96
+
+DEFINEBLOCK     WALLBLOCK
+                152 152 140 204 68 204 68 205 96
+
+DEFINEBLOCK     WALLBLOCK
+                25 25 49 51 34 51 34 179 96
+
+DEFINEBLOCK     WALLBLOCK
+                136 8 8 8 0 8 0 137 96
+
+DEFINEBLOCK     WALLBLOCK
+                254 253 227 211 187 119 47 31 96
+
+DEFINEBLOCK     WALLBLOCK
+                127 191 199 203 221 238 244 248 96
+
+DEFINEBLOCK     WALLBLOCK
+                233 249 126 39 229 247 255 75 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 255 255 255 249 249 255 255 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 255 255 255 159 159 255 255 96
+
+DEFINEBLOCK     WALLBLOCK
+                151 159 126 228 167 239 251 210 96
+
+DEFINEBLOCK     WALLBLOCK
+                77 180 101 210 85 234 181 250 96
+
+DEFINEBLOCK     WALLBLOCK
+                84 18 37 226 21 42 29 127 96
+
+DEFINEBLOCK     WALLBLOCK
+                11 101 146 47 89 175 95 255 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 0 0 0 96
+
+DEFINEBLOCK     PLATFORMBLOCK
+                249 118 119 115 55 66 33 64 96
+
+DEFINEBLOCK     PLATFORMBLOCK
+                175 119 119 82 96 66 32 2 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                7 3 5 2 5 0 1 0 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                224 192 160 64 160 0 128 0 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                254 248 234 212 160 80 128 0 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                127 31 87 43 5 10 1 0 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 1 0 5 2 5 3 7 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 128 0 160 64 160 192 224 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 128 80 160 212 234 248 254 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 1 10 5 43 87 31 127 96
+
+DEFINEBLOCK     WALLBLOCK
+                0 239 239 239 0 189 253 253 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 227 193 129 129 195 231 255 96
+
+DEFINEBLOCK     WALLBLOCK
+                248 136 15 255 33 33 255 12 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 189 219 231 231 219 189 255 96
+
+DEFINEBLOCK     WALLBLOCK
+                75 223 247 229 39 126 249 233 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                63 63 29 13 15 15 7 0 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 255 254 93 58 240 224 0 96
+
+DEFINEBLOCK     WALLBLOCK
+                210 243 239 167 228 126 159 151 96
+
+DEFINEBLOCK     WALLBLOCK
+                195 231 197 157 185 163 231 195 96
+
+DEFINEBLOCK     WALLBLOCK
+                195 231 163 185 157 197 231 195 96
+
+DEFINEBLOCK     WALLBLOCK
+                227 247 213 182 156 136 136 221 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                238 102 51 102 204 68 34 16 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                119 102 204 102 51 34 68 8 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                91 73 16 0 0 0 0 0 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 0 0 0 96
+
+DEFINEBLOCK     PLATFORMBLOCK
+                249 118 119 115 55 66 33 64 96
+
+DEFINEBLOCK     PLATFORMBLOCK
+                245 238 238 202 134 66 4 64 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                7 3 5 2 5 0 1 0 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                224 192 160 64 160 0 128 0 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 1 0 5 2 5 3 7 96
+
+DEFINEBLOCK     WALLBLOCK
+                247 235 219 189 62 222 217 227 96
+
+DEFINEBLOCK     WALLBLOCK
+                191 127 127 191 223 238 241 251 96
+
+DEFINEBLOCK     WALLBLOCK
+                223 191 191 30 97 247 247 251 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 0 1 171 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 0 32 171 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 129 173 165 161 189 129 255 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 255 231 195 130 65 128 1 96
+
+DEFINEBLOCK     WALLBLOCK
+                223 55 62 227 102 254 239 206 96
+
+DEFINEBLOCK     WALLBLOCK
+                251 236 124 199 102 63 247 115 96
+
+DEFINEBLOCK     WALLBLOCK
+                1 128 65 130 195 231 255 255 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 128 0 160 64 160 192 224 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                254 248 234 212 160 80 128 0 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                127 31 87 43 5 10 1 0 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 128 80 160 212 234 248 254 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 1 10 5 43 87 31 127 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                127 95 95 23 23 5 5 1 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                254 250 250 232 232 160 160 128 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                114 34 0 0 0 0 0 0 96
+
+DEFINEBLOCK     WALLBLOCK
+                36 66 165 66 129 0 129 0 96
+
+DEFINEBLOCK     WALLBLOCK
+                128 1 128 1 128 1 128 1 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                114 34 0 0 0 0 0 0 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                128 64 128 64 128 64 128 64 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                1 2 1 2 1 2 1 2 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                40 84 68 68 0 20 8 20 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                40 84 68 68 0 20 8 20 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                40 84 68 68 0 20 8 20 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                40 84 68 68 0 20 8 20 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                40 84 68 68 0 20 8 20 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                40 84 68 68 0 20 8 20 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                40 84 68 68 0 20 8 20 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                40 84 68 68 0 20 8 20 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                40 84 68 68 0 20 8 20 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                40 84 68 68 0 20 8 20 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                40 84 68 68 0 20 8 20 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                40 84 68 68 0 20 8 20 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                40 84 68 68 0 20 8 20 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                40 84 68 68 0 20 8 20 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 0 0 0 96
+
+DEFINEBLOCK     CUSTOMBLOCK
+                16 16 56 56 124 84 16 16 96
+
+
+DEFINESPRITE    1
+                0 0 3 224 15 248 31 252 63 254 59 110 1 192 0 128
+                1 192 27 236 21 212 17 196 8 136 4 16 2 32 2 32
+
+DEFINESPRITE    1
+                128 1 0 0 3 240 7 252 15 250 31 255 28 245 131 96
+                223 32 175 56 134 0 132 0 136 0 78 0 33 0 160 129
+
+DEFINESPRITE    4
+                128 1 15 192 31 240 63 248 127 244 113 252 3 20 3 128
+                3 152 55 84 42 36 32 8 16 16 8 16 4 0 132 1
+                128 1 0 0 7 224 15 248 31 252 63 250 56 254 1 138
+                1 192 49 198 43 170 69 17 64 1 32 2 16 4 144 5
+                128 1 1 240 7 252 15 254 31 253 28 127 0 197 0 224
+                12 224 21 214 18 138 8 2 4 4 4 8 0 16 128 17
+                128 1 0 0 7 224 15 248 31 252 63 250 56 254 1 138
+                1 192 13 216 11 168 9 8 4 16 2 32 1 64 129 65
+
+DEFINESPRITE    1
+                128 1 0 0 15 192 63 224 95 240 255 248 175 56 6 193
+                4 251 28 245 0 97 0 33 0 17 0 114 0 132 129 5
+
+DEFINESPRITE    4
+                128 1 3 240 15 248 31 252 47 254 63 142 40 192 1 192
+                25 192 42 236 36 84 16 4 8 8 8 16 0 32 128 33
+                128 1 0 0 7 224 31 240 63 248 95 252 127 28 81 128
+                3 128 99 140 85 212 136 162 128 2 64 4 32 8 160 9
+                128 1 15 128 63 224 127 240 191 248 254 56 163 0 7 0
+                7 48 107 168 81 72 64 16 32 32 16 32 8 0 136 1
+                128 1 0 0 7 224 31 240 63 248 95 252 127 28 81 128
+                3 128 27 176 21 208 16 144 8 32 4 64 2 128 130 129
+
+DEFINESPRITE    1
+                0 0 0 0 0 0 0 0 3 224 15 248 31 252 63 254
+                59 110 1 192 0 128 49 198 43 234 69 209 65 193 56 142
+
+DEFINESPRITE    1
+                131 193 7 224 7 224 6 160 3 224 1 192 0 128 1 128
+                1 192 13 216 11 168 9 8 4 16 2 32 2 32 130 33
+
+DEFINESPRITE    1
+                128 1 0 60 0 126 0 126 0 116 0 126 0 48 0 112
+                1 220 3 192 99 195 91 173 69 17 96 3 16 4 144 5
+
+DEFINESPRITE    4
+                131 193 7 224 7 224 7 64 3 224 1 192 3 0 3 128
+                3 152 55 84 42 36 32 8 16 16 8 16 4 0 132 1
+                128 1 1 224 3 240 3 240 3 160 1 240 0 224 1 128
+                1 192 49 198 43 170 69 17 64 1 32 2 16 4 144 5
+                128 241 1 248 1 248 1 208 0 248 0 112 0 192 0 224
+                12 224 21 214 18 138 8 2 4 4 4 8 0 16 128 17
+                128 1 1 224 3 240 3 240 3 160 1 240 0 224 1 128
+                1 192 13 216 11 168 9 8 4 16 2 32 1 64 129 65
+
+DEFINESPRITE    1
+                128 1 60 0 126 0 126 0 46 0 126 0 12 0 14 0
+                59 128 3 192 195 198 181 218 136 162 192 6 32 8 160 9
+
+DEFINESPRITE    4
+                131 193 7 224 7 224 2 224 7 192 3 128 0 192 1 192
+                25 192 42 236 36 84 16 4 8 8 8 16 0 32 128 33
+                128 1 7 128 15 192 15 192 5 192 15 128 7 0 1 128
+                3 128 99 140 85 212 136 162 128 2 64 4 32 8 160 9
+                143 1 31 128 31 128 11 128 31 0 14 0 3 0 7 0
+                7 48 107 168 81 72 64 16 32 32 16 32 8 0 136 1
+                128 1 7 128 15 192 15 192 5 192 15 128 7 0 1 128
+                3 128 27 176 21 208 16 144 8 32 4 64 2 128 130 129
+
+DEFINESPRITE    1
+                128 1 0 0 0 0 0 0 1 192 3 224 3 224 3 224
+                2 160 1 192 0 128 49 198 43 234 69 209 65 193 184 142
+
+DEFINESPRITE    1
+                128 1 3 192 7 224 7 224 5 96 7 192 3 128 1 0
+                15 224 19 144 35 136 3 128 6 192 4 64 4 64 140 97
+
+DEFINESPRITE    1
+                128 1 0 0 1 224 3 240 3 240 3 160 1 240 0 224
+                0 134 15 254 9 192 9 192 1 192 6 48 4 16 140 25
+
+DEFINESPRITE    3
+                128 1 3 192 7 224 7 224 7 64 3 224 1 192 3 0
+                7 64 15 128 23 0 7 0 7 128 4 128 28 192 144 1
+                131 193 7 224 7 224 7 64 3 224 1 192 3 0 7 0
+                15 0 15 128 7 0 7 0 15 0 9 0 1 0 129 129
+                131 193 7 224 7 224 7 64 3 224 1 192 3 0 7 0
+                7 0 7 0 7 0 6 0 6 0 4 0 4 0 134 1
+
+DEFINESPRITE    1
+                128 1 0 0 7 128 15 192 15 192 5 192 15 128 7 0
+                97 0 127 240 3 144 3 144 3 128 12 96 8 32 152 49
+
+DEFINESPRITE    3
+                128 1 3 192 7 224 7 224 2 224 7 192 3 128 0 192
+                2 224 1 240 0 232 0 224 1 224 1 32 3 56 128 9
+                131 193 7 224 7 224 2 224 7 192 3 128 0 192 0 224
+                0 240 1 240 0 224 0 224 0 240 0 144 0 128 129 129
+                131 193 7 224 7 224 2 224 7 192 3 128 0 192 0 224
+                0 224 0 224 0 224 0 96 0 96 0 32 0 32 128 97
+
+DEFINESPRITE    1
+                128 1 0 0 0 0 0 0 1 192 3 224 3 224 3 224
+                2 160 1 192 0 128 1 192 3 224 5 208 21 212 159 253
+
+DEFINESPRITE    3
+                128 1 0 0 0 0 1 32 0 64 9 192 7 232 3 224
+                11 240 1 200 1 0 2 64 0 0 0 0 0 0 128 1
+                128 1 0 0 0 0 0 64 4 144 1 192 11 224 7 240
+                3 232 1 192 4 144 1 0 0 0 0 0 0 0 128 1
+                128 1 0 0 0 0 0 128 5 16 1 192 3 240 11 232
+                7 224 1 192 4 80 0 128 0 0 0 0 0 0 128 1
+
+DEFINESPRITE    4
+                128 1 0 0 0 0 0 0 0 0 0 0 5 160 15 240
+                7 224 31 248 14 112 28 56 60 60 28 56 62 124 150 105
+                128 1 0 0 0 0 0 0 0 0 1 184 0 240 3 240
+                1 248 7 224 3 128 15 192 7 128 15 192 7 0 143 193
+                128 1 0 0 0 0 1 64 1 64 3 224 1 192 3 224
+                1 192 3 224 1 192 3 224 3 224 7 240 3 224 135 241
+                128 1 0 0 0 0 0 0 0 0 29 128 15 0 15 192
+                31 128 7 224 1 192 3 240 1 224 3 240 0 224 131 241
+
+DEFINESPRITE    2
+                128 129 1 192 33 194 1 192 19 228 11 232 27 236 3 224
+                127 255 99 227 67 97 77 217 77 89 46 58 23 244 147 229
+                128 1 0 128 1 192 1 192 3 224 3 224 7 240 11 232
+                51 102 49 198 65 65 68 17 78 57 47 122 23 244 145 197
+
+DEFINESPRITE    2
+                128 1 4 16 34 34 0 0 17 196 27 236 3 224 115 231
+                111 251 67 225 66 161 77 217 76 25 46 186 23 244 147 229
+                128 1 1 192 3 224 3 224 3 224 2 160 1 192 8 136
+                53 214 51 230 65 193 68 145 78 57 47 122 23 244 145 197
+
+DEFINESPRITE    2
+                161 225 27 246 11 244 3 160 9 244 24 246 32 145 7 208
+                9 224 17 192 1 240 1 16 13 27 15 255 15 254 131 253
+                128 1 1 224 3 240 3 240 3 160 1 240 15 224 137 130
+                13 192 33 192 1 240 25 83 25 219 31 255 31 254 135 253
+
+DEFINESPRITE    4
+                63 254 15 232 5 208 3 128 0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                31 236 15 216 7 160 3 192 1 64 0 128 0 0 0 0
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                15 232 7 208 3 176 2 192 1 160 0 192 0 128 0 0
+                0 128 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                31 236 15 216 7 160 3 192 1 64 0 128 0 0 0 0
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+DEFINESPRITE    1
+                1 0 0 0 1 0 3 128 3 128 7 64 4 64 15 32
+                24 16 62 8 60 72 58 136 29 16 10 160 6 64 3 128
+
+DEFINESPRITE    3
+                7 192 11 240 15 248 6 4 64 2 64 0 192 0 192 6
+                192 13 192 15 96 14 120 14 60 12 52 24 28 48 1 192
+                3 192 14 32 28 0 56 12 120 26 88 30 48 15 0 7
+                128 3 128 3 64 2 96 2 49 132 31 200 15 64 3 128
+                0 96 12 176 16 248 48 124 112 14 96 2 224 1 224 1
+                240 0 176 0 96 0 0 24 0 52 0 124 15 248 3 192
+
+
+DEFINEOBJECT    96 3 80 184
+                7 224 31 248 56 60 112 30 104 14 224 7 235 103 255 127
+                230 39 216 27 222 59 78 50 119 110 59 220 27 216 7 224
+
+DEFINEOBJECT    96 6 112 120
+                7 224 31 248 56 60 112 30 104 14 224 7 235 103 255 127
+                230 39 216 27 222 59 78 50 119 110 59 220 27 216 7 224
+
+DEFINEOBJECT    96 4 80 72
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+DEFINESCREEN      0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+                  0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+                  0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+                  0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+                  0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+                  0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+                  0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+                229   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 225
+                208 229   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 230 208
+                208 208 226   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1 225 208 208
+                208 128 129 226   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1 230 126 127 208
+                208 150 151 236 214   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 214 216 235 148 149 208
+                227 172 173 213 210 210 216 214   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1 230 209 224 170 171 228
+                 94 153 212 211 208 208 229 209 209 229 215 216 214 215 216   0 215 216 214 215 230 209 209 230 208 208 212 211 153   0
+                116 196 208 208 208 208 208 208 208 208 209 210 209 220 210 210 220 209 210 209 208 208 208 208 208 208 208 208 196  65
+                138 196 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 196  92
+                160 196 227 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 196 111
+                182 196 209 209 209 209 209 212 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 196 180
+                112 196 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 208 196 133
+                134 196 227 252 217 217 208 208 217 217 208 217 208 217 208 208 208 208 217 208 217 217 217 208 208 217 217 228 196  92
+                 65 152 153 153 153 153  44 153 153 153 153 153  44 153  44 153 153 153 153  44 153 153 153  44 153 153 153 153 152 180
+SPRITEPOSITION  4 12 152 112
+SPRITEPOSITION  2 6 152 176
+SPRITEPOSITION  5 0 128 32
+
+MAP             WIDTH 3
+                STARTSCREEN 0
+                255   0 255
+ENDMAP
+
+DEFINEFONT      0 0 0 0 0 0 0 0
+                24 24 24 8 24 24 16 16
+                102 102 204 132 4 0 0 0
+                108 254 108 254 108 100 68 0
+                126 242 124 30 254 186 144 16
+                100 216 124 54 126 76 72 0
+                112 228 126 198 126 108 36 32
+                24 24 48 16 16 0 0 0
+                28 52 48 48 60 40 40 32
+                56 44 12 12 56 56 40 8
+                108 56 238 58 108 100 64 0
+                24 24 126 56 24 16 16 0
+                0 0 0 24 24 48 16 0
+                0 0 0 126 92 8 0 0
+                0 0 0 0 24 24 8 8
+                6 14 26 56 96 32 32 0
+                124 198 214 198 126 52 36 4
+                24 56 56 24 126 60 40 32
+                252 14 124 200 254 110 68 0
+                126 83 78 3 127 62 18 0
+                48 96 204 254 108 36 36 0
+                254 192 252 6 254 126 42 2
+                124 192 252 198 252 180 36 32
+                254 198 78 30 52 20 16 0
+                124 198 124 198 126 116 36 0
+                124 198 126 6 126 122 82 0
+                0 24 24 16 8 24 8 8
+                0 24 16 8 16 24 56 8
+                6 28 112 60 38 4 0 0
+                0 0 254 0 254 0 0 0
+                96 56 14 60 104 104 64 0
+                0 252 6 62 16 56 56 32
+                124 214 190 118 110 126 84 20
+                56 56 108 124 222 74 64 64
+                252 198 252 198 254 230 68 64
+                124 246 208 192 198 124 84 4
+                252 214 198 198 252 116 84 0
+                126 196 240 192 126 76 4 0
+                254 196 240 208 208 192 64 0
+                126 192 222 198 254 182 148 4
+                198 198 254 206 198 198 132 0
+                126 26 24 24 24 126 58 8
+                6 6 6 6 6 252 236 72
+                198 220 244 224 248 238 162 0
+                192 192 192 192 254 118 34 2
+                198 238 254 214 214 20 4 0
+                198 230 246 222 206 202 130 2
+                124 198 198 198 252 188 136 0
+                252 198 252 204 200 64 64 0
+                124 198 214 220 246 102 38 2
+                252 198 252 216 204 140 132 4
+                126 224 124 38 252 236 68 0
+                126 122 88 24 24 8 8 8
+                198 198 198 198 254 180 160 128
+                198 198 236 188 188 20 16 0
+                214 214 254 254 214 68 68 0
+                198 238 58 124 222 214 130 2
+                198 110 58 56 56 16 16 16
+                254 156 56 112 254 118 36 32
+                126 96 96 96 126 60 40 32
+                96 112 120 92 22 18 16 0
+                126 6 6 6 126 106 74 8
+                24 60 110 42 34 34 32 0
+                0 0 0 0 255 90 10 0
+                62 98 250 96 254 100 100 32
+                124 6 126 198 126 86 4 4
+                192 252 198 198 252 228 68 64
+                126 192 192 192 254 102 68 64
+                6 126 198 198 126 100 36 4
+                124 198 254 192 254 204 68 0
+                62 98 250 104 104 96 32 32
+                126 198 126 6 126 52 36 32
+                192 252 230 230 198 194 194 64
+                24 0 24 24 24 8 8 0
+                6 0 6 6 252 116 36 4
+                192 204 248 204 198 70 66 0
+                56 24 24 24 24 16 16 16
+                236 254 214 214 214 82 66 2
+                252 198 198 198 198 70 68 0
+                124 198 198 198 124 120 40 32
+                252 198 198 252 216 200 64 64
+                126 198 198 126 70 6 4 4
+                252 222 210 210 192 64 64 0
+                126 192 124 6 254 220 84 16
+                48 252 48 48 62 44 36 4
+                198 198 198 198 126 60 40 40
+                198 198 110 122 90 18 16 16
+                198 214 214 254 108 68 68 0
+                198 108 56 124 222 74 2 0
+                198 110 122 26 240 192 64 64
+                254 28 56 112 254 94 74 64
+                12 24 112 88 12 4 4 4
+                24 24 24 24 24 24 16 16
+                96 48 28 56 104 72 0 0
+                0 118 254 26 8 0 0 0
+                126 227 223 219 223 235 126 106
+;----------------------------------------------------------------------
+; PLAYER
+;----------------------------------------------------------------------
+; - Fase switch : Unvulnerable
+; - Move        : left/right
+; - Jump        : left/right
+; - Attack      : Spit left/right with wait delay
+;                 Spit distance depends on status player
+; - Eat worm    : energy +3    -> lose 1 sec    
+;----------------------------------------------------------------------
+; SETTINGA = Delay counter
+; SETTINGB = Eat counter
+; H = Invulnerable
+; N = Shoot delay
+;----------------------------------------------------------------------
+
+EVENT PLAYER
+
+  GETBLOCKS			; Check hit collectable block
+
+;----------------------------------------------------------------------
+; Check hitting objects for entering combat rooms
+; Every object enters a different combat room.
+;----------------------------------------------------------------------
+
+  DETECTOBJ			; Check if hit object
+  IF OBJ <> 255			; If hit object
+    GET OBJ			; Collect object
+
+    LET D SCREEN		; Save return room
+
+    IF GOT 0
+      LET SCREEN 9		; Entering combat room 1
+      LET X 120
+      LET Y 80
+      RESTART
+    ENDIF
+
+    IF GOT 1
+      LET SCREEN 5		; Entering combat room 2
+      LET X 120
+      RESTART
+    ENDIF
+
+    IF GOT 2
+      LET SCREEN 7		; Entering combat room 3
+      LET X 120
+      RESTART
+    ENDIF
+
+  ENDIF
+
+;----------------------------------------------------------------------
+; Display collected objects
+; Objects are displayed in circles when entering room with circles
+;----------------------------------------------------------------------
+
+  IF SCREEN 6			; If in screen 19
+    IF GOT 0			; If object0 in posession
+      PUT 136 16 0		; Locate object in circle
+      ADD 1 TO A		; Increment object counter
+    ENDIF
+    IF GOT 1			; If object1 in posession
+      PUT 120 40 1		; Locate object in circle
+      ADD 1 TO A		; Increment object counter
+    ENDIF
+    IF GOT 2			; If object2 in posession
+      PUT 104 16 2		; Locate object in circle
+      ADD 1 TO A		; Increment object counter
+    ENDIF
+  ENDIF
+
+
+;----------------------------------------------------------------------
+; Hitting blocks
+;----------------------------------------------------------------------
+
+  IF DEADLY
+    LET W 255			; Decrement energy -1
+  ENDIF
+
+;----------------------------------------------------------------------
+; Check Mario-style jump on top
+; Strength is copied to stumbled sprite type 8
+;----------------------------------------------------------------------
+
+  IF COLLISION 2		; Jump on Child/spider
+    OTHER
+      LET I AIRBORNE
+      LET J Y
+      LET K SETTINGA
+    ENDSPRITE
+    IF I 0			; If enemy not in air
+      IF AIRBORNE > 0		; If in air
+        IF JUMPSPEED < 128  	; If juming down
+          IF Y < J		; If hitting top
+            STOPFALL
+            JUMP 4		; Jump
+            OTHER
+              REMOVE
+              EXPLODE 2
+              SPAWN 8 11	; Stumbled Child/spider
+              SPAWNED
+                LET SETTINGA K
+              ENDSPRITE
+            ENDSPRITE
+          ENDIF
+        ENDIF
+      ENDIF
+    ENDIF
+  ENDIF
+
+  IF COLLISION 4		; Jump on Child
+    OTHER
+      LET I AIRBORNE
+      LET J Y
+      LET K SETTINGA
+    ENDSPRITE
+    IF I 0			; If enemy not in air
+      IF AIRBORNE > 0		; If in air
+        IF JUMPSPEED < 128  	; If juming down
+          IF Y < J		; If hitting top
+            STOPFALL
+            JUMP 4		; Jump
+            OTHER
+              REMOVE
+              EXPLODE 2
+              SPAWN 8 17	; Stumbled Child
+              SPAWNED
+                LET SETTINGA K
+              ENDSPRITE
+            ENDSPRITE
+          ENDIF
+        ENDIF
+      ENDIF
+    ENDIF
+  ENDIF
+
+  IF COLLISION 5		; Jump on Spider
+    OTHER
+      LET I AIRBORNE
+      LET J Y
+      LET K SETTINGA
+    ENDSPRITE
+    IF I 0			; If enemy not in air
+      IF AIRBORNE > 0		; If in air
+        IF JUMPSPEED < 128  	; If juming down
+          IF Y < J		; If hitting top
+            STOPFALL
+            JUMP 4		; Jump
+            OTHER
+              REMOVE
+              EXPLODE 2
+              SPAWN 8 5		; Stumbled Spider
+              SPAWNED
+                LET SETTINGA K
+              ENDSPRITE
+            ENDSPRITE
+          ENDIF
+        ENDIF
+      ENDIF
+    ENDIF
+  ENDIF
+
+;----------------------------------------------------------------------
+; Invulnerable
+;----------------------------------------------------------------------
+
+  IF H > 0
+    SUBTRACT 1 FROM H
+    SPRITEINK H			; Blink player
+    EXIT			; Needed to avoid colour attribute clash
+  ENDIF
+
+;----------------------------------------------------------------------
+; Check if player is eating worm
+;----------------------------------------------------------------------
+
+  LET I F			; Save fase
+  DIVIDE I BY 6
+  ADD 20 TO I
+  IF IMAGE I			; Check if image is eating
+    SUBTRACT 1 FROM SETTINGB	; Subtract counter
+    IF SETTINGB 0		; If counter 0 -> stand
+      LET IMAGE F		; Stand left
+    ELSE
+      ANIMATE SLOW		; If counter>0 -> animate
+      EXIT
+    ENDIF
+  ENDIF
+
+;----------------------------------------------------------------------
+; Check screen leaving left
+;----------------------------------------------------------------------
+
+  IF DIRECTION LEFT		; If moving left
+    IF X <= LEFTEDGE		; If crossing left border
+      SCREENLEFT		; Screen left
+	;USER 1			; Scroll right
+      LET X 238			; Set X-pos
+      EXIT
+    ENDIF
+  ENDIF
+
+;----------------------------------------------------------------------
+; Check screen leaving right
+;----------------------------------------------------------------------
+
+  IF DIRECTION RIGHT		; If moving right
+    IF X >= RIGHTEDGE		; If crossing right border
+      SCREENRIGHT		; Screen right
+	;USER 0			; Scroll left
+      LET X 10			; Set X-pos
+      EXIT
+    ENDIF
+  ENDIF
+
+;----------------------------------------------------------------------
+; Check screen leaving up
+;----------------------------------------------------------------------
+
+  IF Y <= 9			; If crossing top border
+    LET Y 150		; Set Y-pos
+    SCREENUP		; Screen up
+    ;USER 3			; Scroll down
+    EXIT
+  ENDIF
+
+;----------------------------------------------------------------------
+; Check screen leaving down
+;----------------------------------------------------------------------
+
+  IF Y >=160			; If crossing bottom border
+    LET Y 10			; Set Y-pos
+    SCREENDOWN			; Screen down
+      ;USER 2			; Scroll up
+    EXIT
+  ENDIF
+
+;----------------------------------------------------------------------
+; Check actions
+;----------------------------------------------------------------------
+
+  LET I 0			; Reset move flag
+
+; Check move left
+
+  IF KEY LEFT			; Check pressed left
+    LET DIRECTION = LEFT
+    LET IMAGE = F
+    ADD 4 TO IMAGE		; Walk left
+    IF CANGOLEFT
+      SPRITELEFT
+    ENDIF
+    LET I 1
+  ENDIF
+
+; Check move right
+
+  IF KEY RIGHT			; Check pressed right
+    LET DIRECTION = RIGHT
+    LET IMAGE = F
+    ADD 2 TO IMAGE		; Walk right
+    IF CANGORIGHT
+      SPRITERIGHT 
+    ENDIF
+    LET I 1
+  ENDIF
+
+; Check no moving = standing
+
+  IF I = 0			; Display standing player
+    IF N 0
+      LET IMAGE F
+      LET FRAME 0 
+      DIVIDE X BY 8		; Align player to block
+      MULTIPLY X BY 8
+    ENDIF
+  ELSE
+    ANIMATE
+  ENDIF
+
+; Check if jumping
+
+  IF AIRBORNE > 0		; Display jumping player
+    LET IMAGE F
+    IF DIRECTION = LEFT
+      ADD 4 TO IMAGE		; Jump left up
+      LET FRAME 0
+    ELSE
+      ADD 2 TO IMAGE		; Jump right up
+      LET FRAME 0
+    ENDIF
+    IF JUMPSPEED < 128
+      LET FRAME	1		; Jump down
+    ENDIF
+  ENDIF
+
+; Check for jump key
+
+  IF KEY FIRE			; Check for jumping
+    JUMP V
+  ENDIF
+
+; Check for spit
+
+  IF KEY FIRE2			; Spit
+    LET I X
+    IF N = 0
+      LET IMAGE F
+      IF DIRECTION LEFT 
+        SUBTRACT 16 FROM X
+        ADD 3 TO IMAGE		; Spit left
+        SPAWN 3 18		; Spawn spit left
+        SPAWNED
+          IF F 0
+            LET SETTINGB 1
+          ELSE
+            IF F 6
+              LET SETTINGB 2
+            ELSE
+              LET SETTINGB 3
+            ENDIF
+          ENDIF
+        ENDSPRITE
+        LET SETTINGA 8
+      ELSE
+        ADD 16 TO X
+        ADD 1 TO IMAGE		; Spit right
+        SPAWN 3 18		; Spawn spit right
+        SPAWNED
+          IF F 0
+            LET SETTINGB 1
+          ELSE
+            IF F 6
+              LET SETTINGB 2
+            ELSE
+              LET SETTINGB 3
+            ENDIF
+          ENDIF
+        ENDSPRITE
+        LET SETTINGA 8
+      ENDIF 
+      LET FRAME 0 
+      LET N 20			; Shoot delay
+;      LET W 254			; Energy -2
+    ENDIF
+    LET X I
+  ENDIF
+
+;----------------------------------------------------------------------
+; Adjust shoot delay
+;----------------------------------------------------------------------
+
+  IF N > 0			; Shoot delay
+    SUBTRACT 1 FROM N
+  ENDIF
+
+  FALL				; Gravity
+
+;----------------------------------------------------------------------
+; ENEMY WORM
+;----------------------------------------------------------------------
+;
+; Movement:
+; - Moves left-right with a delay
+; - Stays on platforms 
+; - Looks ahead 15 pixels, if enemy, 1/2 sec delay and reverse direction
+;
+; Collision:
+; - Player, worm gets eaten, energy player +3
+; - Child/spider, worm gets eaten, strength enemy +1
+; - Spider, worm gets eaten, strength enemy +1
+;
+; Hit by spit:
+; - Remove
+;
+;----------------------------------------------------------------------
+; SETTINGA = Animation delay counter
+; SETTINGB = Delay counter
+;----------------------------------------------------------------------
+
+EVENT SPRITETYPE1
+
+;----------------------------------------------------------------------
+; Check for fall off screen
+;----------------------------------------------------------------------
+
+  IF Y 160
+    REMOVE			; At bottom remove
+    EXIT
+  ENDIF
+
+;----------------------------------------------------------------------
+; Look ahead 15 pixels
+;----------------------------------------------------------------------
+
+  IF SETTINGA = 0		; If no delay
+
+    LET I X			; Save X-pos
+    IF DIRECTION RIGHT
+      ADD 15 TO X		; Look ahead
+      IF COLLISION 0		; Player
+        LET DIRECTION LEFT	; If so, reverse direction
+        LET SETTINGA 25		; Set delay 1/2 sec
+      ELSE
+        IF COLLISION 2		; Child/Spider
+          LET DIRECTION LEFT	; If so, reverse direction
+          LET SETTINGA 25	; Set delay 1/2 sec
+        ELSE
+          IF COLLISION 4	; Child
+            LET DIRECTION LEFT	; If so, reverse direction
+            LET SETTINGA 25	; Set delay 1/2 sec
+          ELSE
+            IF COLLISION 5	; Baby spider
+              LET DIRECTION LEFT; If so, reverse direction
+              LET SETTINGA 25	; Set delay 1/2 sec
+            ENDIF
+          ENDIF
+        ENDIF
+      ENDIF
+    ELSE
+      SUBTRACT 15 FROM X	; Look ahead
+      IF COLLISION 0		; Player
+        LET DIRECTION RIGHT	; If so, reverse direction
+        LET SETTINGA 25		; Set delay 1/2 sec
+      ELSE
+        IF COLLISION 2		; Child/Spider
+          LET DIRECTION RIGHT	; If so, reverse direction
+          LET SETTINGA 25	; Set delay 1/2 sec
+        ELSE
+          IF COLLISION 4	; Child
+            LET DIRECTION RIGHT	; If so, reverse direction
+            LET SETTINGA 25	; Set delay 1/2 sec
+          ELSE
+            IF COLLISION 5	; Baby spider
+              LET DIRECTION RIGHT; If so, reverse direction
+              LET SETTINGA 25	; Set delay 1/2 sec
+            ENDIF
+          ENDIF
+        ENDIF
+      ENDIF
+    ENDIF
+    LET X I			; Restore X-pos
+  ENDIF
+  
+;----------------------------------------------------------------------
+; Check hit by player 
+;----------------------------------------------------------------------
+
+  IF H = 0
+    IF COLLISION 0		; If hit by player
+      IF AIRBORNE 0		; If not falling
+        OTHER
+          LET I JUMPSPEED
+          LET J AIRBORNE
+        ENDSPRITE
+        IF J 0			; Don't eat falling worm
+          IF I < 128		; Jump down
+            REMOVE
+            EXPLODE 4		; Remove worm and explode
+            LET I X
+            LET J Y
+            OTHER
+              LET X I
+              LET Y J
+              LET K F		; Save fase
+              DIVIDE K BY 6
+              LET IMAGE K	; Start eating worm animation
+              ADD 20 TO IMAGE
+              LET FRAME 0
+              LET SETTINGB 25	; Set eating counter
+            ENDSPRITE
+            LET W 5		; Energy +5
+            EXIT
+          ENDIF
+        ENDIF
+      ENDIF
+    ENDIF
+  ENDIF
+
+;----------------------------------------------------------------------
+; Check hit by child/spider
+;----------------------------------------------------------------------
+
+  IF COLLISION 2		; If hit by child/spider
+    IF AIRBORNE 0		; If not falling
+      OTHER
+        LET I JUMPSPEED
+        LET J AIRBORNE
+      ENDSPRITE
+      IF J 0			; Don't eat falling worm
+        IF I < 128		; Jump down
+          REMOVE
+          EXPLODE 4		; Remove worm and explode
+          LET I X
+          LET J Y
+          OTHER
+            LET X I
+            LET Y J
+            LET IMAGE 21	; Start child/spider eating worm animation
+            LET FRAME 0
+            LET SETTINGB 25	; Set eating counter
+            IF SETTINGA < 5
+              ADD 1 TO SETTINGA	; Strength  +1
+            ENDIF
+          ENDSPRITE
+          EXIT
+        ENDIF
+      ENDIF
+    ENDIF
+  ENDIF
+
+;----------------------------------------------------------------------
+; Check hit by child
+;----------------------------------------------------------------------
+
+  IF COLLISION 4		; If hit by child
+    IF AIRBORNE 0		; If not falling
+      OTHER
+        LET I JUMPSPEED
+        LET J AIRBORNE
+      ENDSPRITE
+      IF J 0			; Don't eat falling worm
+        IF I < 128		; Jump down
+          REMOVE
+          EXPLODE 4		; Remove worm and explode
+          LET I X
+          LET J Y
+          OTHER
+            LET X I
+            LET Y J
+            LET IMAGE 22	; Start child eating worm animation
+            LET FRAME 0
+            LET SETTINGB 25	; Set eating counter
+            IF SETTINGA < 5
+              ADD 1 TO SETTINGA	; Strength  +1
+            ENDIF
+          ENDSPRITE
+          EXIT
+        ENDIF
+      ENDIF
+    ENDIF 
+  ENDIF
+
+;----------------------------------------------------------------------
+; Check hit by spider
+;----------------------------------------------------------------------
+
+  IF COLLISION 5		; If hit by spider
+    OTHER
+      LET I JUMPSPEED
+      LET J AIRBORNE
+    ENDSPRITE
+    IF J 0			; Don't eat falling worm
+      IF I < 128		; Jump down
+        REMOVE
+        EXPLODE 4		; Remove worm and explode
+        LET I X
+        LET J Y
+        OTHER
+          LET X I
+          LET Y J
+          LET IMAGE 20		; Start spider eating worm animation
+          LET FRAME 0
+          LET SETTINGB 25	; Set eating counter
+          IF SETTINGA < 5
+            ADD 1 TO SETTINGA	; Strength  +1
+          ENDIF
+        ENDSPRITE
+        EXIT
+      ENDIF
+    ENDIF
+  ENDIF
+
+;----------------------------------------------------------------------
+; Only execute when delay counter is expired
+;----------------------------------------------------------------------
+
+  IF SETTINGA = 0		; Check delay factor
+
+    LET I X			; Save X
+    LET J Y			; Save Y
+    ADD 20 TO J			; Check platform
+
+;----------------------------------------------------------------------
+; Check movements
+;----------------------------------------------------------------------
+
+    IF DIRECTION LEFT		; Check going left
+      IF CANGOLEFT
+        ADD 4 TO I
+        GETBLOCK I,J
+        IF BLOCK EMPTYBLOCK	; Check for left end of platform
+          LET DIRECTION RIGHT	; If so, reverse direction
+          LET SETTINGA 25	; Delay 1 sec
+        ELSE
+          SPRITELEFT		; If not, move left
+        ENDIF
+      ELSE
+        LET DIRECTION RIGHT	; If not cangoleft, reverse direction
+        LET SETTINGA 25		; Delay 1 sec
+      ENDIF
+    ENDIF
+
+    IF DIRECTION RIGHT		; Check going right
+      IF CANGORIGHT
+        ADD 12 TO I
+        GETBLOCK I,J
+        IF BLOCK EMPTYBLOCK	; Check for right end of platform
+          LET DIRECTION LEFT	; If so, reverse direction
+          LET SETTINGA 25	; Delay 1 sec
+        ELSE
+          SPRITERIGHT		; If not, move right
+        ENDIF
+      ELSE
+        LET DIRECTION LEFT	; If not cangoright, reverse direction
+        LET SETTINGA 25		; Delay 1 sec
+      ENDIF
+    ENDIF
+
+    IF DIRECTION LEFT		; Determine animation direction
+      ANIMATE 
+    ELSE
+      ANIMBACK 
+    ENDIF
+
+;----------------------------------------------------------------------
+; Animation delay
+;----------------------------------------------------------------------
+
+    IF SETTINGA < 3
+      LET SETTINGA 3		; Reset delaycounter
+    ENDIF
+
+  ENDIF
+
+;----------------------------------------------------------------------
+; Delay 
+;----------------------------------------------------------------------
+
+  IF SETTINGB > 0
+    SUBTRACT 1 FROM SETTINGB
+  ENDIF
+
+  SUBTRACT 1 FROM SETTINGA	; Increment delaycounter
+  TABLEFALL			; If off platform, fall
+
+;----------------------------------------------------------------------
+; ENEMY CHILD/SPIDER
+;----------------------------------------------------------------------
+;
+; Movement:
+; - Moves left-right and falls from platform
+; - Jumps randomly (5%)
+;
+; Collision:
+; - Player, energy-2
+;
+; Hit by spit:
+; - Strength-1, if strength=0, kill
+;
+;----------------------------------------------------------------------
+; SETTINGA = Hit counter
+; SETTINGB = Movement delay (jump/direction change)
+;----------------------------------------------------------------------
+
+EVENT SPRITETYPE2
+
+;----------------------------------------------------------------------
+; Check Mario-style jump on top
+; Strength is copied to stumbled sprite type 8
+;----------------------------------------------------------------------
+
+  IF COLLISION 4		; Jump on Child
+    OTHER
+      LET I AIRBORNE
+      LET J Y
+      LET K SETTINGA
+    ENDSPRITE
+    IF I 0			; If enemy not in air
+      IF AIRBORNE > 0		; If in air
+        IF JUMPSPEED < 128  	; If juming down
+          IF Y < J		; If hitting top
+            STOPFALL
+            JUMP 4		; Jump
+            OTHER
+              REMOVE
+              EXPLODE 5
+              SPAWN 8 17	; Stumbled Child
+              SPAWNED
+                LET SETTINGA K
+              ENDSPRITE
+            ENDSPRITE
+          ENDIF
+        ENDIF
+      ENDIF
+    ENDIF
+  ENDIF
+
+  IF COLLISION 5		; Jump on Spider
+    OTHER
+      LET I AIRBORNE
+      LET J Y
+      LET K SETTINGA
+    ENDSPRITE
+    IF I 0			; If enemy not in air
+      IF AIRBORNE > 0		; If in air
+        IF JUMPSPEED < 128  	; If juming down
+          IF Y < J		; If hitting top
+            STOPFALL
+            JUMP 4		; Jump
+            OTHER
+              REMOVE
+              EXPLODE 5
+              SPAWN 8 5		; Stumbled Spider
+              SPAWNED
+                LET SETTINGA K
+              ENDSPRITE
+            ENDSPRITE
+          ENDIF
+        ENDIF
+      ENDIF
+    ENDIF
+  ENDIF
+
+;----------------------------------------------------------------------
+; Remove player if falling to screen below
+;----------------------------------------------------------------------
+
+  IF Y 160
+    REMOVE			; At bottom remove
+    EXIT
+  ENDIF
+
+;----------------------------------------------------------------------
+; Hitting blocks
+;----------------------------------------------------------------------
+
+  IF CUSTOM
+    JUMP 8			; If hitting custom block, jump vertical
+  ENDIF
+
+;----------------------------------------------------------------------
+; Check if child/spider is eating worm
+;----------------------------------------------------------------------
+
+  IF IMAGE 21			; Check if image is eating
+    SUBTRACT 1 FROM SETTINGB	; Subtract counter
+    IF SETTINGB 0		; If counter 0 -> stand
+      LET IMAGE 6		; Stand left
+      LET FRAME 0
+    ELSE
+      ANIMATE SLOW		; If counter>0 -> animate
+      EXIT
+    ENDIF
+  ENDIF
+
+;----------------------------------------------------------------------
+; Check collision player
+;----------------------------------------------------------------------
+
+;  IF H = 0
+;    IF COLLISION 0
+;      LET W 254			; Energy-2
+;    ENDIF
+;  ENDIF
+
+;----------------------------------------------------------------------
+; Check for delay
+;----------------------------------------------------------------------
+
+  IF SETTINGB > 0
+    SUBTRACT 1 FROM SETTINGB
+    IF SETTINGB 21		; Check waiting for going left
+      LET DIRECTION LEFT
+      LET SETTINGB 0
+    ENDIF
+    IF SETTINGB 11		; Check waiting for going right
+      LET DIRECTION RIGHT
+      LET SETTINGB 0
+    ENDIF
+    IF SETTINGB 1		; Check waiting for jumping
+      GETRANDOM 2		; Jump for 50%
+      IF RND 1
+        JUMP 8
+      ENDIF
+      LET SETTINGB 0
+    ENDIF
+    EXIT
+  ENDIF
+
+;----------------------------------------------------------------------
+; Show right image for rising/falling
+;----------------------------------------------------------------------
+
+  IF AIRBORNE > 0		; Display jumping player
+    IF DIRECTION = LEFT
+      LET IMAGE	10		; Jump left up
+      LET FRAME 0
+    ELSE
+      LET IMAGE	8		; Jump right up
+      LET FRAME 0
+    ENDIF
+    IF JUMPSPEED < 127
+      LET FRAME 2
+    ENDIF
+  ENDIF
+
+;----------------------------------------------------------------------
+; AI handling Child/spider
+;----------------------------------------------------------------------
+; - look left ahead
+;     seeing player spider:       20% ri,60% att,20% st
+;     seeing player spider/child: 40% ri,40% att,20% st
+;     seeing player child:        60% ri,20% att,20% st
+;     seeing spit:                20% ri,60% att,      ,20% jmp
+;
+; - look right ahead
+;     seeing player spider:       20% le,60% att,20% st
+;     seeing player spider/child: 40% le,40% att,20% st
+;     seeing player child:        60% le,20% att,20% st
+;     seeing spit:                20% le,60% att       ,20% jmp
+;----------------------------------------------------------------------
+
+  GETRANDOM 5			; RND nr -> 100/5=20%
+
+  LET J 0			; Reset collisionflag
+
+; Checking look ahead 46 pixels
+
+  LET I X
+
+  IF DIRECTION LEFT		; Check left ahead
+    LET K 0
+    SUBTRACT 31 FROM X		; Check right ahead
+  ELSE
+    LET K 1
+    ADD 31 TO X
+  ENDIF
+
+; Check look ahead collisions
+
+  IF COLLISION 0
+    IF F 0
+      LET J 1			; Collision Player spider
+    ENDIF
+    IF F 6
+      LET J 2			; Collision Player Child/spider
+    ENDIF
+    IF F 12
+      LET J 3			; Collision Player Child
+    ENDIF
+  ELSE
+    IF COLLISION 5
+      LET J 1			; Collision Spider
+    ENDIF
+    IF COLLISION 4
+      LET J 3			; Collision Child
+    ENDIF
+  ENDIF
+
+; Checking look ahead 15 pixels
+
+  LET X I			; Restore X
+
+  IF COLLISION 0
+    IF F 0
+      LET J 1			; Collision Player spider
+    ENDIF
+    IF F 6
+      LET J 2			; Collision Player Child/spider
+    ENDIF
+    IF F 12
+      LET J 3			; Collision Player Child
+    ENDIF
+  ELSE
+    IF COLLISION 4
+      LET J 3			; Collision Child
+    ENDIF
+    IF COLLISION 5
+      LET J 1			; Collision Spider
+    ENDIF
+  ENDIF
+
+; Seeing Player Spider + Spider
+
+  IF J 1			; Player Player Spider + Spider
+    LET K 3			; 60% Attack
+    IF RND 0			; 20% Right/Left
+      IF K 0
+        LET K 1
+      ELSE
+        LET K 0
+      ENDIF
+    ENDIF
+    IF RND 4
+      LET K 4			; 20% Stay
+    ENDIF
+  ENDIF
+
+; Seeing Player Child/spider
+
+  IF J 2			; Player Child/spider
+    LET K 1			; 40% Right/Left
+    IF RND 2			; 20% Attack
+      LET K 3
+    ENDIF
+    IF RND 3			; 20% Attack
+      LET K 3
+    ENDIF
+    IF RND 4
+      LET K 4			; 20% Stay
+    ENDIF
+  ENDIF
+
+; Seeing Player Child + Child
+
+  IF J 3			; Player Child + Child
+    LET K 1			; 60% Right/Left
+    IF RND 3			; 20% Attack
+      LET K 3
+    ENDIF
+    IF RND 4
+      LET K 4			; 20% Stay
+    ENDIF
+  ENDIF
+
+; Seeing spit
+
+  IF COLLISION 3		; Look left spit
+    LET K 3			; 60% Attack
+    IF RND 0			; 20% Right/Left
+      IF K 0
+        LET K 1
+      ELSE
+        LET K 0
+      ENDIF
+    ENDIF
+    IF RND 4
+      LET K 2			; 20% Jump
+    ENDIF
+  ENDIF
+
+  LET X I			; Restore X
+
+;----------------------------------------------------------------------
+; Status handling in variable K:
+;
+; 0 - Left
+; 1 - Right
+; 2 - Jump
+; 3 - Attack
+; 4 - Stay
+;----------------------------------------------------------------------
+
+  IF AIRBORNE 0			; If not falling
+
+    IF K 3			; ATTACK
+      LET I X
+      IF DIRECTION LEFT 
+        SUBTRACT 16 FROM X
+        LET IMAGE 9		; Spit left
+        SPAWN 3 18		; Spawn spit left
+        SPAWNED
+          LET SETTINGB 2
+        ENDSPRITE
+        LET K 1
+      ELSE
+        ADD 16 TO X
+        LET IMAGE 7		; Spit right
+        SPAWN 3 18		; Spawn spit right
+         SPAWNED
+          LET SETTINGB 2
+        ENDSPRITE
+       LET K 0
+      ENDIF 
+      LET FRAME 0 
+      LET SETTINGB 8
+      LET X I
+    ENDIF
+
+    IF SETTINGB 0		; If no delay
+
+      IF K 0			; LEFT
+        LET IMAGE 10
+        IF CANGOLEFT
+          LET DIRECTION LEFT
+          SPRITELEFT		; Continue walking 
+        ELSE
+          IF AIRBORNE = 0	; Check if jumping
+            LET SETTINGB 20	; If not, set delay timer going left
+          ELSE
+            LET DIRECTION RIGHT	; In air so change direction
+          ENDIF
+        ENDIF
+      ENDIF
+
+      IF K 1			; RIGHT
+        LET IMAGE 8
+        IF CANGORIGHT
+          LET DIRECTION RIGHT
+          SPRITERIGHT
+        ELSE
+          IF AIRBORNE = 0	; Check if jumping
+            LET SETTINGB 30	; If not, set delay timer going right
+          ELSE
+            LET DIRECTION LEFT	; In air so change direction
+          ENDIF
+        ENDIF
+      ENDIF
+
+    ENDIF
+
+    IF K 2			; JUMP
+      IF CANGOUP		; Check if can go up
+        LET SETTINGB 10		; Yes, set delay jumping
+        LET IMAGE 10		; Change image to jump left
+        LET FRAME 0		; Reset framenr
+      ENDIF
+    ENDIF
+
+    IF K 4			; STAY
+      LET SETTINGB 30		; Yes, set delay jumping
+      LET IMAGE 6 		; Stand
+      LET FRAME 0
+    ENDIF
+
+  ENDIF
+
+;----------------------------------------------------------------------
+
+  ANIMATE FAST
+  FALL
+
+;----------------------------------------------------------------------
+; SPIT
+;----------------------------------------------------------------------
+;
+; Movements:
+; - Move left/right doublespeed
+; - If phase spider, distance=4
+; - If phase spider/child, distance=8
+; - If phase child, distance=12
+;
+; Collision:
+; - Worm, kill worm
+; - Player, kill player, energy -3
+; - Spider, strength -1, if strength=0 then kill
+; - Child/spider, strength -1, if strength=0 then devoluate to spider
+; - Child, strength -1, if strength=0 then devoluate to child/spider
+;
+;----------------------------------------------------------------------
+; SETTINGA = Shoot distance counter
+; SETTINGB = Shoot speed
+;----------------------------------------------------------------------
+
+EVENT SPRITETYPE3
+
+;----------------------------------------------------------------------
+; If spit, determine distance
+;----------------------------------------------------------------------
+
+  IF SETTINGA > 0
+    SUBTRACT SETTINGB FROM SETTINGA
+    IF SETTINGA 0		; Remove skit/dagger after x moves
+      REMOVE
+      EXIT
+    ENDIF
+  ENDIF
+
+;----------------------------------------------------------------------
+; If hit player
+;----------------------------------------------------------------------
+
+ IF H = 0			; If player not invulnerable
+  IF COLLISION 0
+    EXPLODE 2
+    REMOVE
+    LET W 252			; Set energybar update flag
+    EXIT
+  ENDIF
+ ENDIF
+
+;----------------------------------------------------------------------
+; If hit worm
+;----------------------------------------------------------------------
+
+;  IF COLLISION 1		; If hit by weapon
+;    OTHER
+;      REMOVE			; Remove worm
+;    ENDSPRITE
+;    EXPLODE 2
+;    REMOVE			; Remove weapon
+;    EXIT
+;  ENDIF
+
+;----------------------------------------------------------------------
+; If hit Spider
+;----------------------------------------------------------------------
+
+  IF COLLISION 5		; If hit by weapon
+    LET I DIRECTION
+    OTHER
+      SUBTRACT 1 FROM SETTINGA	; Decrement hitcounter
+      IF SETTINGA = 0
+        REMOVE
+        SPAWN 1,19		; Spawn worm
+        LET Y 200
+
+        IF G > 0		; Decrement enemy nr if in combat room
+          SUBTRACT 1 FROM G
+        ENDIF
+
+      ELSE
+        REPEAT 4		; Move enemy 8 pixels 
+          IF I LEFT
+            IF CANGOLEFT
+              SPRITELEFT
+            ENDIF
+          ELSE
+            IF CANGORIGHT
+              SPRITERIGHT
+            ENDIF
+          ENDIF
+          FALL
+        ENDREPEAT
+      ENDIF
+      LET I X
+    ENDSPRITE
+    EXPLODE 2
+    REMOVE
+    EXIT
+  ENDIF
+
+;----------------------------------------------------------------------
+; If hit Child/Spider
+;----------------------------------------------------------------------
+
+  IF COLLISION 2
+    LET I DIRECTION
+    OTHER
+      SUBTRACT 1 FROM SETTINGA	; Decrement hitcounter
+      IF SETTINGA = 0
+        REMOVE
+        SPAWN 5,0		; Spawn spider
+        LET Y 200
+      ELSE
+        REPEAT 4		; Move enemy 8 pixels 
+          IF I LEFT
+            IF CANGOLEFT
+              SPRITELEFT
+            ENDIF
+          ELSE
+            IF CANGORIGHT
+              SPRITERIGHT
+            ENDIF
+          ENDIF
+          FALL
+        ENDREPEAT
+      ENDIF
+      LET I X
+    ENDSPRITE
+    EXPLODE 2
+    REMOVE
+    EXIT
+  ENDIF
+
+
+;----------------------------------------------------------------------
+; If hit Child
+;----------------------------------------------------------------------
+
+  IF COLLISION 4
+    LET I DIRECTION
+    OTHER
+      SUBTRACT 1 FROM SETTINGA	; Decrement hitcounter
+      IF SETTINGA = 0
+        REMOVE
+        SPAWN 2,6		; Spawn child/spider
+        LET Y 200
+      ELSE
+        REPEAT 4		; Move enemy 8 pixels 
+          IF I LEFT
+            IF CANGOLEFT
+              SPRITELEFT
+            ENDIF
+          ELSE
+            IF CANGORIGHT
+              SPRITERIGHT
+            ENDIF
+          ENDIF
+          FALL
+        ENDREPEAT
+      ENDIF
+      LET I X
+    ENDSPRITE
+    EXPLODE 2
+    REMOVE
+    EXIT
+  ENDIF
+ 
+;----------------------------------------------------------------------
+; If hit Stumbled sprite
+;----------------------------------------------------------------------
+
+  IF COLLISION 8		; If hit by weapon
+    OTHER
+      SUBTRACT 1 FROM SETTINGA	; Decrement hitcounter
+      IF SETTINGA = 0
+        REMOVE
+        IF F 0
+          SPAWN 1,19		; Spawn worm
+        ELSE
+          IF F 6
+            SPAWN 5,0		; Spawn spider
+          ELSE
+            SPAWN 2,6		; Spawn child/spider
+          ENDIF
+        ENDIF
+      ENDIF
+    ENDSPRITE
+    EXPLODE 2
+    REMOVE
+    EXIT
+  ENDIF
+
+;----------------------------------------------------------------------
+; Check movements
+;----------------------------------------------------------------------
+
+  IF DIRECTION LEFT		; Check left
+    IF CANGOLEFT
+      REPEAT SETTINGB
+        SPRITELEFT		; Move at double enemy/player speed
+      ENDREPEAT
+    ELSE
+      EXPLODE 2			; Obstruction, remove
+      REMOVE
+    ENDIF
+  ELSE
+    IF CANGORIGHT		; Check right
+      REPEAT SETTINGB
+        SPRITERIGHT
+      ENDREPEAT
+    ELSE
+      EXPLODE 2			; Obstruction, remove
+      REMOVE
+    ENDIF
+  ENDIF
+
+  ANIMATE SLOW
+
+;----------------------------------------------------------------------
+; ENEMY CHILD
+;----------------------------------------------------------------------
+;
+; Movement:
+; - Moves left/right and falls from platform
+;
+; Collision:
+; - Player, energy player -2
+;
+;----------------------------------------------------------------------
+; SETTINGA = Hit counter
+; SETTINGB = Movement delay (jump/direction change)
+;----------------------------------------------------------------------
+
+EVENT SPRITETYPE4
+
+;----------------------------------------------------------------------
+; Check Mario-style jump on top
+; Strength is copied to stumbled sprite type 8
+;----------------------------------------------------------------------
+
+  IF COLLISION 2		; Jump on Child/spider
+    OTHER
+      LET I AIRBORNE
+      LET J Y
+      LET K SETTINGA
+    ENDSPRITE
+    IF I 0			; If enemy not in air
+      IF AIRBORNE > 0		; If in air
+        IF JUMPSPEED < 128  	; If juming down
+          IF Y < J		; If hitting top
+            STOPFALL
+            JUMP 4		; Jump
+            OTHER
+              REMOVE
+              EXPLODE 5
+              SPAWN 8 11	; Stumbled Child/spider
+              SPAWNED
+                LET SETTINGA K
+              ENDSPRITE
+            ENDSPRITE
+          ENDIF
+        ENDIF
+      ENDIF
+    ENDIF
+  ENDIF
+
+  IF COLLISION 5		; Jump on Spider
+    OTHER
+      LET I AIRBORNE
+      LET J Y
+      LET K SETTINGA
+    ENDSPRITE
+    IF I 0			; If enemy not in air
+      IF AIRBORNE > 0		; If in air
+        IF JUMPSPEED < 128  	; If juming down
+          IF Y < J		; If hitting top
+            STOPFALL
+            JUMP 4		; Jump
+            OTHER
+              REMOVE
+              EXPLODE 5
+              SPAWN 8 5		; Stumbled Spider
+              SPAWNED
+                LET SETTINGA K
+              ENDSPRITE
+            ENDSPRITE
+          ENDIF
+        ENDIF
+      ENDIF
+    ENDIF
+  ENDIF
+
+;----------------------------------------------------------------------
+; Remove player if falling to screen below
+;----------------------------------------------------------------------
+
+  IF Y 160
+    REMOVE			; At bottom, remove
+    EXIT
+  ENDIF
+
+;----------------------------------------------------------------------
+; Hitting blocks
+;----------------------------------------------------------------------
+
+  IF CUSTOM
+    JUMP 9			; If hitting custom block, jump
+  ENDIF
+
+;----------------------------------------------------------------------
+; Check if child is eating worm
+;----------------------------------------------------------------------
+
+  IF IMAGE 22			; Check if image is eating
+    SUBTRACT 1 FROM SETTINGB	; Subtract counter
+    IF SETTINGB 0		; If counter 0 -> stand
+      LET IMAGE 12		; Stand left
+      LET FRAME 0
+    ELSE
+      ANIMATE SLOW		; If counter>0 -> animate
+      EXIT
+    ENDIF
+  ENDIF
+
+;----------------------------------------------------------------------
+; Check collision player
+;----------------------------------------------------------------------
+
+; IF H = 0
+;  IF COLLISION 0
+;    LET W 254			; Energy-2
+;  ENDIF
+; ENDIF
+
+;----------------------------------------------------------------------
+; Check for delay
+;----------------------------------------------------------------------
+
+  IF SETTINGB > 0
+    SUBTRACT 1 FROM SETTINGB
+    IF SETTINGB 21		; Check waiting for going left
+      LET DIRECTION LEFT
+      LET SETTINGB 0
+    ENDIF
+    IF SETTINGB 11		; Check waiting for going right
+      LET DIRECTION RIGHT
+      LET SETTINGB 0
+    ENDIF
+    IF SETTINGB 1		; Check waiting for jumping
+      GETRANDOM 2		; Jump for 50%
+      IF RND 1
+        JUMP 9
+      ENDIF
+      LET SETTINGB 0
+      LET SETTINGB 0
+    ENDIF
+    EXIT
+  ENDIF
+
+;----------------------------------------------------------------------
+; Show right image for rising/falling
+;----------------------------------------------------------------------
+
+  IF AIRBORNE > 0		; Display jumping player
+    IF DIRECTION = LEFT
+      LET IMAGE	16		; Jump left
+      LET FRAME 0
+    ELSE
+      LET IMAGE	14		; Jump right
+      LET FRAME 0
+    ENDIF
+    IF JUMPSPEED < 127		; Check if jumping up/down
+      LET FRAME 2
+    ENDIF
+  ENDIF
+
+;----------------------------------------------------------------------
+; AI handling Child
+;----------------------------------------------------------------------
+; - look left ahead
+;     seeing player spider:              80% att,20% st
+;     seeing player spider/child: 20% ri,60% att,20% st
+;     seeing player child:        40% ri,40% att,20% st
+;     seeing spit:                       80% att       ,20% jmp
+;
+; - look right ahead
+;     seeing player spider:       40% le,40% att,20% st
+;     seeing player spider/child: 60% le,20% att,20% st
+;     seeing player child:        80%           ,20% st
+;     seeing spit:                20% le,40% att,20% st,20% jmp
+;----------------------------------------------------------------------
+
+  GETRANDOM 5			; RND nr -> 100/5=20%
+
+  LET J 0			; Reset collisionflag
+
+; Checking look ahead 46 pixels
+
+  LET I X			; Save X
+
+  IF DIRECTION LEFT		; Check left ahead
+    LET K 0
+    SUBTRACT 31 FROM X		; Check right ahead
+  ELSE
+    LET K 1
+    ADD 31 TO X
+  ENDIF
+
+; Check look ahead collisions
+
+  IF COLLISION 0
+    IF F 0
+      LET J 1			; Collision Player spider
+    ENDIF
+    IF F 6
+      LET J 2			; Collision Player Child/spider
+    ENDIF
+    IF F 12
+      LET J 3			; Collision Player Child
+    ENDIF
+  ELSE
+    IF COLLISION 2
+      LET J 2			; Collision Child/spider
+    ENDIF
+    IF COLLISION 5
+      LET J 1			; Collision Spider
+    ENDIF
+  ENDIF
+
+; Checking look ahead 15 pixels
+
+  LET X I			; Restore X
+
+  IF COLLISION 0
+    IF F 0
+      LET J 1			; Collision Player Spider
+    ENDIF
+    IF F 6
+      LET J 2			; Collision Player Child/spider
+    ENDIF
+    IF F 12
+      LET J 3			; Collision Player Child
+    ENDIF
+  ELSE
+    IF COLLISION 2
+      LET J 2			; Collision Child/Spider
+    ENDIF
+    IF COLLISION 5
+      LET J 1			; Collision Spider
+    ENDIF
+  ENDIF
+
+; Seeing Player spider +Spider
+
+  IF J 1			; Player Player spider +Spider
+    LET K 3			; 80% Attack
+    IF RND 4
+      LET K 4			; 20% Stay
+    ENDIF
+  ENDIF
+
+; Seeing Player Child/spider + Child/spider
+
+  IF J 2			; Player Child/spider + Child/spider
+    LET K 3			; 60% Attack
+    IF RND 0			; 20% Right/Left
+      IF K 0
+        LET K 1
+      ELSE
+        LET K 0
+      ENDIF
+    ENDIF
+    IF RND 4
+      LET K 4			; 20% Stay
+    ENDIF
+  ENDIF
+
+; Seeing Player Child
+
+  IF J 3			; Player Child
+    LET K 1			; 40% Right/Left
+    IF RND 2			; 20% Attack
+      LET K 3
+    ENDIF
+    IF RND 3			; 20% Attack
+      LET K 3
+    ENDIF
+    IF RND 4
+      LET K 4			; 20% Stay
+    ENDIF
+  ENDIF
+
+; Seeing spit
+
+  IF COLLISION 3		; Look left spit
+    LET K 3			; 80% Attack
+    IF RND 4
+      LET K 4			; 20% Stay
+    ENDIF
+  ENDIF
+
+  LET X I			; Restore X
+
+;----------------------------------------------------------------------
+; Status handling in variable K:
+;
+; 0 - Left
+; 1 - Right
+; 2 - Jump
+; 3 - Attack
+; 4 - Stay
+;----------------------------------------------------------------------
+
+ IF AIRBORNE 0
+
+  IF K 3			; ATTACK
+    LET I X
+    IF DIRECTION LEFT 
+      SUBTRACT 16 FROM X
+      LET IMAGE 15		; Spit left
+      SPAWN 3 18		; Spawn spit left
+        SPAWNED
+          LET SETTINGB 3
+        ENDSPRITE
+      LET K 1
+    ELSE
+      ADD 16 TO X
+      LET IMAGE 13		; Spit right
+      SPAWN 3 18		; Spawn spit right
+        SPAWNED
+          LET SETTINGB 3
+        ENDSPRITE
+      LET K 0
+    ENDIF 
+    LET FRAME 0 
+    LET SETTINGB 8
+    LET X I
+  ENDIF
+
+  IF SETTINGB 0
+
+    IF K 0			; LEFT
+      LET IMAGE 16
+      IF CANGOLEFT
+        LET DIRECTION LEFT
+        SPRITELEFT		; Continue walking 
+      ELSE
+        IF AIRBORNE = 0		; Check if jumping
+          LET SETTINGB 20	; If not, set delay timer going left
+        ELSE
+          LET DIRECTION RIGHT	; In air so change direction
+        ENDIF
+      ENDIF
+    ENDIF
+
+    IF K 1			; RIGHT
+      LET IMAGE 14
+      IF CANGORIGHT
+        LET DIRECTION RIGHT
+        SPRITERIGHT
+      ELSE
+        IF AIRBORNE = 0		; Check if jumping
+          LET SETTINGB 30		; If not, set delay timer going right
+        ELSE
+          LET DIRECTION LEFT	; In air so change direction
+        ENDIF
+      ENDIF
+    ENDIF
+
+  ENDIF
+
+  IF K 2			; JUMP
+    IF CANGOUP			; Check if can go up
+      LET SETTINGB 10		; Yes, set delay jumping
+      LET IMAGE 16		; Change image to jump left
+      LET FRAME 0		; Reset framenr
+    ENDIF
+  ENDIF
+
+  IF K 4			; STAY
+    LET SETTINGB 30		; Yes, set delay jumping
+    LET IMAGE 12		; Stand
+    LET FRAME 0
+  ENDIF
+
+ ENDIF
+
+;----------------------------------------------------------------------
+
+  ANIMATE FAST
+  FALL
+
+
+;----------------------------------------------------------------------
+; ENEMY SPIDER
+;----------------------------------------------------------------------
+;
+; Movement:
+; - Moves left/right and falls from platform
+;
+; Collision:
+; - Player, energy player -2
+;
+;----------------------------------------------------------------------
+; SETTINGA = Hit counter
+; SETTINGB = Movement delay (jump/direction change)
+;----------------------------------------------------------------------
+
+EVENT SPRITETYPE5
+
+;----------------------------------------------------------------------
+; Check Mario-style jump on top
+; Strength is copied to stumbled sprite type 8
+;----------------------------------------------------------------------
+
+  IF COLLISION 2		; Jump on Child/spider
+    OTHER
+      LET I AIRBORNE
+      LET J Y
+      LET K SETTINGA
+    ENDSPRITE
+    IF I 0			; If enemy not in air
+      IF AIRBORNE > 0		; If in air
+        IF JUMPSPEED < 128  	; If juming down
+          IF Y < J		; If hitting top
+            STOPFALL
+            JUMP 4		; Jump
+            OTHER
+              REMOVE
+              EXPLODE 5
+              SPAWN 8 11	; Stumbled Child/spider
+              SPAWNED
+                LET SETTINGA K
+              ENDSPRITE
+            ENDSPRITE
+          ENDIF
+        ENDIF
+      ENDIF
+    ENDIF
+  ENDIF
+
+  IF COLLISION 4		; Jump on Child
+    OTHER
+      LET I AIRBORNE
+      LET J Y
+      LET K SETTINGA
+    ENDSPRITE
+    IF I 0			; If enemy not in air
+      IF AIRBORNE > 0		; If in air
+        IF JUMPSPEED < 128  	; If juming down
+          IF Y < J		; If hitting top
+            STOPFALL
+            JUMP 4		; Jump
+            OTHER
+              REMOVE
+              EXPLODE 5
+              SPAWN 8 17	; Stumbled Child
+              SPAWNED
+                LET SETTINGA K
+              ENDSPRITE
+            ENDSPRITE
+          ENDIF
+        ENDIF
+      ENDIF
+    ENDIF
+  ENDIF
+
+;----------------------------------------------------------------------
+; Remove player if falling to screen below
+;----------------------------------------------------------------------
+
+  IF Y 160
+    REMOVE			; At bottom, remove
+    EXIT
+  ENDIF
+
+;----------------------------------------------------------------------
+; Hitting blocks
+;----------------------------------------------------------------------
+
+  IF CUSTOM
+    JUMP 7			; If hitting custom block, jump
+  ENDIF
+
+;----------------------------------------------------------------------
+; Check if child/spider is eating worm
+;----------------------------------------------------------------------
+
+  IF IMAGE 20			; Check if image is eating
+    SUBTRACT 1 FROM SETTINGB	; Subtract counter
+    IF SETTINGB 0		; If counter 0 -> stand
+      LET IMAGE 0		; Stand left
+      LET FRAME 0
+    ELSE
+      ANIMATE SLOW		; If counter>0 -> animate
+      EXIT
+    ENDIF
+  ENDIF
+
+;----------------------------------------------------------------------
+; Check collision player
+;----------------------------------------------------------------------
+
+; IF H = 0
+;  IF COLLISION 0
+;    LET W 254			; Energy-2
+;  ENDIF
+; ENDIF
+
+;----------------------------------------------------------------------
+; Check for delay
+;----------------------------------------------------------------------
+
+  IF SETTINGB > 0
+    SUBTRACT 1 FROM SETTINGB
+    IF SETTINGB 21		; Check waiting for going left
+      LET DIRECTION LEFT
+      LET SETTINGB 0
+    ENDIF
+    IF SETTINGB 11		; Check waiting for going right
+      LET DIRECTION RIGHT
+      LET SETTINGB 0
+    ENDIF
+    IF SETTINGB 1		; Check waiting for jumping
+      GETRANDOM 2		; Jump for 50%
+      IF RND 1
+        JUMP 7
+      ENDIF
+      LET SETTINGB 0
+      LET SETTINGB 0
+    ENDIF
+    EXIT
+  ENDIF
+
+;----------------------------------------------------------------------
+; Show right image for rising/falling
+;----------------------------------------------------------------------
+
+  IF AIRBORNE > 0		; Display jumping player
+    IF DIRECTION = LEFT
+      LET IMAGE	4		; Jump left
+      LET FRAME 0
+    ELSE
+      LET IMAGE	2		; Jump right
+      LET FRAME 0
+    ENDIF
+    IF JUMPSPEED < 127		; Check if jumping up/down
+      LET FRAME 2
+    ENDIF
+  ENDIF
+
+;----------------------------------------------------------------------
+; AI handling Spider
+;----------------------------------------------------------------------
+; - look left ahead
+;     seeing player spider:       40% ri,40% att,20% st
+;     seeing player spider/child: 60% ri,20% att,20% st
+;     seeing player child:        80%           ,20% st
+;     seeing spit:                20% ri,40% att,20% st,20% jmp
+;
+; - look right ahead
+;     seeing player spider:       40% le,40% att,20% st
+;     seeing player spider/child: 60% le,20% att,20% st
+;     seeing player child:        80%           ,20% st
+;     seeing spit:                20% le,40% att,20% st,20% jmp
+;----------------------------------------------------------------------
+
+  GETRANDOM 5			; RND nr -> 100/5=20%
+
+  LET J 0			; Reset collisionflag
+
+; Checking look ahead 46 pixels
+
+  LET I X			; Save X
+
+  IF DIRECTION LEFT		; Check left ahead
+    LET K 0
+    SUBTRACT 31 FROM X		; Check right ahead
+  ELSE
+    LET K 1
+    ADD 31 TO X
+  ENDIF
+
+; Check look ahead collisions
+
+  IF COLLISION 0
+    IF F 0
+      LET J 1			; Collision Player spider
+    ENDIF
+    IF F 6
+      LET J 2			; Collision Player Child/spider
+    ENDIF
+    IF F 12
+      LET J 3			; Collision Player Child
+    ENDIF
+  ELSE
+    IF COLLISION 2
+      LET J 2			; Collision Child/spider
+    ENDIF
+    IF COLLISION 4
+      LET J 3			; Collision Child
+    ENDIF
+  ENDIF
+
+; Checking look ahead 15 pixels
+
+  LET X I			; Restore X
+
+;  IF DIRECTION LEFT		; Check left ahead
+;    LET K 0
+;    SUBTRACT 15 FROM X		; Check right ahead
+;  ELSE
+;    LET K 1
+;    ADD 15 TO X
+;  ENDIF
+
+  IF COLLISION 0
+    IF F 0
+      LET J 1			; Collision Player spider
+    ENDIF
+    IF F 6
+      LET J 2			; Collision Player Child/spider
+    ENDIF
+    IF F 12
+      LET J 3			; Collision Player Child
+    ENDIF
+  ELSE
+    IF COLLISION 2
+      LET J 2			; Collision Child/spider
+    ENDIF
+    IF COLLISION 4
+      LET J 3			; Collision Child
+    ENDIF
+  ENDIF
+
+; Seeing Player spider
+
+  IF J 1			; Player spider
+    LET K 0			; 40% Right/Left
+    IF RND 2			; 20% Attack
+      LET K 3
+    ENDIF
+    IF RND 3			; 20% Attack
+      LET K 3
+    ENDIF
+    IF RND 4
+      LET K 4			; 20% Stay
+    ENDIF
+  ENDIF
+
+; Seeing Player Child/spider + Child/spider
+
+  IF J 2			; Player Child/spider + Child/spider
+    LET K 0			; 60% Right/Left
+    IF RND 3			; 20% Attack
+      LET K 3
+    ENDIF
+    IF RND 4
+      LET K 4			; 20% Stay
+    ENDIF
+  ENDIF
+
+; Seeing Player Child + Child
+
+  IF J 3			; Player Child + Child
+    LET K 0			; 80% Right/Left
+    IF RND 4
+      LET K 4			; 20% Stay
+    ENDIF
+  ENDIF
+
+; Seeing spit
+
+  IF COLLISION 3		; Look left spit
+    LET K 3			; 40% Attack
+    IF RND 0			; 20% Right/Left
+      IF K 0
+        LET K 1
+      ELSE
+        LET K 0
+      ENDIF
+    ENDIF
+    IF RND 3			; 20% Jump
+      LET K 2
+    ENDIF
+    IF RND 4
+      LET K 4			; 20% Stay
+    ENDIF
+  ENDIF
+
+  LET X I			; Restore X
+
+;----------------------------------------------------------------------
+; Status handling in variable K:
+;
+; 0 - Left
+; 1 - Right
+; 2 - Jump
+; 3 - Attack
+; 4 - Stay
+;----------------------------------------------------------------------
+
+ IF AIRBORNE 0
+
+  IF K 3			; ATTACK
+    LET I X
+    IF DIRECTION LEFT 
+      SUBTRACT 16 FROM X
+      LET IMAGE 3		; Spit left
+      SPAWN 3 18		; Spawn spit left
+        SPAWNED
+          LET SETTINGB 1
+        ENDSPRITE
+      LET K 1
+    ELSE
+      ADD 16 TO X
+      LET IMAGE 1		; Spit right
+      SPAWN 3 18		; Spawn spit right
+        SPAWNED
+          LET SETTINGB 1
+        ENDSPRITE
+      LET K 0
+    ENDIF 
+    LET FRAME 0 
+    LET SETTINGB 5
+    LET X I
+  ENDIF
+
+ IF SETTINGB 0
+  IF K 0			; LEFT
+    LET IMAGE 4
+    IF CANGOLEFT
+      LET DIRECTION LEFT
+      SPRITELEFT		; Continue walking 
+    ELSE
+      IF AIRBORNE = 0		; Check if jumping
+        LET SETTINGB 20		; If not, set delay timer going left
+      ELSE
+        LET DIRECTION RIGHT	; In air so change direction
+      ENDIF
+    ENDIF
+  ENDIF
+
+  IF K 1			; RIGHT
+    LET IMAGE 2
+    IF CANGORIGHT
+      LET DIRECTION RIGHT
+      SPRITERIGHT
+    ELSE
+      IF AIRBORNE = 0		; Check if jumping
+        LET SETTINGB 30		; If not, set delay timer going right
+      ELSE
+        LET DIRECTION LEFT	; In air so change direction
+      ENDIF
+    ENDIF
+  ENDIF
+ ENDIF
+
+  IF K 2			; JUMP
+    IF CANGOUP			; Check if can go up
+      LET SETTINGB 10		; Yes, set delay jumping
+      LET IMAGE 4		; Change image to jump left
+      LET FRAME 0		; Reset framenr
+    ENDIF
+  ENDIF
+
+  IF K 4			; STAY
+    LET SETTINGB 30		; Yes, set delay jumping
+    LET IMAGE 0 		; Stand
+    LET FRAME 0
+  ENDIF
+
+ ENDIF
+
+;----------------------------------------------------------------------
+
+  ANIMATE FAST
+  FALL
+
+
+;----------------------------------------------------------------------
+; TOXIC DROP
+;----------------------------------------------------------------------
+
+EVENT SPRITETYPE6
+
+  ANIMATE SLOW
+
+; Check collision
+
+  IF COLLISION 0		; If collision player
+    EXPLODE 4
+    REMOVE
+    LET W 252			; Set energybar update flag
+    EXIT
+  ENDIF
+
+  IF COLLISION 2		; If collision child/spider
+    OTHER
+      SUBTRACT 1 FROM SETTINGA	; Decrement hitcounter
+      IF SETTINGA = 0
+        REMOVE
+        SPAWN 5,0		; Spawn spider
+      ENDIF
+    ENDSPRITE
+    EXPLODE 4
+    REMOVE
+    EXIT
+  ENDIF
+
+  IF COLLISION 4		; If collision child
+    OTHER
+      SUBTRACT 1 FROM SETTINGA	; Decrement hitcounter
+      IF SETTINGA = 0
+        REMOVE
+        SPAWN 2,6		; Spawn spider/child
+      ENDIF
+    ENDSPRITE
+    EXPLODE 4
+    REMOVE
+    EXIT
+  ENDIF
+
+  IF COLLISION 5		; If collision spider
+    OTHER
+      SUBTRACT 1 FROM SETTINGA	; Decrement hitcounter
+      IF SETTINGA = 0
+        REMOVE
+        SPAWN 1,19		; Spawn worm
+      ENDIF
+    ENDSPRITE
+    EXPLODE 4
+    REMOVE
+    EXIT
+  ENDIF
+
+; Movement
+
+  IF CANGODOWN
+    SPRITEDOWN
+    SPRITEDOWN
+  ELSE
+    REMOVE
+    EXPLODE 4
+  ENDIF
+
+;----------------------------------------------------------------------
+; DRIPPING ROCK
+;----------------------------------------------------------------------
+
+EVENT SPRITETYPE7
+
+  ANIMATE SLOW
+
+; Determine 25% chances
+
+  GETRANDOM 4
+  LET I RND
+
+; Check for dropping worm/toxic drop
+
+  GETRANDOM 80			; Same as in INITSPRITE
+
+  IF RND SETTINGB
+
+   IF SETTINGA > 0
+;      SUBTRACT 1 FROM A		; Max 1 worm dropping per hole
+
+      IF F 0			; Spider
+        IF I 0
+          SPAWN 6,24		; 25% Spawn toxic drop
+        ELSE
+          SPAWN 1,19		; 75% Spawn worm
+        ENDIF
+      ENDIF
+
+      IF F 6			; Child/spider
+        IF I 0
+          SPAWN 6,24		; 50% Spawn toxic drop
+        ELSE
+          IF I 1
+            SPAWN 6,24
+          ELSE
+            SPAWN 1,19		; 50% Spawn worm
+          ENDIF
+        ENDIF
+      ENDIF
+
+      IF F 12			; Child
+        IF I 0
+          SPAWN 1,19		; 25% Spawn worm
+        ELSE
+          SPAWN 6,24		; 75% Spawn toxic drop
+        ENDIF
+      ENDIF
+
+    ENDIF
+    REMOVE			; Remove dripping rock
+
+  ENDIF
+;----------------------------------------------------------------------
+; STUMBLED ENEMY OR TELEPORT
+;----------------------------------------------------------------------
+;
+; If enemy hit Mario-style, the spritetype changes into stumbled type 8
+; Strength is copied back if stumble phase is over
+;----------------------------------------------------------------------
+; SETTINGA = Strength
+; SETTINGB = Delay counter
+;----------------------------------------------------------------------
+
+EVENT SPRITETYPE8
+
+;----------------------------------------------------------------------
+; If sprite is teleport
+;----------------------------------------------------------------------
+
+  IF IMAGE 25				; If sprite is teleport
+    ANIMATE SLOW			; Animate
+    IF COLLISION 0			; If player hits teleport
+
+      LET I 0
+      IF SCREEN 5
+        LET I 1
+      ENDIF
+      IF SCREEN 7
+        LET I 1
+      ENDIF
+      IF SCREEN 9
+        LET I 1
+      ENDIF
+
+      IF I 1
+        DELAY 20
+        PAPER 0
+        INK 4
+        CLW				; Print text
+        PRINTMODE 1
+        AT 11,10
+        PRINT "VICTORY!!!!!"
+        DELAY 100
+        PRINTMODE 0
+        LET SCREEN D			; Save return screen
+        RESTART
+        LET D 0
+      ELSE
+
+        AT 12,8				; Print text
+        PAPER 0
+        INK 6
+        PRINT "TELEPORTED ....."
+        DELAY 50
+
+  ENDGAME
+  EXIT
+
+        LET I 0
+        WHILE I 0
+        ENDWHILE
+        
+        IF SETTINGA 1			; Teleport lower part
+          LET SCREEN 0
+        ENDIF
+
+        RESTART
+      ENDIF
+    ENDIF
+    EXIT				; Exit routine
+  ENDIF
+
+;----------------------------------------------------------------------
+; Sprite is stumbled enemy
+;----------------------------------------------------------------------
+
+  IF SETTINGB > 0
+    SUBTRACT 1 FROM SETTINGB		; Decrement delay counter
+  ELSE
+    REMOVE				; Remove stumble and spawn new
+
+   LET I SETTINGA
+   IF IMAGE 5
+      SPAWN 5,0				; Spider
+      SPAWNED
+        LET SETTINGA I			; Copy strength
+      ENDSPRITE
+      EXIT
+    ENDIF
+
+    IF IMAGE 11
+      SPAWN 2,6				; Child/spider
+      SPAWNED
+        LET SETTINGA I			; Copy strength
+      ENDSPRITE
+      EXIT 
+    ENDIF
+
+    IF IMAGE 17
+      SPAWN 4,12			; Child
+      SPAWNED
+        LET SETTINGA I			; Copy strength
+      ENDSPRITE
+      EXIT
+    ENDIF
+
+  ENDIF
+EVENT INITSPRITE
+
+; Player
+
+  IF TYPE 0
+    LET DIRECTION RIGHT
+  ENDIF
+
+; Worm type
+
+  IF TYPE 1		; If worm, reset delaycounter
+    LET SETTINGA 3
+    GETRANDOM 2
+    IF RND 1		; Determine direction
+      LET DIRECTION LEFT
+    ELSE
+      LET DIRECTION RIGHT
+    ENDIF
+    LET SETTINGB 0
+    LET FRAME 0
+    EXIT
+  ENDIF
+
+; Spider/Child
+
+  IF TYPE 2
+    LET SETTINGA 5	; Set hitcounter
+    LET SETTINGB 0	; Reset movement delay counter
+    EXIT
+  ENDIF
+
+; Shoot
+
+  IF TYPE 3
+;    IF F 0
+;      LET SETTINGA 6	; Set shooting distance spider
+;    ENDIF
+;    IF F 6
+;      LET SETTINGA 10	; Set shooting distance spider/child
+;    ENDIF
+;    IF F 12
+      LET SETTINGA 24	; Set shooting distance child
+;    ENDIF
+    EXIT
+  ENDIF
+
+
+; Child
+
+  IF TYPE 4
+    LET SETTINGA 7	; Set hitcounter
+    LET SETTINGB 0	; Reset movement delay counter
+    EXIT
+  ENDIF
+
+; Spider
+
+  IF TYPE 5
+    LET SETTINGA 5	; Set hitcounter
+    LET SETTINGB 0	; Reset movement delay counter
+    LET DIRECTION LEFT
+    EXIT
+  ENDIF
+
+; Toxic drops
+
+  IF TYPE 7
+    LET SETTINGA 1	; Drop 1 worm per hole
+    GETRANDOM 80
+    LET SETTINGB RND	; Set dropping delay 
+  ENDIF
+
+; Stumbled enemy
+
+  IF TYPE 8
+    LET SETTINGB 50	; Delay 2 sec
+  ENDIF
+EVENT MAINLOOP1
+
+;---------------------------------------------------------------
+; Introscreen, autoplay demo
+;---------------------------------------------------------------
+
+  IF SCREEN 0
+
+    IF Z 1			; First time
+
+; Print intro screen
+
+      PAPER 0
+      AT 0,10
+      INK 2
+      PRINTMODE 1
+      PRINT "METAMORPHOSIS"
+      PRINTMODE 0
+
+      INK 5
+      AT 3,3
+      PRINT "PROGRAMMING:"
+      AT 4,5
+      PRINT "K.van Oss"
+      INK 3
+      AT 6,11
+      PRINT "GRAPHICS:"
+      AT 7,11
+      PRINT "L.Vettori"
+      INK 4
+      AT 3,20
+      PRINT "MUSIC:"
+      AT 4,17
+      PRINT " M.Fanciulli"
+
+      INK 2
+      AT 9,11
+      PRINT "CONTROLS:"
+      INK 6
+      AT 11,10
+      PRINT "1. Keyboard"
+      AT 12,10
+      PRINT "2. KEMPSTON"
+      AT 13,10
+      PRINT "3. SINCLAIR"
+
+      AT 23,8
+      INK 2
+      PRINT "Select controls"
+
+      LET Z 0			; Only print text once
+
+    ENDIF
+
+; Select controls
+
+    IF KEY OPTION1
+      LET CONTROL = 0
+    ENDIF
+
+    IF KEY OPTION2
+      LET CONTROL = 1
+    ENDIF
+
+    IF KEY OPTION3
+      LET CONTROL = 2
+    ENDIF
+
+; Control is selected
+
+    IF CONTROL <> 99
+      LET SCREEN 0		; Start screen after control selection
+      RESTART
+      PAPER 7
+      CLS
+    ENDIF
+
+    EXIT
+
+  ENDIF
+
+;---------------------------------------------------------------
+; Check if teleports have to be placed in combat rooms
+;---------------------------------------------------------------
+
+  LET I 0
+
+  IF D <> 0			; If entered
+    IF G 0			; If all enemies killed
+      IF SCREEN 5
+        LET I 1
+      ENDIF
+      IF SCREEN 7
+        LET I 1
+      ENDIF
+      IF SCREEN 9
+        LET I 1
+      ENDIF
+    ENDIF
+  ENDIF
+  
+  IF I 1			; Spawn teleport
+    SPAWN 8,25
+    SPAWNED
+      LET X 120
+      LET Y 100
+    ENDSPRITE
+    LET G 1
+  ENDIF
+
+;---------------------------------------------------------------
+; Check keys
+;---------------------------------------------------------------
+
+  IF KEY FIRE3		; R = restart
+    RESTART
+    EXIT
+  ENDIF
+
+  IF KEY OPTION3	; Increment energy
+    IF E < 239
+      ADD 1 TO E
+      LET W 1
+    ENDIF
+  ENDIF
+
+  IF KEY OPTION4	; Decrement energy
+    IF E > 0
+      SUBTRACT 2 FROM E
+      LET W 1
+    ENDIF
+  ENDIF
+
+;-----------------------------------------------------
+; Place teleport if 3 objects collected
+;-----------------------------------------------------
+
+; Lower part
+
+  IF SCREEN 7		; In screen 19?
+    IF A 3		; All objects collected?
+      SPAWN 8,25	; Yes, place teleport
+      SPAWNED
+        LET X 120	; Set right coordinates
+        LET Y 68
+        LET SETTINGA 1
+      ENDSPRITE
+      IF A < 128
+        ADD 128 TO A
+      ENDIF		; Prevent new spawning teleport by setting b7
+    ENDIF
+  ELSE
+    MULTIPLY A BY 2
+    DIVIDE A BY 2
+  ENDIF
+
+; Middle part
+
+  IF SCREEN 5		; In screen 13?
+    IF B 3		; All objects collected?
+      SPAWN 8,25	; Yes, place teleport
+      SPAWNED
+        LET X 120	; Set right coordinates
+        LET Y 76
+        LET SETTINGA 2
+      ENDSPRITE
+      IF B < 128
+        ADD 128 TO B
+      ENDIF		; Prevent new spawning teleport by setting b7
+    ENDIF
+  ELSE
+    MULTIPLY B BY 2
+    DIVIDE B BY 2
+  ENDIF
+
+; Upper part
+
+  IF SCREEN 9		; In screen 9?
+    IF C 3		; All objects collected?
+      SPAWN 8,25	; Yes, place teleport
+      SPAWNED
+        LET X 120	; Set right coordinates
+        LET Y 68
+        LET SETTINGA 3
+      ENDSPRITE
+      IF C < 128
+        ADD 128 TO C
+      ENDIF		; Prevent new spawning teleport by setting b7
+    ENDIF
+  ELSE
+    MULTIPLY C BY 2
+    DIVIDE C BY 2
+  ENDIF
+EVENT MAINLOOP2
+
+; Update energybar if flag set
+
+  IF W > 0
+      
+    IF W <> 255
+      ADD W TO E
+      IF E > 251
+        LET E 0
+      ENDIF
+
+      IF E > 239
+        LET E 239
+      ENDIF
+     
+      IF E <3			; Check if energy gone
+        LET E 3
+      ENDIF
+    ENDIF
+
+    LET I E
+    DIVIDE I BY 8
+    MULTIPLY I BY 8		; Determine full energyblocks
+    LET J E
+    SUBTRACT I FROM J		; Determine rest energyblock
+    DIVIDE I BY 8
+
+    AT 23,1
+    IF I > 0
+      REPEAT I			; Draw full energyblocks
+        PUTBLOCK 34
+      ENDREPEAT
+    ENDIF
+
+    ADD 27 TO J
+    PUTBLOCK J			; Draw rest energyblock
+
+    WHILE I < 29		; Fill rest of bar
+      PUTBLOCK 27
+      ADD 1 TO I
+    ENDWHILE
+    LET W 0			; Reset energybar update flag
+
+    LET I F			; Save current fase
+    LET F E
+    DIVIDE F BY 80
+    MULTIPLY F BY 6
+
+    IF F <> I			; Check fase switch
+      LET H 50
+    ENDIF
+
+    LET V F			; Adjust jumpheight with status
+    DIVIDE V BY 6
+    ADD 7 TO V
+
+    LET W 0
+
+  ENDIF
+
+EVENT INTROMENU
+
+  LET CONTROL = 99
+  LET F 1
+  PAPER 0
+  CLS
+
+EVENT GAMEINIT
+
+; Init
+
+  LET LIVES = 3
+  LET V 7		; Initial Jumpvalue
+  LET E 2		; Initial energyvalue
+  LET H 50		; Initial invulnarability
+  LET A 0		; Collected objects low
+  LET B 0		; Collected objects mid
+  LET C 0		; Collected objects high
+  LET Z 1		; Show introscreen
+
+  LET D 0		; Returnscreen combat room
+  LET G 0		; Nr of enemies in combat room
+EVENT RESTARTSCREEN
+
+;---------------------------------------------------------
+; Combat room, 1 enemy
+;---------------------------------------------------------
+
+  LET I 0
+
+  IF SCREEN 5
+    LET I 1
+  ENDIF
+  IF SCREEN 7
+    LET I 1
+  ENDIF
+  IF SCREEN 9
+    LET I 1
+  ENDIF
+
+  IF I 1
+    PAPER 0
+    INK 2
+    CLW
+    PRINTMODE 1
+    AT 11,3
+    PRINT " ENTERING COMBAT ROOM!!!! "
+    DELAY 100
+    PRINTMODE 0
+    PAPER 7
+    INK 1
+    CLW
+
+    LET W 1             	; Set draw energybar flag
+    IF SCREEN 5
+      LET G 2			; Nr of enemies in combatroom
+    ENDIF
+    IF SCREEN 7
+      LET G 3			; Nr of enemies in combatroom
+    ENDIF
+    IF SCREEN 9
+      LET G 1			; Nr of enemies in combatroom
+    ENDIF
+
+    EXIT			; No header+energybar
+
+  ENDIF
+
+;---------------------------------------------------------
+; Print header + energy bar
+;---------------------------------------------------------
+
+  IF SCREEN <> 0		; If not introscreen draw header+energybar
+
+; Print gameheader
+
+    AT 0,1
+    PAPER 0
+    INK 2
+    PRINT "   METAMORPHOSIS - The game   "
+
+; Draw energybar
+
+    PAPER 7
+    INK 1
+    AT 23,0
+    PUTBLOCK 26
+    REPEAT 30
+      PUTBLOCK 27
+    ENDREPEAT
+    PUTBLOCK 35
+
+; Plot evoluting fase points
+
+    PLOT 87,182
+    PLOT 87,183
+    PLOT 167,182
+    PLOT 167,183
+
+    LET W 255             	; Set draw energybar flag
+
+  ENDIF
+
+EVENT FELLTOOFAR
+
+
+EVENT KILLPLAYER
+
+  LET LIVES 0
+
+EVENT LOSTGAME
+
+  DELAY 80
+
+  PAPER 7
+  CLS
+  PRINTMODE 1
+  AT 12,9
+  PRINT "GAME OVER!!!!!"
+  PRINTMODE 0
+
+  DELAY 120
+
+;  LET SCREEN 4
+;  LET LIVES 3
+;  LET LIVES = 3
+;  LET V 7		; Initial Jumpvalue
+;  LET E 10		; Initial energyvalue
+;  RESTART
+
+EVENT COMPLETEDGAME
+
+;-----------------
+; Temperary end
+;-----------------
+
+  PAPER 0
+  INK 4
+  CLS
+  PRINTMODE 1
+  AT 11,8
+  PRINT "CONGRATULATIONS!"
+  PRINTMODE 0
+  AT 14,4
+  INK 2
+  PRINT "YOU EVOLVED AND ESCAPED."
+  AT 15,10
+  INK 3
+  PRINT "END OF DEMO."
+  DELAY 20
+  WAITKEY
+
+;-----------------
+
+EVENT NEWHIGHSCORE
+
+
+EVENT COLLECTBLOCK
+
+;------------------------------------------------
+; Change player to eating image
+;------------------------------------------------
+
+  LET K F			; Save fase
+  DIVIDE K BY 6
+  LET IMAGE K			; Start eating worm animation
+  ADD 20 TO IMAGE
+  LET FRAME 0
+  LET SETTINGB 12		; Set eating counter
+
+  LET W 2			; Add 2 energy points
+
+; Adjust X when hitting egg
+
+  IF AIRBORNE 0			; If not in the air
+    IF DIRECTION LEFT
+      SUBTRACT 8 FROM X
+    ELSE
+      ADD 8 TO X
+    ENDIF
+  ENDIF

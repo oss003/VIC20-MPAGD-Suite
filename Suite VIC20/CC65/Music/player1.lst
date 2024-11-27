@@ -1,0 +1,533 @@
+ca65 V2.13.3 - (C) Copyright 1998-2012 Ullrich von Bassewitz
+Main file   : player1.asm
+Current file: player1.asm
+
+000000r 1               ;----------------------------------------------
+000000r 1               ; Music player VIC20
+000000r 1               ; CC65 conversion by Mauro 2024
+000000r 1               ;----------------------------------------------
+000000r 1               
+000000r 1               ;----------------------------------------------
+000000r 1               ; Header
+000000r 1               ;----------------------------------------------
+000000r 1               
+000000r 1               .segment "CODE"
+000000r 1               
+000000r 1  rr rr        	.word main
+000002r 1               main:
+000002r 1               	.include "player1.inc"
+000002r 2               ;---------------------------------------------------------------
+000002r 2               ; Music player routine
+000002r 2               ;---------------------------------------------------------------
+000002r 2               ; - Music player + data should be loaded at $a900
+000002r 2               ; - $a900 = jmp music_init
+000002r 2               ; - $a903 = jmp music_on
+000002r 2               ; - $a906 = jmp music_off
+000002r 2               ; - $a909 = jmp music_play
+000002r 2               ; - Zeropage variables from $90 upwards can be used
+000002r 2               ;---------------------------------------------------------------
+000002r 2               
+000002r 2               
+000002r 2               ;---------------------------------------------------------------
+000002r 2               ; Zeropage variables
+000002r 2               ;---------------------------------------------------------------
+000002r 2               
+000002r 2               	SONG_POS          = $d0
+000002r 2               	PATTERN_POS       = $d1
+000002r 2               	FRAME_COUNT       = $d2
+000002r 2               	FRAME_LENGTH      = $d3
+000002r 2               	SONG_NEXT_TRUE    = $d4
+000002r 2               	SONG_END_TRUE     = $d5
+000002r 2               
+000002r 2               ; 2 byte address of pattern data
+000002r 2               
+000002r 2               	CH1_PATTERN_POS   = $d6
+000002r 2               	CH2_PATTERN_POS   = $d8
+000002r 2               	CH3_PATTERN_POS   = $da
+000002r 2               	CH4_PATTERN_POS   = $dc
+000002r 2               
+000002r 2               ; #$00 == inactive mode
+000002r 2               
+000002r 2               	CH1_ACTIVE        = $e0
+000002r 2               	CH2_ACTIVE        = $e1
+000002r 2               	CH3_ACTIVE        = $e2
+000002r 2               	CH4_ACTIVE        = $e3
+000002r 2               
+000002r 2               	TEMP_GUY          = $e4
+000002r 2               	CHAN_NOTE_DATA    = $e5
+000002r 2               	CHANS_INACTIVE    = $e6
+000002r 2               	FAST_COUNTER      = $e7
+000002r 2               	MEGA_COUNTER      = $e8
+000002r 2               
+000002r 2               ; Flag for enable/disable channel for music
+000002r 2               
+000002r 2               	CHANNEL1_ENABLED  = $ea
+000002r 2               	CHANNEL2_ENABLED  = $eb
+000002r 2               	CHANNEL3_ENABLED  = $ec
+000002r 2               	CHANNEL4_ENABLED  = $ed
+000002r 2               	MUSIC_ON	      = $ee
+000002r 2               
+000002r 2               ;---------------------------------------------------------------
+000002r 2               ; Constants
+000002r 2               ;---------------------------------------------------------------
+000002r 2               
+000002r 2               	TEXT_TITLE	= songpos
+000002r 2               	TEXT_ARTIST	= songpos+$10
+000002r 2               	TEXT_COPY	= songpos+$20
+000002r 2               	TABLE_SPEED	= songpos+$30
+000002r 2               	TABLE_VOLUME	= songpos+$40
+000002r 2               	PATTERNS	= songpos+$50
+000002r 2               	SONG_PAGE_1	= songpos+$850
+000002r 2               	SONG_PAGE_2	= songpos+$950
+000002r 2               
+000002r 2               ; VIC-I chip audio registers
+000002r 2               	VIC_CHAN_1	= $900a
+000002r 2               	VIC_CHAN_2	= $900b
+000002r 2               	VIC_CHAN_3	= $900c
+000002r 2               	VIC_CHAN_4	= $900d
+000002r 2               	VIC_VOLUME	= $900e
+000002r 2               
+000002r 2               
+000002r 2               ; bit masks for pattern data / effects
+000002r 2               	NOTE_IS		= %10000000
+000002r 2               	NOTE_OFF	= %00000001
+000002r 2               	NOTE_NEXT	= %00000010
+000002r 2               	NOTE_END	= %00000011
+000002r 2               	NOTE_NOTHING	= %00000000
+000002r 2               
+000002r 2               ; VIC VIA constants
+000002r 2               
+000002r 2               	Timer21_Low  	= $9124		; Timer 1 low byte
+000002r 2               	Timer21_High 	= $9125		; Timer 1 high byte
+000002r 2               	AUX2		= $912b		; Auxiliary control register
+000002r 2               	IFR2		= $912d		; Interrupt Flag Register
+000002r 2               	IER2		= $912e		; Interrupt Enable Register
+000002r 2               	timerint	= 20000		; Interrupt timer 1/50 sec
+000002r 2               
+000002r 2               ;---------------------------------------------------------------
+000002r 2               ; API calls, entry with A = API call
+000002r 2               ;---------------------------------------------------------------
+000002r 2               
+000002r 2  4C rr rr     	jmp music_init
+000005r 2  4C rr rr     	jmp music_on
+000008r 2  4C rr rr     	jmp music_off
+00000Br 2  4C rr rr     	jmp music_play
+00000Er 2               
+00000Er 2               ;---------------------------------------------------------------
+00000Er 2               ; Initialisation routine
+00000Er 2               ;---------------------------------------------------------------
+00000Er 2               
+00000Er 2               music_init:
+00000Er 2               
+00000Er 2               ; Init VIA2 timer21 for IRQ 1/50 sec
+00000Er 2               
+00000Er 2  78           	sei			; disable interrupt
+00000Fr 2  A9 40        	lda #$40		; T1 continuous, no square wave on PB7
+000011r 2  8D 2B 91     	sta AUX2
+000014r 2  A9 C0        	lda #$c0		; int timer1
+000016r 2  8D 2E 91     	sta IER2
+000019r 2  A9 20        	lda #<timerint		; timer 1/50 sec
+00001Br 2  8D 24 91     	sta Timer21_Low
+00001Er 2  A9 4E        	lda #>timerint
+000020r 2  8D 25 91     	sta Timer21_High
+000023r 2  A9 rr        	lda #<int_service	; set new IRQ vector
+000025r 2  8D 14 03     	sta $0314
+000028r 2  A9 rr        	lda #>int_service
+00002Ar 2  8D 15 03     	sta $0315
+00002Dr 2               
+00002Dr 2               ; Init music player
+00002Dr 2               
+00002Dr 2  A9 00        	lda #$00
+00002Fr 2  85 D0        	sta SONG_POS
+000031r 2  85 D1        	sta PATTERN_POS
+000033r 2  85 D4        	sta SONG_NEXT_TRUE
+000035r 2  85 D5        	sta SONG_END_TRUE
+000037r 2  85 D2        	sta FRAME_COUNT
+000039r 2  85 E8        	sta MEGA_COUNTER
+00003Br 2               
+00003Br 2  A9 01        	lda #$01		; load first frame length
+00003Dr 2  85 D3        	sta FRAME_LENGTH
+00003Fr 2  60           	rts
+000040r 2               
+000040r 2               
+000040r 2               ;---------------------------------------------------------------
+000040r 2               ; INTERRUPT SERVICE ROUTINE
+000040r 2               ;---------------------------------------------------------------
+000040r 2               
+000040r 2               int_service:
+000040r 2  AD 24 91     	lda Timer21_Low		; Clear timer1 flag
+000043r 2               
+000043r 2               ; Insert interrupt code here
+000043r 2               
+000043r 2  20 rr rr     	jsr music_play		; Cycle color topleft char
+000046r 2               
+000046r 2               ; End of interrupt code
+000046r 2               
+000046r 2  68           	pla			; Restore resgisters
+000047r 2  A8           	tay
+000048r 2  68           	pla
+000049r 2  AA           	tax
+00004Ar 2  68           	pla
+00004Br 2               
+00004Br 2  40           	rti			; Return from interrupt
+00004Cr 2               
+00004Cr 2               ;---------------------------------------------------------------
+00004Cr 2               ; Music_on, enable interrupt and play music
+00004Cr 2               ;---------------------------------------------------------------
+00004Cr 2               
+00004Cr 2               music_on:
+00004Cr 2  A9 C0        	lda #$c0		; int timer1
+00004Er 2  8D 2E 91     	sta IER2
+000051r 2  AD 0E 90     	lda $900e
+000054r 2  09 0F        	ora #$0f
+000056r 2  8D 0E 90     	sta $900e
+000059r 2               
+000059r 2  A9 01        	lda #$1
+00005Br 2  85 EE        	sta MUSIC_ON
+00005Dr 2  85 EA        	sta CHANNEL1_ENABLED
+00005Fr 2  85 EB        	sta CHANNEL2_ENABLED
+000061r 2  85 EC        	sta CHANNEL3_ENABLED
+000063r 2  85 ED        	sta CHANNEL4_ENABLED
+000065r 2               
+000065r 2  58           	cli			; enable interrupts
+000066r 2  60           	rts
+000067r 2               
+000067r 2               ;---------------------------------------------------------------
+000067r 2               ; Music_off, disable interrrupt and stop music
+000067r 2               ;---------------------------------------------------------------
+000067r 2               
+000067r 2               music_off:
+000067r 2               	; sei			; enable interrupts
+000067r 2               	; lda #$7f		; int timer1
+000067r 2               	; sta IFR2
+000067r 2               	; sta IER2
+000067r 2               	; lda #$00
+000067r 2               	; sta $900e
+000067r 2               
+000067r 2  A9 00        	lda #$0
+000069r 2  85 EE        	sta MUSIC_ON
+00006Br 2  85 EA        	sta CHANNEL1_ENABLED
+00006Dr 2  85 EB        	sta CHANNEL2_ENABLED
+00006Fr 2  85 EC        	sta CHANNEL3_ENABLED
+000071r 2  85 ED        	sta CHANNEL4_ENABLED
+000073r 2  8D 0A 90     	sta VIC_CHAN_1
+000076r 2  8D 0B 90     	sta VIC_CHAN_2
+000079r 2  8D 0C 90     	sta VIC_CHAN_3
+00007Cr 2  8D 0D 90     	sta VIC_CHAN_4
+00007Fr 2               
+00007Fr 2  60           	rts
+000080r 2               
+000080r 2               ;---------------------------------------------------------------
+000080r 2               ; Mainloop
+000080r 2               ;---------------------------------------------------------------
+000080r 2               
+000080r 2               music_play:
+000080r 2               main_loop_skip_raster:
+000080r 2               
+000080r 2               ; load them patterns
+000080r 2               ; resets song position if 4 empty patterns
+000080r 2  20 rr rr     	jsr SONG_POS_UPDATE
+000083r 2               
+000083r 2               ; update song stuff
+000083r 2  20 rr rr     	jsr AUDIO_UPDATE
+000086r 2               
+000086r 2               ; check if NeXT was called
+000086r 2  A5 D4        	lda SONG_NEXT_TRUE
+000088r 2  C9 00        	cmp #$00
+00008Ar 2  F0 11        	beq not_next_effect_called
+00008Cr 2  A9 00        	lda #$00
+00008Er 2  85 D1        	sta PATTERN_POS
+000090r 2  85 D4        	sta SONG_NEXT_TRUE
+000092r 2  E6 D0        	inc SONG_POS
+000094r 2  20 rr rr     	jsr SONG_POS_UPDATE
+000097r 2  20 rr rr     	jsr AUDIO_PROCESS_CHANNEL
+00009Ar 2  4C rr rr     	jmp main_loop_skip_raster
+00009Dr 2               
+00009Dr 2               ; ready for next music frame?
+00009Dr 2               not_next_effect_called:
+00009Dr 2  E6 D2        	inc FRAME_COUNT
+00009Fr 2  A5 D2        	lda FRAME_COUNT
+0000A1r 2  C5 D3        	cmp FRAME_LENGTH
+0000A3r 2  D0 18        	bne endmusicplayfunc
+0000A5r 2               
+0000A5r 2               ; reset frame counter
+0000A5r 2  A9 00        	lda #$00
+0000A7r 2  85 D2        	sta FRAME_COUNT
+0000A9r 2               
+0000A9r 2               ; increase pattern position
+0000A9r 2  E6 D1        	inc PATTERN_POS
+0000ABr 2  A5 D1        	lda PATTERN_POS
+0000ADr 2  C9 10        	cmp #$10
+0000AFr 2  D0 08        	bne not_next_pattern
+0000B1r 2               
+0000B1r 2               next_pattern:
+0000B1r 2  A9 00        	lda #$00
+0000B3r 2  85 D1        	sta PATTERN_POS
+0000B5r 2  E6 D0        	inc SONG_POS
+0000B7r 2  A5 D0        	lda SONG_POS
+0000B9r 2               
+0000B9r 2               not_next_pattern:
+0000B9r 2               
+0000B9r 2               ; done
+0000B9r 2  E6 E8        	inc MEGA_COUNTER
+0000BBr 2  A5 E8        	lda MEGA_COUNTER
+0000BDr 2               
+0000BDr 2               endmusicplayfunc:
+0000BDr 2  60           	rts
+0000BEr 2               
+0000BEr 2               ;---------------------------------------------------------------
+0000BEr 2               ;---------------------------------------------------------------
+0000BEr 2               
+0000BEr 2               ; grab current playback data and push to VIC
+0000BEr 2               
+0000BEr 2               AUDIO_UPDATE:
+0000BEr 2               
+0000BEr 2               ; y = pattern position
+0000BEr 2  A4 D1        	ldy PATTERN_POS
+0000C0r 2  B9 rr rr     	lda TABLE_SPEED,y
+0000C3r 2  85 D3        	sta FRAME_LENGTH
+0000C5r 2  B9 rr rr     	lda TABLE_VOLUME,y
+0000C8r 2  29 F0        	and #$f0
+0000CAr 2  0D 0E 90     	ora VIC_VOLUME
+0000CDr 2  8D 0E 90     	sta VIC_VOLUME
+0000D0r 2               
+0000D0r 2               ; x = channel counter
+0000D0r 2  A2 00        	ldx #$00
+0000D2r 2               
+0000D2r 2               ; CHANNEL 1
+0000D2r 2  A5 E0        	lda CH1_ACTIVE
+0000D4r 2  C9 00        	cmp #$00
+0000D6r 2  D0 05        	bne channel1_active
+0000D8r 2               
+0000D8r 2  A9 20        	lda #$20
+0000DAr 2  4C rr rr     	jmp channel1_done
+0000DDr 2               
+0000DDr 2               channel1_active:
+0000DDr 2  B1 D6        	lda (CH1_PATTERN_POS),y
+0000DFr 2  20 rr rr     	jsr AUDIO_PROCESS_CHANNEL
+0000E2r 2  69 20        	adc #$20
+0000E4r 2               
+0000E4r 2               channel1_done:
+0000E4r 2               
+0000E4r 2               ; CHANNEL 2
+0000E4r 2  E8           	inx
+0000E5r 2  A5 E1        	lda CH2_ACTIVE
+0000E7r 2  C9 00        	cmp #$00
+0000E9r 2  D0 05        	bne channel2_active
+0000EBr 2               
+0000EBr 2  A9 20        	lda #$20
+0000EDr 2  4C rr rr     	jmp channel2_done
+0000F0r 2               
+0000F0r 2               channel2_active:
+0000F0r 2  B1 D8        	lda (CH2_PATTERN_POS),y
+0000F2r 2  20 rr rr     	jsr AUDIO_PROCESS_CHANNEL
+0000F5r 2  69 20        	adc #$20
+0000F7r 2               
+0000F7r 2               channel2_done:
+0000F7r 2               
+0000F7r 2               ; CHANNEL 3
+0000F7r 2  E8           	inx
+0000F8r 2  A5 E2        	lda CH3_ACTIVE
+0000FAr 2  C9 00        	cmp #$00
+0000FCr 2  D0 05        	bne channel3_active
+0000FEr 2  A9 20        	lda #$20
+000100r 2  4C rr rr     	jmp channel3_done
+000103r 2               
+000103r 2               channel3_active:
+000103r 2  B1 DA        	lda (CH3_PATTERN_POS),y
+000105r 2  20 rr rr     	jsr AUDIO_PROCESS_CHANNEL
+000108r 2  69 20        	adc #$20
+00010Ar 2               
+00010Ar 2               channel3_done:
+00010Ar 2               
+00010Ar 2               ; CHANNEL 4
+00010Ar 2  E8           	inx
+00010Br 2  A5 E3        	lda CH4_ACTIVE
+00010Dr 2  C9 00        	cmp #$00
+00010Fr 2  D0 05        	bne channel4_active
+000111r 2               
+000111r 2  A9 20        	lda #$20
+000113r 2  4C rr rr     	jmp channel4_done
+000116r 2               
+000116r 2               channel4_active:
+000116r 2  B1 DC        	lda (CH4_PATTERN_POS),y
+000118r 2  20 rr rr     	jsr AUDIO_PROCESS_CHANNEL
+00011Br 2  69 20        	adc #$20
+00011Dr 2               
+00011Dr 2               channel4_done:
+00011Dr 2  60           	rts
+00011Er 2               
+00011Er 2               ;---------------------------------------------------------------
+00011Er 2               ;---------------------------------------------------------------
+00011Er 2               
+00011Er 2               AUDIO_PROCESS_CHANNEL:
+00011Er 2  85 E5        	sta CHAN_NOTE_DATA
+000120r 2  29 80        	and #%10000000
+000122r 2  C9 80        	cmp #%10000000
+000124r 2  D0 0A        	bne not_note
+000126r 2               
+000126r 2               is_note:
+000126r 2  B5 EA        	lda CHANNEL1_ENABLED,x
+000128r 2  F0 05        	beq channel_disabled_is_note
+00012Ar 2  A5 E5        	lda CHAN_NOTE_DATA
+00012Cr 2  9D 0A 90     	sta VIC_CHAN_1,x
+00012Fr 2               channel_disabled_is_note:
+00012Fr 2  60           	rts
+000130r 2               
+000130r 2               not_note:
+000130r 2  A5 E5        	lda CHAN_NOTE_DATA
+000132r 2  C9 01        	cmp #%00000001
+000134r 2  D0 0A        	bne not_note_off
+000136r 2               
+000136r 2  B5 EA        	lda CHANNEL1_ENABLED,x
+000138r 2  F0 05        	beq channel_disabled_not_note
+00013Ar 2  A9 00        	lda #$00
+00013Cr 2  9D 0A 90     	sta VIC_CHAN_1,x
+00013Fr 2               channel_disabled_not_note:
+00013Fr 2  60           	rts
+000140r 2               
+000140r 2               not_note_off:
+000140r 2  A5 E5        	lda CHAN_NOTE_DATA
+000142r 2  C9 02        	cmp #%00000010
+000144r 2  D0 03        	bne not_note_next
+000146r 2               
+000146r 2               ; move song to next song row
+000146r 2  E6 D4        	inc SONG_NEXT_TRUE
+000148r 2               
+000148r 2               ; XXX do what here?
+000148r 2               ; will update correctly on next frame
+000148r 2               ; if we move where this subroutine gets called
+000148r 2               
+000148r 2               ;	lda #$00
+000148r 2  60           	rts
+000149r 2               
+000149r 2               not_note_next:
+000149r 2  A5 E5        	lda CHAN_NOTE_DATA
+00014Br 2  C9 03        	cmp #NOTE_END
+00014Dr 2  D0 08        	bne not_end_of_song
+00014Fr 2               
+00014Fr 2               ; turn the sound off cheaply :D/
+00014Fr 2  AD 0E 90     	lda VIC_VOLUME
+000152r 2  29 F0        	and #$f0
+000154r 2  8D 0E 90     	sta VIC_VOLUME
+000157r 2               
+000157r 2               ;-----BUG----------
+000157r 2               ; soft reset the machine!
+000157r 2               ; solution from https://www.c64-wiki.com/wiki/Reset_(Process)
+000157r 2               ;	jmp $fd22
+000157r 2               ;-----BUG----------
+000157r 2               
+000157r 2               not_end_of_song:
+000157r 2  60           	rts
+000158r 2               
+000158r 2               ;---------------------------------------------------------------
+000158r 2               ;---------------------------------------------------------------
+000158r 2               
+000158r 2               ; put pattern addresses in zero page
+000158r 2               ; SONG_POS should be set before calling
+000158r 2               
+000158r 2               SONG_POS_UPDATE:
+000158r 2               
+000158r 2               ; x = channel pattern position offset
+000158r 2  A2 00        	ldx #$00
+00015Ar 2  86 E6        	stx CHANS_INACTIVE
+00015Cr 2  A9 FF        	lda #$ff
+00015Er 2  85 E0        	sta CH1_ACTIVE
+000160r 2  85 E1        	sta CH2_ACTIVE
+000162r 2  85 E2        	sta CH3_ACTIVE
+000164r 2  85 E3        	sta CH4_ACTIVE
+000166r 2               
+000166r 2               song_pos_loop:
+000166r 2  A5 D0        	lda SONG_POS
+000168r 2  38           	sec
+000169r 2  E9 40        	sbc #$40
+00016Br 2  10 10        	bpl song_page_2
+00016Dr 2               
+00016Dr 2               song_page_1:
+00016Dr 2  0A           	asl
+00016Er 2  0A           	asl
+00016Fr 2  85 E4        	sta TEMP_GUY
+000171r 2  8A           	txa
+000172r 2  4A           	lsr
+000173r 2  18           	clc
+000174r 2  65 E4        	adc TEMP_GUY
+000176r 2  A8           	tay
+000177r 2  B9 rr rr     	lda SONG_PAGE_1,y
+00017Ar 2  4C rr rr     	jmp pattern_found
+00017Dr 2               
+00017Dr 2               song_page_2:
+00017Dr 2  0A           	asl
+00017Er 2  0A           	asl
+00017Fr 2  85 E4        	sta TEMP_GUY
+000181r 2  8A           	txa
+000182r 2  4A           	lsr
+000183r 2  18           	clc
+000184r 2  65 E4        	adc TEMP_GUY
+000186r 2  A8           	tay
+000187r 2  B9 rr rr     	lda SONG_PAGE_2,y
+00018Ar 2               
+00018Ar 2               pattern_found:
+00018Ar 2  85 E4        	sta TEMP_GUY
+00018Cr 2               
+00018Cr 2               ; lets make sure its not an empty pattern
+00018Cr 2  C9 FF        	cmp #$ff
+00018Er 2  D0 17        	bne dont_reset
+000190r 2               
+000190r 2               ; set channel to inactive mode
+000190r 2  8A           	txa
+000191r 2  4A           	lsr
+000192r 2  A8           	tay
+000193r 2  A9 00        	lda #$00
+000195r 2  99 E0 00     	sta CH1_ACTIVE,y
+000198r 2               
+000198r 2               ; reset song if there are 4 empty patterns
+000198r 2  E6 E6        	inc CHANS_INACTIVE
+00019Ar 2  A5 E6        	lda CHANS_INACTIVE
+00019Cr 2  C9 04        	cmp #$04
+00019Er 2  D0 07        	bne dont_reset
+0001A0r 2               
+0001A0r 2               song_reset:
+0001A0r 2  A9 00        	lda #$00
+0001A2r 2  85 D0        	sta SONG_POS
+0001A4r 2  4C rr rr     	jmp SONG_POS_UPDATE
+0001A7r 2               
+0001A7r 2               dont_reset:
+0001A7r 2  A5 E4        	lda TEMP_GUY
+0001A9r 2               
+0001A9r 2               ; LSB
+0001A9r 2  0A           	asl
+0001AAr 2  0A           	asl
+0001ABr 2  0A           	asl
+0001ACr 2  0A           	asl
+0001ADr 2  18           	clc
+0001AEr 2  69 rr        	adc #<PATTERNS	;$50
+0001B0r 2  95 D6        	sta CH1_PATTERN_POS,x
+0001B2r 2  E8           	inx
+0001B3r 2               
+0001B3r 2               ; MSB11
+0001B3r 2  A5 E4        	lda TEMP_GUY
+0001B5r 2  4A           	lsr
+0001B6r 2  4A           	lsr
+0001B7r 2  4A           	lsr
+0001B8r 2  4A           	lsr
+0001B9r 2  18           	clc
+0001BAr 2  69 rr        	adc #>PATTERNS
+0001BCr 2  95 D6        	sta CH1_PATTERN_POS,x
+0001BEr 2  E8           	inx
+0001BFr 2  E0 08        	cpx #$08
+0001C1r 2  D0 A3        	bne song_pos_loop
+0001C3r 2  60           	rts
+0001C4r 2               
+0001C4r 2               
+0001C4r 1  xx xx xx xx  	.align $100
+0001C8r 1  xx xx xx xx  
+0001CCr 1  xx xx xx xx  
+000200r 1               songpos:
+000200r 1  48 01 0C 0C  	.incbin "songdata_pal.bin"
+000204r 1  0F 17 05 27  
+000208r 1  05 0E 20 20  
+000C50r 1               
+000C50r 1               eind_asm:
+000C50r 1               
+000C50r 1               .out .sprintf("Musicplayer size = %d bytes, free space = %d bytes", (eind_asm - main),(8192-eind_asm + main))
+000C50r 1               

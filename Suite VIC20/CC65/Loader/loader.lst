@@ -1,0 +1,134 @@
+ca65 V2.13.3 - (C) Copyright 1998-2012 Ullrich von Bassewitz
+Main file   : loader.asm
+Current file: loader.asm
+
+000000r 1               ;----------------------------------------------
+000000r 1               ; Basic loader VIC20
+000000r 1               ; CC65 conversion by KC 2024
+000000r 1               ;----------------------------------------------
+000000r 1               
+000000r 1               ;----------------------------------------------
+000000r 1               ; Header
+000000r 1               ;----------------------------------------------
+000000r 1               
+000000r 1               ;.org $1200-2
+000000r 1               
+000000r 1  rr rr        	.word main
+000002r 1               main:
+000002r 1               	.include "loader.inc"
+000002r 2               ;----------------------------------------------
+000002r 2               ; BASIC header
+000002r 2               ;----------------------------------------------
+000002r 2               
+000002r 2               .segment "BASIC"
+000000r 2               
+000000r 2  rr rr        	.word load
+000002r 2  rr rr        load:   .word @end
+000004r 2               
+000004r 2               ; 10 PRINT CHR$(147)
+000004r 2  0A 00 99 20  	.byte $0a,$00,$99,$20,$c7,$28,$31,$34,$37,$29,$00,$2b,$12
+000008r 2  C7 28 31 34  
+00000Cr 2  37 29 00 2B  
+000011r 2               
+000011r 2               ; 20 PRINT"TURBOLOADER Y/N";:INPUT A$
+000011r 2  14 00 99 22  	.byte $14,$00,$99,$22,"TURBOLOADER Y/N",$22,$3b,$3a,$85,$20,$41,$24,$00,$3f,$12
+000015r 2  54 55 52 42  
+000019r 2  4F 4C 4F 41  
+00002Er 2               
+00002Er 2               ; 30 IF A$="Y" THEN SYS tload:SYS 41984
+00002Er 2  1E 00 8B 20  	.byte $1e,$00,$8b," A$",$b2,$22,"Y",$22,$20,$a7,$20,$9e,$20
+000032r 2  41 24 B2 22  
+000036r 2  59 22 20 A7  
+00003Dr 2  rr           	.byte .lobyte(tload/1000 .mod 10) + $30
+00003Er 2  rr           	.byte .lobyte(tload/100 .mod 10) + $30
+00003Fr 2  rr           	.byte .lobyte(tload/10 .mod 10) + $30
+000040r 2  rr           	.byte .lobyte(tload/1 .mod 10) + $30
+000041r 2  3A 9E 20 34  	.byte $3a,$9e," 41984",$00,$54,$12
+000045r 2  31 39 38 34  
+000049r 2  00 54 12     
+00004Cr 2               
+00004Cr 2               ; 40 SYS pload
+00004Cr 2  28 00 9E 20  	.byte $28,$00,$9e,$20
+000050r 2  rr           	.byte .lobyte(pload/1000 .mod 10) + $30
+000051r 2  rr           	.byte .lobyte(pload/100 .mod 10) + $30
+000052r 2  rr           	.byte .lobyte(pload/10 .mod 10) + $30
+000053r 2  rr           	.byte .lobyte(pload/1 .mod 10) + $30
+000054r 2  00 00        	.byte $00,$00
+000056r 2               
+000056r 2  00 00        @end:   .word 0
+000058r 2               
+000058r 2               ;----------------------------------------------
+000058r 2               ; Entry if selected "Y"
+000058r 2               ; Load the turboloader
+000058r 2               ;----------------------------------------------
+000058r 2               
+000058r 2               tload:
+000058r 2  A9 09        	lda #(EndFileName-FileName)
+00005Ar 2  A2 rr        	ldx #<FileName
+00005Cr 2  A0 rr        	ldy #>FileName
+00005Er 2  20 BD FF     	jsr $ffbd
+000061r 2               
+000061r 2               ; Which device to use (in A the file num 1 is OK - x with 8 is the type of device
+000061r 2               ; usually the first drive, and y set to 1 reads from the header
+000061r 2               ; of the file the location where to save it)
+000061r 2               
+000061r 2               load_start:
+000061r 2  A9 01        	lda #1				; Load at addresss
+000063r 2  A2 08        	ldx #8				; Disk device
+000065r 2  A0 01        	ldy #1
+000067r 2  20 BA FF     	jsr $ffba
+00006Ar 2               
+00006Ar 2               ; load from disk to ram
+00006Ar 2  A9 00        	lda #0				; accumulator must be set to 0 to load the image
+00006Cr 2  A2 FF        	ldx #<$ff			; target location low not set (got from header)
+00006Er 2  A0 00        	ldy #>$ff			; target location high (got from header)
+000070r 2  20 D5 FF     	jsr $ffd5
+000073r 2               load_end:
+000073r 2  60           	rts
+000074r 2               
+000074r 2               ;----------------------------------------------
+000074r 2               ; Entry if selected "N" and after turboloader
+000074r 2               ; Load the AGD game
+000074r 2               ;----------------------------------------------
+000074r 2               
+000074r 2               pload:
+000074r 2  A2 00        	ldx #0				; Copy loader code to $0f00
+000076r 2               load_loop:
+000076r 2  BD rr rr     	lda load_start,x
+000079r 2  9D 00 0F     	sta $0f00,x
+00007Cr 2  E8           	inx
+00007Dr 2  E0 12        	cpx #(load_end-load_start)
+00007Fr 2  D0 F5        	bne load_loop
+000081r 2               
+000081r 2  A9 4C        	lda #$4c			; Add jmp $2000
+000083r 2  9D 00 0F     	sta $0f00,x
+000086r 2  E8           	inx
+000087r 2  A9 00        	lda #$00
+000089r 2  9D 00 0F     	sta $0f00,x
+00008Cr 2  E8           	inx
+00008Dr 2  A9 20        	lda #$20
+00008Fr 2  9D 00 0F     	sta $0f00,x
+000092r 2               
+000092r 2  A9 0B        	lda #(EndGameName-GameName)	; Set load parameters for AGD game
+000094r 2  A2 rr        	ldx #<GameName
+000096r 2  A0 rr        	ldy #>GameName
+000098r 2  20 BD FF     	jsr $ffbd
+00009Br 2  4C 00 0F     	jmp $0f00			; Load and start AGD game
+00009Er 2               
+00009Er 2               FileName:
+00009Er 2  54 55 52 42      .byte "TURBODISK"
+0000A2r 2  4F 44 49 53  
+0000A6r 2  4B           
+0000A7r 2               EndFileName:
+0000A7r 2               
+0000A7r 2               GameName:
+0000A7r 2  41 47 44 47      .byte "AGDGAME.PRG"
+0000ABr 2  41 4D 45 2E  
+0000AFr 2  50 52 47     
+0000B2r 2               EndGameName:
+0000B2r 2               
+0000B2r 1               
+0000B2r 1               eind_asm:
+0000B2r 1               
+0000B2r 1               ;.out .sprintf("Loader size = %d bytes", (eind_asm - main))
+0000B2r 1               

@@ -1,0 +1,1007 @@
+
+DEFINEWINDOW    1 0 23 32
+
+DEFINECONTROLS  'Q' 'A' 'O' 'P' 32 'Z' 'H' '1' '2' '3' '4'
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 0 0 0 96
+
+DEFINEBLOCK     WALLBLOCK
+                255 128 255 1 255 128 255 1 96
+
+
+DEFINESPRITE    2
+                1 0 3 0 2 128 2 0 7 64 10 32 139 34 7 64
+                135 66 139 34 147 18 199 34 207 22 216 34 208 22 128 2
+                1 0 3 0 2 128 2 0 7 64 10 32 139 34 7 64
+                135 66 139 34 147 18 199 34 207 22 216 34 210 150 129 2
+
+DEFINESPRITE    6
+                64 0 64 0 64 2 64 2 160 2 64 2 0 5 0 2
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 0 0 32 0 112 0 32 0 0 4
+                0 14 0 4 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 32 0 80 0 136 0 80 4 32 10
+                0 17 0 10 0 4 0 0 0 0 0 0 0 0 0 0
+                0 0 32 0 80 0 136 0 4 0 132 4 136 10 80 17
+                32 33 0 17 0 10 0 4 0 0 0 0 0 0 0 0
+                32 0 136 0 2 0 128 4 1 18 128 0 66 32 0 1
+                4 0 32 65 8 0 0 32 0 2 0 8 0 0 0 0
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+DEFINESPRITE    16
+                0 128 0 128 1 192 1 192 9 200 1 192 11 232 75 233
+                11 104 70 49 78 185 95 253 123 239 117 215 106 171 64 129
+                0 0 0 8 0 24 2 48 4 240 3 240 21 224 46 40
+                127 48 255 160 135 224 23 244 7 120 4 176 0 48 0 32
+                0 0 0 0 0 4 9 8 18 48 36 112 127 224 254 64
+                15 72 39 208 23 224 9 200 20 208 2 224 0 192 0 128
+                0 0 0 0 8 0 16 134 121 60 255 248 14 112 7 112
+                15 224 15 208 29 224 1 192 1 160 1 192 1 128 3 0
+                0 0 254 128 112 0 56 0 93 208 46 0 95 192 57 252
+                252 255 57 252 95 192 46 0 93 208 56 0 112 0 254 128
+                3 0 1 128 1 192 1 160 1 192 29 224 15 208 15 224
+                7 112 14 112 255 248 121 60 16 134 8 0 0 0 0 0
+                0 128 0 192 2 224 20 208 9 200 23 224 39 208 15 72
+                254 64 127 224 36 112 18 48 9 8 0 4 0 0 0 0
+                0 32 0 48 4 176 7 120 23 244 135 224 255 160 127 48
+                46 40 21 224 3 240 4 240 2 48 0 24 0 8 0 0
+                64 129 106 171 117 215 123 239 95 253 78 185 70 49 11 104
+                75 233 11 232 1 192 9 200 1 192 1 192 0 128 0 128
+                4 0 12 0 13 32 30 224 47 232 7 225 5 255 12 254
+                20 116 7 168 15 192 15 32 12 64 24 0 16 0 0 0
+                1 0 3 0 7 64 11 40 19 144 7 232 11 228 18 240
+                2 127 7 254 14 36 12 72 16 144 32 0 0 0 0 0
+                0 192 1 128 3 128 5 128 3 128 7 184 11 240 7 240
+                14 224 14 112 31 255 60 158 97 8 0 16 0 0 0 0
+                0 0 1 127 0 14 0 28 11 186 0 116 3 250 63 156
+                255 63 63 156 3 250 0 116 11 186 0 28 0 14 1 127
+                0 0 0 0 0 16 97 8 60 158 31 255 14 112 14 224
+                7 240 11 240 7 184 3 128 5 128 3 128 1 128 0 192
+                0 0 0 0 32 0 16 144 12 72 14 36 7 254 2 127
+                18 240 11 228 7 232 19 144 11 40 7 64 3 0 1 0
+                0 0 16 0 24 0 12 64 15 32 15 192 7 168 20 116
+                12 254 5 255 7 225 47 232 30 224 13 32 12 0 4 0
+
+DEFINESPRITE    1
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+DEFINESPRITE    5
+                0 0 0 0 0 0 0 144 11 224 7 248 14 112 30 56
+                14 60 7 240 7 240 9 200 0 64 0 0 0 0 0 0
+                128 8 1 128 102 240 27 154 30 234 148 60 26 84 56 30
+                106 22 48 156 46 48 31 252 13 200 39 116 128 192 0 1
+                32 8 65 128 164 49 3 136 20 2 144 32 0 8 40 17
+                74 4 32 18 2 32 72 212 5 9 32 84 144 128 4 9
+                130 8 72 33 1 0 0 4 32 33 0 0 0 2 128 0
+                16 36 0 1 128 0 8 0 64 136 33 1 8 18 64 128
+                0 64 65 4 128 0 0 0 0 2 16 0 0 0 0 0
+                0 2 0 0 128 0 0 0 4 0 32 68 128 0 4 9
+
+DEFINESPRITE    1
+                65 4 163 138 6 128 103 72 182 146 175 74 166 130 180 82
+                175 138 70 132 236 14 169 42 68 68 3 128 1 0 1 0
+
+DEFINESPRITE    1
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 64
+                0 128 1 64 0 128 1 192 1 192 1 192 0 128 0 0
+
+
+DEFINEOBJECT    96 255 8 8
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+DEFINESCREEN      1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1
+                  1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1
+                  1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1
+                  1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1
+                  1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1
+                  1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1
+                  1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1
+                  1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1
+                  1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1
+                  1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1
+                  1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1
+                  1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1
+                  1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1
+                  1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1
+                  1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1
+                  1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1
+                  1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1
+                  1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1
+                  1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1
+                  1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1
+                  1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1
+                  1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1
+                  1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1
+SPRITEPOSITION  0 0 144 120
+SPRITEPOSITION  7 3 8 0
+
+MAP             WIDTH 3
+                STARTSCREEN 0
+                255   0 255
+ENDMAP
+
+DEFINEFONT      0 0 0 0 0 0 0 0
+                16 16 24 24 24 0 24 0
+                108 108 36 0 0 0 0 0
+                0 52 126 52 44 126 44 0
+                0 16 124 64 124 12 124 16
+                226 174 232 120 238 206 206 0
+                124 68 108 56 110 100 126 0
+                24 24 8 0 0 0 0 0
+                8 16 32 32 32 16 8 0
+                32 16 8 8 8 16 32 0
+                0 16 124 56 124 16 0 0
+                0 16 16 126 24 24 0 0
+                0 0 0 0 0 24 24 8
+                0 0 0 126 0 0 0 0
+                0 0 0 0 0 24 24 0
+                2 6 12 24 48 96 96 0
+                126 66 66 66 66 66 126 0
+                48 16 16 16 60 60 60 0
+                60 4 4 60 32 32 60 0
+                120 8 8 60 12 12 124 0
+                96 96 96 108 124 12 12 0
+                124 64 64 124 4 4 124 0
+                112 80 64 64 124 68 124 0
+                124 68 4 8 16 16 16 0
+                60 36 36 126 102 102 126 0
+                124 68 68 124 12 12 12 0
+                0 24 24 0 0 24 24 0
+                0 24 24 0 0 24 24 8
+                0 8 16 96 48 24 24 0
+                0 0 126 0 126 0 0 0
+                0 16 8 6 12 24 24 0
+                126 66 2 30 24 0 24 0
+                254 130 158 210 222 192 254 0
+                60 36 36 126 102 102 102 0
+                124 68 68 126 102 102 126 0
+                120 72 64 96 100 100 124 0
+                120 68 68 100 100 100 120 0
+                60 32 32 120 96 96 124 0
+                60 32 32 120 96 96 96 0
+                120 72 64 78 70 70 126 0
+                68 68 68 124 100 100 100 0
+                16 16 16 24 24 24 24 0
+                4 4 4 12 12 76 124 0
+                76 76 76 126 66 66 66 0
+                64 64 64 96 96 96 124 0
+                126 82 82 198 198 198 198 0
+                124 68 68 100 100 100 100 0
+                126 98 98 98 66 66 126 0
+                124 68 68 124 96 96 96 0
+                126 66 66 70 70 70 126 0
+                124 68 68 124 70 70 70 0
+                126 96 96 126 6 6 126 0
+                126 16 16 24 24 24 24 0
+                68 68 68 100 100 100 120 0
+                66 66 66 102 44 44 60 0
+                198 198 198 214 84 84 108 0
+                204 204 204 120 196 196 196 0
+                68 68 68 124 12 12 124 0
+                124 4 4 124 96 96 124 0
+                60 32 32 48 48 48 60 0
+                64 96 48 24 12 12 12 0
+                60 4 4 12 12 12 60 0
+                16 16 124 100 100 0 0 0
+                0 0 0 0 0 0 0 255
+                28 20 16 126 48 48 126 0
+                0 0 62 2 126 98 126 0
+                64 64 64 126 70 70 126 0
+                0 0 126 64 96 96 126 0
+                2 2 2 126 98 98 126 0
+                0 0 126 70 126 64 126 0
+                30 18 16 126 24 24 24 0
+                0 0 126 98 98 126 2 126
+                64 64 64 126 70 70 70 0
+                8 0 8 8 24 24 24 0
+                4 0 4 4 12 12 76 124
+                64 72 72 126 70 70 70 0
+                24 8 8 8 24 24 24 0
+                0 0 126 82 86 86 86 0
+                0 0 126 66 70 70 70 0
+                0 0 126 98 98 66 126 0
+                0 0 126 66 66 126 96 96
+                0 0 126 66 66 126 6 6
+                0 0 126 66 96 96 96 0
+                0 0 126 64 126 6 126 0
+                32 32 120 32 48 50 62 0
+                0 0 66 66 70 70 126 0
+                0 0 66 66 118 52 60 0
+                0 0 66 66 106 106 126 0
+                0 0 102 38 60 100 102 0
+                0 0 66 66 66 126 6 126
+                0 0 126 4 24 32 126 0
+                30 16 16 120 24 24 30 0
+                128 64 32 16 8 4 2 0
+                120 8 8 30 24 24 120 0
+                116 92 92 0 0 0 0 0
+                255 129 189 161 177 189 129 255
+EVENT PLAYER
+;===========        PLAYER       ============
+;============================================
+;
+; VARIABLES
+; ===========================================
+; DIRECTION	-	TRIGGER PLAYER EXPLOSION (99)
+; SETTINGA	-	FIRE KEY DEBOUNCING
+; SETTINGB	-	availabe for use in your game
+; AIRBORNE	-	availabe for use in your game	
+; JUMPSPEED	-	availabe for use in your game
+; ===========================================
+
+
+								; COLOURS
+								; =======================
+SPRITEINK 69					; Bright Cyan ink
+
+								; PLAYER MOVEMENT
+								; ====================
+IF KEY UP						; Player presses up (thrust)
+	LET FRAME = 1				; switch to the frame that shows jetflame
+	IF Y > 92 					; If player is below the 92 y pixel line
+		SPRITEUP				; move player up
+		SPRITEUP				; and up again (faster movement)
+	ENDIF
+ELSE							; if player is not pressing thrust
+	LET FRAME = 0				; switch to the regular spaceship (no jetflame)
+	SPRITEDOWN					; move player down
+ENDIF
+
+IF KEY LEFT						; has player pressed LEFT?
+	IF CANGOLEFT				; can the player move left?	
+		SPRITELEFT				; yes, move player left
+		SPRITELEFT				; and again (moves faster)
+	ENDIF 
+ENDIF
+
+IF KEY RIGHT					; has the player pressed RIGHT?			
+	IF CANGORIGHT				; yes, can the player move right?				
+		SPRITERIGHT				; yes, move player right
+		SPRITERIGHT				; and again (moves faster)
+	ENDIF									
+ENDIF
+
+								; FIRE PHOTON TORPEDOS
+								; ====================
+IF KEY FIRE						; if player presses fire key
+	IF SETTINGA = 0				; if firekey is debounced
+		IF S < 12				; and if less than 12 sprites on screen
+			SPAWN 1 1			; spawn a bullet
+			LET SETTINGA = 1	; bounce the fire key
+			SPAWNED				; switch to the Photon Torpedo
+			LET DIRECTION = 1	; set its direction to 1 (up)
+			ENDSPRITE			; return to this sprite
+		ENDIF
+	ENDIF
+ELSE							; fire key not pressed
+	LET SETTINGA = 0			; debounce it
+ENDIF				
+
+
+								; BOUNDARY CHECK
+								; ====================
+IF Y >= BOTTOMEDGE				; has player gone beyond the bottom edge?
+	LET Y = BOTTOMEDGE			; yes, keep them at the bottom edge
+ENDIF
+
+								; REQUEST PLAYER EXPLOSION
+								; ====================
+IF DIRECTION = 99				; player explosion requested
+	LET TYPE = 6				; switch it to the explosion type
+	LET IMAGE = 4				; and the explosion image
+	LET FRAME = 0				; reset it to first frame
+	LET DIRECTION = 1			; this is the player exploding
+ENDIF
+
+								; STORE PLAYER X Y FOR OTHER EVENTS
+								; =================================
+LET M = X						; store player X in M
+LET N = Y						; store player Y in N
+EVENT SPRITETYPE1
+
+;=======     PLAYER TORPEDOS     ============
+;============================================
+;
+; VARIABLES
+; =======================================================
+; DIRECTION	-	DIRECTION OF TRAVEL, 99 = TRIGGER EXPLOSION
+; SETTINGA	-	availabe for use in your game
+; SETTINGB	-	DISTANCE TRAVELLED COUNTER
+; AIRBORNE	-	availabe for use in your game	
+; JUMPSPEED	-	availabe for use in your game
+; ========================================================
+
+
+IF DIRECTION 1					; Torpedo travel up
+	LET IMAGE = 1				; make sure we are on image 1
+	REPEAT 6					; torpedos move quick, so do this 6 times
+	SPRITEUP					; move up
+	ADD 2 TO SETTINGB			; increase the distance travelled counter by 2
+	IF SETTINGB > = 88			; when distance travelled = 88
+		LET DIRECTION = 99		; run the explode routine
+	ENDIF
+	IF Y <= 8					; has the torpedo reached the top?	
+		LET DIRECTION = 99		; yes, so explode it
+		EXIT					; exit this event (as we are in a loop)
+	ENDIF
+	ENDREPEAT
+ENDIF
+
+
+								; EXPLODE THE TORPEDO
+								; ===================
+IF DIRECTION = 99				; torpedo explosion requested
+	ADD 1 TO FRAME				; increment the frame
+	IF FRAME = 5				; when we reach the last frame
+		REMOVE					; remove the torpedo
+		SUBTRACT 1 FROM S		; decrement the sprite counter
+	ENDIF
+ENDIF
+
+
+
+EVENT SPRITETYPE2
+
+
+;=======     AVAILABLE     ============
+;======================================
+;
+; VARIABLES
+; =======================================================
+; DIRECTION	-	availabe for use in your game
+; SETTINGA	-	availabe for use in your game
+; SETTINGB	-	availabe for use in your game
+; AIRBORNE	-	availabe for use in your game	
+; JUMPSPEED	-	availabe for use in your game
+; ========================================================
+
+EVENT SPRITETYPE3
+;=======  ENEMY MISSILES   ============
+;======================================
+; VARIABLES
+; =======================================================
+; DIRECTION	-	DIRECTION OF ENEMY TRAVEL WHEN RELEASED
+; SETTINGA	-	availabe for use in your game
+; SETTINGB	-	availabe for use in your game
+; AIRBORNE	-	availabe for use in your game	
+; JUMPSPEED	-	availabe for use in your game
+; ========================================================
+
+
+SPRITEINK 71					; bright white
+SPRITEDOWN						; go down fast (3 times
+SPRITEDOWN
+SPRITEDOWN
+IF DIRECTION = 0				; was alien going down when fired?
+ELSE							; if so, do nothing
+	IF DIRECTION < 8			; was alien going right?
+		SPRITERIGHT				; make missile veer right
+	ELSE
+		IF DIRECTION = 8		; was alien going straight up?
+		ELSE					; do nothing
+		SPRITELEFT				; alien was going left, veer missile left
+		ENDIF
+	ENDIF
+ENDIF
+
+
+IF COLLISION PLAYER				; has missile collided with player?
+	IF X > M					; is missile to the right of player?
+		SUBTRACT M FROM X		; subtract M to find out how far to the right
+		IF RND <= 10			; its a hit!
+			OTHER				; switch to the player
+			LET DIRECTION = 99 	; trigger the player explosion
+			ENDSPRITE			; switch back to this event
+			LET DIRECTION = 99
+		ENDIF
+		ADD M TO X
+	ELSE						; not to the right
+		IF X < M				; is missile to the left?	
+			SUBTRACT X FROM M	; yes, how far to left?
+			IF M <= 8			; its a hit!
+				OTHER			;switch to the player
+				LET DIRECTION = 99 ; trigger the player explosion
+				ENDSPRITE		; switch back to this event
+				LET DIRECTION = 99
+			ENDIF
+			ADD X TO M			; reset M
+		ELSE					; must have been a direct hit
+			OTHER				; switch to the player
+			LET DIRECTION = 99	; trigger the player explosion
+			ENDSPRITE			; switch back to this event
+		ENDIF
+	ENDIF   	  
+ENDIF
+
+IF DIRECTION = 99
+	LET TYPE = 6
+	LET IMAGE = 4
+	LET FRAME = 0
+	LET DIRECTION = 2
+ENDIF
+
+IF Y >= 188						; has missile reached bottom of the screen
+	REMOVE						; remove it
+	SUBTRACT 1 FROM S			; decrement the sprite counter
+ENDIF
+	
+
+
+
+EVENT SPRITETYPE4
+;=======     AVAILABLE     ============
+;======================================
+; VARIABLES
+; =======================================================
+; DIRECTION	-	availabe for use in your game
+; SETTINGA	-	availabe for use in your game
+; SETTINGB	-	availabe for use in your game
+; AIRBORNE	-	availabe for use in your game	
+; JUMPSPEED	-	availabe for use in your game
+; ========================================================
+
+
+EVENT SPRITETYPE5
+;=======     ENEMIES     ============
+;====================================
+;
+; VARIABLES
+; =======================================================
+; DIRECTION	-	CURRENT DIRECTION OF TRAVEL,( 254= OUT OF BOUNDS, 255= EXPLODE)
+; SETTINGA	-	STATUS (0= INITIALISE, 1=GET DIRECTION & REPS, 2=MOVE)
+; SETTINGB	-	# REPETITIONS OF CURRENT DIRECTION
+; AIRBORNE	-	CHANCE OF FIRING WEAPON (0 = NO, 1 = YES)	
+; JUMPSPEED	-	availabe for use in your game
+; ========================================================
+
+
+							
+SPRITEINK C							; colour the alien with C value					
+							
+IF SETTINGA = 0						; Alien first appears
+	RESTORE							; Restore the data table
+	LET RND = L						; Store the Level number in RND	
+	ADD 50 TO RND					; and increase it by 50
+	WHILE DIRECTION <> RND			; While DIRECTION doesnt = RND
+	READ DIRECTION					; Read value from DATA table
+	READ SETTINGB					; Also read second value
+	ENDWHILE						; Keep going until we find the value in RND
+	LET SETTINGA = 1				; When we find it change SA to 1
+ENDIF
+
+IF SETTINGA = 1						; ready to get direction & reptitions
+	READ DIRECTION    				; read the next movement into DIRECTION
+	READ SETTINGB     				; read the repetitions into SettingB
+	LET SETTINGA = 2				; ready to do the movement		
+	IF IMAGE 2						; is this image 2?
+		LET FRAME = DIRECTION 		; yes, set the frame to the same as direction
+	ENDIF
+ENDIF
+
+									; COLLISIONS
+									; ==============================
+IF COLLISION 1          		  	; if hit by a player torpedo
+	OTHER							; switch to torpedo
+	LET DIRECTION = 99				; run the explosion
+	ENDSPRITE						; return to this Alien
+	LET DIRECTION = 255				; request alien explosion
+ENDIF
+
+
+IF COLLISION 0						; if enemy and player collide
+	OTHER							; switch to the player
+	LET DIRECTION = 99				; trigger the player explosion
+	ENDSPRITE						; return to this sprite
+	LET DIRECTION = 255				; request alien explosion
+ENDIF
+
+									; EXPLODE THE ALIEN
+									; =======================
+IF DIRECTION = 255					; Alien explosion requested
+	LET TYPE = 6					; switch it to the explosion type
+	LET IMAGE = 4					; and the explosion image
+	LET FRAME = 0					; reset it to first frame
+	LET DIRECTION = 0				; this is an alen exploding
+ENDIF
+
+									; MOVEMENT
+									; ====================
+IF DIRECTION = 0					; Move N
+	SPRITEUP
+	SPRITEUP
+ENDIF
+
+IF DIRECTION = 1					; Move NNE
+	SPRITERIGHT
+	SPRITEUP
+	SPRITEUP
+ENDIF
+
+IF DIRECTION = 2					; Move NE
+	SPRITERIGHT
+	SPRITERIGHT
+	SPRITEUP
+	SPRITEUP
+ENDIF
+
+IF DIRECTION = 3					; Move ENE
+	SPRITERIGHT
+	SPRITERIGHT
+	SPRITEUP
+ENDIF
+
+IF DIRECTION = 4					; Move E
+	SPRITERIGHT
+	SPRITERIGHT
+
+ENDIF
+
+IF DIRECTION = 5					; Move ESE
+	SPRITERIGHT
+	SPRITERIGHT
+	SPRITEDOWN
+ENDIF
+
+IF DIRECTION = 6					; MOVE SE
+	SPRITERIGHT
+	SPRITERIGHT
+	SPRITEDOWN
+	SPRITEDOWN
+ENDIF
+
+IF DIRECTION = 7					; MOVE SSE
+	SPRITEDOWN
+	SPRITEDOWN
+	SPRITERIGHT
+ENDIF
+
+IF DIRECTION = 8					; MOVE S
+	SPRITEDOWN
+	SPRITEDOWN
+ENDIF
+
+IF DIRECTION = 9					; MOVE SSW
+	SPRITEDOWN
+	SPRITEDOWN
+	SPRITELEFT
+ENDIF
+
+IF DIRECTION = 10					; MOVE SW
+	SPRITEDOWN
+	SPRITEDOWN
+	SPRITELEFT
+	SPRITELEFT
+ENDIF
+
+IF DIRECTION = 11					; MOVE WSW
+	SPRITEDOWN
+	SPRITELEFT
+	SPRITELEFT
+ENDIF
+
+IF DIRECTION = 12					; MOVE W
+	SPRITELEFT
+	SPRITELEFT
+ENDIF
+
+IF DIRECTION = 13					; MOVE WNW
+	SPRITELEFT
+	SPRITELEFT
+	SPRITEUP
+ENDIF
+
+IF DIRECTION = 14					; MOVE NW
+	SPRITELEFT
+	SPRITELEFT
+	SPRITEUP
+	SPRITEUP
+ENDIF
+
+IF DIRECTION = 15					; MOVE NNW
+	SPRITELEFT
+	SPRITEUP
+	SPRITEUP
+ENDIF
+
+									; BOUNDARY CHECKING
+									; ===================
+IF X <= LEFTEDGE					; if alien reaches the left edge
+	LET DIRECTION = 254				; enemy is out of bounds
+ENDIF
+
+IF X >= RIGHTEDGE					; if alien reaches the right edge
+	LET DIRECTION = 254				; enemy is out of bounds
+ENDIF
+
+IF Y >= BOTTOMEDGE					; if alien reaches the right edge
+	LET DIRECTION = 254				; enemy is out of bounds
+ENDIF
+
+IF DIRECTION =254					; is enemy out of bounds?
+	REMOVE							; remove it
+	SUBTRACT 1 FROM S				; decrement the sprite counter
+	SUBTRACT 1 FROM F				; decrement the alien counter
+ENDIF
+
+
+									; CHECK IF ALIEN CAN RELEASE WEAPOM
+									; =================================
+IF Y < Q							; is alien above minimum height for releasing missiles?												;SHALL WE SHOOT A BULLET?
+	IF W > 0						; yes, can alien release	missiles?
+		IF X < M					; yes, is Alien to the right of player?
+			SUBTRACT X FROM M		; yes, how far to the right of player is alien?				
+			IF M <= I				; I or less pixels?
+				LET AIRBORNE = 1	; run the chance of firing routine
+			ENDIF
+			ADD X TO M				; reset M
+		ELSE
+			IF M < X				; is alien to the left of player?
+				SUBTRACT M FROM X 	; yes, how far to the left
+				IF X < = I			; I pixels or less?
+					LET AIRBORNE = 1; yes, run the chance of firing routine
+				ENDIF
+				ADD M TO X			; reset X
+			ELSE					; enemy must be directly above player
+				LET AIRBORNE = 1	; run the chance of firing routine
+			ENDIF
+		ENDIF
+	ENDIF
+ENDIF
+									; CHANCE OF FIRING
+									; ====================
+IF AIRBORNE = 1						; Chance of firing routine
+	IF S < 9						; are there 8 or less sprites on screen?
+		GETRANDOM H					; yes, get a random number from 0 to the aliens missile probability #
+		IF RND = 1					; is it 1?
+			LET RND = DIRECTION		; yes, store aliens direction in RND
+			SPAWN 3 6 				; spawn a missile
+			SPAWNED					; switch to the spawned missile
+			LET DIRECTION = RND 	; set its direction to RND
+			ENDSPRITE 				; switch back to this alien
+		ENDIF
+	ENDIF
+	LET AIRBORNE = 0 				; end the chance of firing routine
+ENDIF
+
+									; REPETITIONS CHECK
+									; ======================
+SUBTRACT 1 FROM SETTINGB			; decrement repetitions remaining
+IF SETTINGB = 0						; has alien moved all repetitions?
+	LET SETTINGA = 1				; get the next direction & # of repetitions
+ENDIF
+
+									; MOVEMENT PATTERNS
+									; ========================
+DATA 51 0 8 20 7 8 6 8 5 8 4 16
+DATA 52 0 8 20 9 8 10 8 11 8 12 16
+DATA 53 0 12 48 11 2 10 2 9 2 8 2 7 2 6 2 5 2 4 40 5 2 6 2 7 2 8 2 9 2 10 40 
+DATA 54 0 4 48 5 2 6 2 7 2 8 2 9 2 10 2 11 2 12 40 11 2 10 2 9 2 8 2 7 2 6 40
+DATA 55 0 13 26 14 4 15 4 0 4 1 4 2 4 3 4 4 4 5 4 6 4 7 4 8 4 9 4 10 40
+DATA 56 0 3 26 1 4 0 4 15 4 14 4 13 4 12 4 11 4 10 4 9 4 8 4 7 4 6 40
+DATA 57 0 8 16 7 4 6 4 5 4 4 4 3 4 2 4 1 4 0 4 15 4 14 4 13 4 12 4 11 4 10 4 9 4 8 4 7 4 6 4 5 4 4 60
+DATA 58 0 8 16 9 4 10 4 11 4 12 4 13 4 14 4 15 4 0 4 1 4 2 4 3 4 4 4 5 4 6 4 7 4 8 4 9 4 10 4 11 2 12 60
+;DATA 59 0 8 16 9 4 10 4 11 4 12 4 13 4 14 4 15 4 0 4 1 4 2 4 3 4 4 4 5 4 6 4 7 4 8 4 9 4 10 4 11 2 12 60
+;DATA 60 0 4 20 13 4 14 4 15 4 0 8 1 4 2 4 3 4 4 4 8 8 7 2 6 2 5 2 4 40
+;DATA 61 0 5 2 6 2 7 2 8 2 9 2 10 2 11 2 12 2 11 3 10 3 9 3 8 3 7 3 6 3 5 4 6 4 7 4 8 4 9 4 10 4
+;DATA 62 0 8 3 4 16 9 24 4 40
+
+ 
+EVENT SPRITETYPE6
+
+;=======    EXPLOSIONS    ===========
+;====================================
+;
+; VARIABLES
+; =======================================================
+; DIRECTION	-	REASON FOR EXPLOSION:
+;				0 = ENEMY HIT BY PLAYER TORPEDO OR PLAYER
+;				1 = PLAYER HIT BY ENEMY MISSILE OR ENEMY
+;				2 = ENEMY MISSILE HITS PLAYER 
+; SETTINGA	-	availabe for use in your game
+; SETTINGB	-	availabe for use in your game
+; AIRBORNE	-	availabe for use in your game	
+; JUMPSPEED	-	availabe for use in your game
+; ========================================================
+
+
+ANIMATE 					; regular amination
+IF FRAME = 4				; are we on the last frame?
+	IF DIRECTION = 0		; was enemy hit by a torpedo?
+		REMOVE				; yes, remove this sprite
+		SUBTRACT 1 FROM S	; decrement the sprite counter
+		SUBTRACT 1 FROM D	; decrement the enemy kill countdown
+		SUBTRACT 1 FROM F	; decremen the kill/exit countdown
+		IF D = 0			; have all enemies  been killed?
+			SCORE 500		; yes, score extra 500 points
+		ELSE				; no, still some more to kill
+			SCORE P			; score P number of points
+		ENDIF
+	ELSE
+		IF DIRECTION = 1	; is this the player exploding?
+			KILL			; kill the player
+		ENDIF
+	ENDIF
+	IF DIRECTION = 2		; enemy missile exploding
+		REMOVE				; remove the missile
+		SUBTRACT 1 FROM S	; decrement the sprite counter
+	ENDIF
+	LET T = 1				; update the score bar
+ENDIF
+
+EVENT SPRITETYPE7
+; VARIABLES
+; =======================================================
+; DIRECTION	-	availabe for use in your game
+; SETTINGA	-	STATUS:
+;				0 = GET DATA FOR NEXT LEVEL
+;				1 = SPAWN ALIENS
+; SETTINGB	-	TIMER BETWEEN SPAWNS
+; AIRBORNE	-	SPAWNER MOVEMENT (not implemented yet)	
+; JUMPSPEED	-	# OF ENEMIES SPAWNER
+; ========================================================
+
+
+									; ALIEN SPAWNER
+									; ============
+
+
+IF SETTINGA = 0						; first time we run this
+	LET JUMPSPEED = 0				; reset the enemies spawned counter
+	LET SETTINGB = 0				; reset the timer
+	RESTORE							; start from the beginning of the data table
+	REPEAT L						; get the data for this level
+	READ AIRBORNE					; get the spawner movement
+	READ X							; get starting x position
+	READ Y							; get starting y position
+	READ J							; get the enemy sprite type
+	READ K							; get the enemy image
+	READ E							; how many enemies in this level?
+	READ G							; delay between releasing each enemy
+	READ P							; points for a kill
+	READ C							; colour
+	READ W							; weapon
+	READ H							; fire weapon probability
+	READ Q							; min height to release weapons
+	READ I							; x distance for alien weapon triggering	
+	ENDREPEAT				
+	LET D = E						; how many kills to get bonus?
+	LET F = E						; enemies remaining
+	ADD 1 TO SETTINGA          		; prevent this running again	
+ENDIF
+
+
+
+IF SETTINGB = G						; has timer reached the delay point?
+	IF JUMPSPEED < E				; are there still enemies left to spawn?
+		IF S < 9					; are there 10 or less enemies already on screen?
+			SPAWN J K				; spawn an enemy
+			ADD 1 TO JUMPSPEED		; increment the number spawned
+			SPAWNED					; switch to the enemy sprite
+			LET DIRECTION = 0		; set its initial direction to 0
+			ENDSPRITE				; return to the spawner		
+		ENDIF
+	ELSE							; all enemies in this level have been spawned
+		IF F = 0
+		ADD 1 TO L					; get ready for next level
+		IF L = 13					; have we reached the end of the levels?
+			LET L = 1				; yes, start again
+		ENDIF
+		LET SETTINGA = 0			; get data for next level
+		ENDIF
+	ENDIF
+	LET SETTINGB = 0				; reset the timer
+ENDIF
+
+ADD 1 TO SETTINGB					; increment the timer
+
+
+
+									; Alien Spawner Data Table
+									;=========================
+DATA 0 132 8 5 2 8 8 5 67 1 10 100 8
+DATA 0 100 8 5 2 10 8 10 68 1 10 100 32
+DATA 0 232 16 5 2 12 6 15 69 1 8 100 100
+DATA 0 8 32 5 2 6 6 15 70 1 8 100 8
+DATA 0 232 146 5 2 6 6 20 71 1 4 100 8
+DATA 0 8 146 5 2 6 6 20 66 1 4 100 8
+DATA 0 40 8 5 2 6 8 5 69 1 2 140 8
+DATA 0 200 8 5 2 6 8 5 69 1 2 140 8
+DATA 0 200 8 5 2 6 8 5 69 1 2 140 8
+DATA 0 8 128 5 2 6 8 5 67 1 10 100 8
+DATA 0 80 8 5 2 6 8 5 67 1 10 100 8
+DATA 0 80 8 5 2 6 8 5 67 1 10 100 8
+
+
+EVENT SPRITETYPE8
+
+;=======     AVAILABLE     ============
+;======================================
+;
+; VARIABLES
+; =======================================================
+; DIRECTION	-	availabe for use in your game
+; SETTINGA	-	availabe for use in your game
+; SETTINGB	-	availabe for use in your game
+; AIRBORNE	-	availabe for use in your game	
+; JUMPSPEED	-	availabe for use in your game
+; ========================================================
+
+
+
+EVENT INITSPRITE
+
+ADD 1 TO S				; increment the sprite counter
+
+IF TYPE 1				; PLAYER TORPEDO
+	LET SETTINGB = 0	; initialise the distance counter
+ENDIF
+
+IF TYPE 5				; ENEMIES
+	LET SETTINGA = 0	; Initialise SettingA
+ENDIF
+
+IF TYPE 7				; SPAWNER
+	LET SETTINGA = 0	; RESET SETTINGA	
+ENDIF
+
+EVENT MAINLOOP1
+
+STAR DOWN			; starfield travelling down
+
+IF T = 1			; Score bar update requested
+	AT 0 1			; at Line 0 column 1
+	SHOWSCORE		; update the score
+	LET T = 0		; reset the trigger
+ENDIF
+
+IF KEY FIRE3									; Pause the game if pause key is pressed
+    WHILE KEY FIRE3
+    ENDWHILE
+    WAITKEY
+ENDIF
+
+
+EVENT MAINLOOP2
+
+
+EVENT INTROMENU
+
+WAITKEY
+
+BORDER 0
+
+COLOUR 68
+CLS
+
+
+LET CONTROL = 99
+WHILE CONTROL >= 99
+	PRINTMODE 1
+	AT 4 6
+	PRINT "MPAGD SHMUPKIT DEMO"
+	AT 18 5
+	PRINT "minilopretro.com 2022"
+	PRINTMODE 0
+    AT 8 10
+    PRINT "1. KEYBOARD"
+    AT 10 10
+    PRINT "2. KEMPSTON"
+    AT 12 10
+    PRINT "3. SINCLAIR"
+    AT 14 10
+    PRINT "4. REDEFINE"
+    LET CONTROL = 99
+    WHILE CONTROL = 99
+        IF KEY OPTION1
+            LET CONTROL = 0
+        ENDIF
+        IF KEY OPTION2
+            LET CONTROL = 1
+        ENDIF
+        IF KEY OPTION3
+            LET CONTROL = 2
+        ENDIF
+        IF KEY OPTION4
+		CLS
+		WHILE KEY OPTION4
+        ENDWHILE
+        AT 7 12
+		PRINT "PRESS KEY FOR:"
+		AT 9 12
+		PRINT "LEFT"     
+		DEFINEKEY LEFT							; the key pressed will be the new UP key
+		AT 11 12        
+		PRINT "RIGHT"     
+		DEFINEKEY RIGHT							; the key pressed will be the new down key
+		AT 13 12
+		PRINT "THRUST"
+		DEFINEKEY UP							; the key pressed will be the new left key
+		AT 15 12
+		PRINT "FIRE"
+		DEFINEKEY FIRE1							; the key pressed will be the new RIGHT key
+		AT 17 12
+		PRINT "PAUSE"
+		DEFINEKEY FIRE3							; this will be the PAUSE key
+		LET CONTROL = 100 
+		CLS
+        ENDIF
+    ENDWHILE
+ENDWHILE
+CLS
+
+
+
+EVENT GAMEINIT
+
+LET L = 1			; Level (starts at 1)
+
+LET LIVES = 3	
+AT 0 16
+DISPLAY LIVES
+
+AT 0 1
+SHOWSCORE
+
+AT 0 25
+SHOWHIGH
+
+EVENT RESTARTSCREEN
+
+LET S = 0			; initialise the sprite counter
+AT 0 1				; position the cursor Line 0 Column 1
+SHOWSCORE			; display the score
+
+AT 10 12			; Cursor at L10 C2
+REPEAT 10			; do this 10 times
+READ A				; read next item into A
+CHR A				; Display A
+DELAY 5				; short wait
+ENDREPEAT			; all items displayed?
+DELAY 100			; longer wait
+
+
+DATA 'G' 'E' 'T' ' ' 'R' 'E' 'A' 'D' 'Y' '!'
+
+
+
+EVENT FELLTOOFAR
+
+
+EVENT KILLPLAYER
+
+SUBTRACT 1 FROM LIVES	; reduce number of lives remaining
+AT 0 16					; update the lives in the score bar
+DISPLAY LIVES
+CLW						; clear the play area
+
+
+
+EVENT LOSTGAME
+
+
+AT 10 12
+REPEAT 10
+READ A
+CHR A
+DELAY 5
+ENDREPEAT
+DELAY 100
+
+
+DATA 'G' 'A' 'M' 'E' ' ' 'O' 'V' 'E' 'R' '!'
+
+EVENT COMPLETEDGAME
+
+
+EVENT NEWHIGHSCORE
+
+
+EVENT COLLECTBLOCK
+
+

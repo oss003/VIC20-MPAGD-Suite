@@ -1,8 +1,7 @@
-/* VIC20 AGD SCript Compiler                             Version 0 */
-/*                                                                 */
-/*   ZX Spectrum/CPC version written by Jonathan Cauldwell         */
-/*   VIC20 version written by Kees van Oss v0 2024                 */
-/*                                                                 */
+/* VIC20 AGD SCript Compiler                     Version 0 */
+/*
+/*   ZX Spectrum/CPC version written by Jonathan Cauldwell */
+/*   VIC20 version written by Kees van Oss 2024            */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -218,6 +217,7 @@ enum
 	INS_PALETTE,
 	INS_GETBLOCK,
 	INS_PLOT,
+	INS_CALL,
 	INS_UNDOSPRITEMOVE,
 	INS_READ,
 	INS_DATA,
@@ -235,6 +235,16 @@ enum
 	INS_STOPFALL,
 	INS_GETBLOCKS,
 	INS_CONTROLMENU,
+	INS_AUXCOLOUR,
+	INS_LOAD,
+	INS_MUSICINIT,
+	INS_MUSICON,
+	INS_MUSICOFF,
+	INS_MODE,
+	INS_DISPLAYON,
+	INS_DISPLAYOFF,
+	INS_DISPLAYUP,
+	INS_DISPLAYDOWN,
 	INS_DOUBLEDIGITS,
 	INS_TRIPLEDIGITS,
 	INS_CLOCK,
@@ -280,7 +290,6 @@ enum
 	CON_BPROP6,
 	CON_BPROP7,
 	CON_BPROP8,
-	CON_BPROP9,
 	CON_FAST,
 	CON_MEDIUM,
 	CON_SLOW,
@@ -379,6 +388,7 @@ void CR_ZeroBonus( void );
 void CR_Sound( void );
 void CR_Beep( void );
 void CR_Crash( void );
+void CR_AuxColour( void );
 void CR_Border( void );
 void CR_Colour( void );
 void CR_Paper( void );
@@ -386,6 +396,15 @@ void CR_Ink( void );
 void CR_Clut( void );
 void CR_Delay( void );
 void CR_Print( void );
+void CR_Load( void );
+void CR_MusicInit( void);
+void CR_MusicOn( void);
+void CR_MusicOff( void);
+void CR_Mode( void );
+void CR_DisplayOn( void );
+void CR_DisplayOff( void );
+void CR_DisplayUp( void );
+void CR_DisplayDown( void );
 void CR_PrintMode( void );
 void CR_At( void );
 void CR_Chr( void );
@@ -431,6 +450,7 @@ void CR_Read( void );
 void CR_Data( void );
 void CR_Restore( void );
 void CR_Plot( void );
+void CR_Call( void );
 void CR_UndoSpriteMove( void );
 void CR_Ticker( void );
 void CR_User( void );
@@ -653,6 +673,7 @@ unsigned const char *keywrd =
 	"PALETTE."			// set palette entry.
 	"GETBLOCK."			// get block at screen position.
 	"PLOT."				// plot pixel.
+	"CALL."				// call routine
 	"UNDOSPRITEMOVE."	// undo last sprite movement.
 	"READ."				// read data.
 	"DATA."				// block of data.
@@ -670,6 +691,16 @@ unsigned const char *keywrd =
 	"STOPFALL."			// stop falling.
 	"GETBLOCKS."		// get collectable blocks.
 	"CONTROLMENU."		// controlmenu
+	"AUXCOLOUR."		// auxilary colour
+	"LOAD."			// load a file
+	"MUSICINIT."		// Music on call $a900
+	"MUSICON."		// Music on call $a903
+	"MUSICOFF."		// Music on call $a906
+	"MODE."			// Set videomode
+	"DISPLAYON."		// Show screen
+	"DISPLAYOFF."		// Hide screen
+	"DISPLAYUP."		// Scroll screen up
+	"DISPLAYDOWN."		// Scroll screen down
 	"DOUBLEDIGITS."		// show as double digits.
 	"TRIPLEDIGITS."		// show as triple digits.
 	"SECONDS."			// show as timer.
@@ -717,7 +748,6 @@ unsigned const char *keywrd =
 	"CUSTOMBLOCK."		// custom.
 	"WATERBLOCK."		// water.
 	"COLLECTABLE."		// collectable.
-	"HIDEBLOCK."		// hide behind blocks
 	"FAST."				// animation speed.
 	"MEDIUM."			// animation speed.
 	"SLOW."				// animation speed.
@@ -751,7 +781,7 @@ const short int nConstantsTable[] =
 	7, 8, 9, 10,			// keys option1, option2, option3, option4.
 	10,				// laser bullet.
 	0, 1, 2,			// keyboard and joystick controls.
-	0, 1, 2, 3, 4, 5, 6, 7, 8, 9,	// block types.
+	0, 1, 2, 3, 4, 5, 6, 7, 8,	// block types.
 	0, 1, 3, 7,			// animation speeds.
 	EVENT_SPRITE_0,			// events.
 	EVENT_SPRITE_1,
@@ -849,6 +879,7 @@ const unsigned char cKeyOrder[ 11 ] =
 
 unsigned short int flagR = 0;	//flagr
 unsigned short int flagB = 0;	//flagb
+unsigned short int flagK = 0;
 
 unsigned long int nErrors = 0;
 unsigned short int nSourceLength = 0;
@@ -910,7 +941,6 @@ short int nDigging = 0;								/* append digging code when non-zero. */
 short int nCollectables = 0;							/* append collectable blocks code when non-zero. */
 short int nObject = 0;								/* append object code */
 short int nLadder = 0;								/* append ladder code */
-short int nCLW = 0;								/* append CLW code */
 
 FILE *pObject;									/* output file. */
 FILE *pEngine;									/* engine source file. */
@@ -927,7 +957,7 @@ int main( int argc, const char* argv[] )
 {
 	short int nChr = 0;
 	short int nTmp;
-	FILE *pSource;
+	FILE * pSource;
 	char szEngineFilename[ 13 ] = { "engine.inc" };
 	char szSourceFilename[ 128 ] = { "" };
 	char szObjectFilename[ 128 ] = { "" };
@@ -938,13 +968,14 @@ int main( int argc, const char* argv[] )
 	char szWorkFile5Name[ 128 ] = { "" };
 	char szWorkFile6Name[ 128 ] = { "" };
 	char szConfigFileName[ 13 ] = { "" };
-	char *cChar;
+	char cChar;
 	char cFlagString[ 128 ];
 	short int nFlagStringSize;									/* source pointer. */
+	short int flgParm;
 
-	puts( "AGD Compiler for ZX Spectrum Version 0.6" );
+	puts( "AGD Compiler for ZX Spectrum Version 0.7" );
 	puts( "(C) Jonathan Cauldwell February 2018" );
-	puts( "VIC20 version by Kees van Oss August 2024 \n" );
+	puts( "VIC20 version by Kees van Oss 2024\n" );
 
 	short int i;
 	char d;
@@ -959,13 +990,18 @@ int main( int argc, const char* argv[] )
 		}
 	} else 
 	{
-		fputs( "Usage: Agd ProjectName Flags\neg: AGD TEST b r k\n", stderr );
+		fputs( "Usage: Agd ProjectName Flags\neg: AGD TEST b r\n", stderr );
+		puts ("Parameters:    b = Big sprites 16x24");
+		puts ("               i = Invert mode");
+		puts ("               a = Adventure mode");
+		puts ("               r = RAM saving sprites with pre-shift");
+		puts ("             pal = Force Vice into PAL mode");
+		puts ("            ntsc = Force Vice into NTSC mode (default)");
 	    // invalid number of command line arguments
 		exit ( 1 );
 	}
 
 	/* Open target files. */
-
 	sprintf( szObjectFilename, "%s.inc", argv[ 1 ], nEvent );
 	pObject = fopen( szObjectFilename, "wb" );
 
@@ -1032,7 +1068,6 @@ int main( int argc, const char* argv[] )
 	}
 
 	lSize = fread( &cChar, 1, 1, pEngine );			/* read first character of engine source. */
-
 
 	while ( lSize > 0 )
 	{
@@ -1313,11 +1348,11 @@ int main( int argc, const char* argv[] )
 	fclose( pObject );
 	free( cStart );
 
-	printf( "Output: %s\n", szObjectFilename );
+	printf( "Output    : %s\n", szObjectFilename );
 
 // game.cfg output
 
-	puts( "game.cfg created .... \n" );
+	puts( "- game.cfg created .... " );
 	sprintf( szConfigFileName, "game.cfg", argv[ 1 ] );
 	pConfig = fopen( szConfigFileName, "wb" );
 	if ( !pConfig )
@@ -1327,27 +1362,26 @@ int main( int argc, const char* argv[] )
 	}
 
 	nFlagStringSize = sprintf( cFlagString, "; Flags saved by AGD Compiler\r\n" );
-  	  fwrite( &cFlagString, 1, nFlagStringSize, pConfig );					/* write header to game.cfg. */
+  	  fwrite( cFlagString, 1, nFlagStringSize, pConfig );					/* write header to game.cfg. */
 	nFlagStringSize = sprintf( cFlagString, "\r\nmflag = %d ;", nMenu );
-	  fwrite( &cFlagString, 1, nFlagStringSize, pConfig );					/* write mflag to game.cfg. */
+	  fwrite( cFlagString, 1, nFlagStringSize, pConfig );					/* write mflag to game.cfg. */
 	nFlagStringSize = sprintf( cFlagString, "\r\npflag = %i ;", nParticles );
-	  fwrite( &cFlagString, 1, nFlagStringSize, pConfig );					/* write pflag to game.cfg. */
+	  fwrite( cFlagString, 1, nFlagStringSize, pConfig );					/* write pflag to game.cfg. */
 	nFlagStringSize = sprintf( cFlagString, "\r\nsflag = %i ;", nScrolling );
-	  fwrite( &cFlagString, 1, nFlagStringSize, pConfig );					/* write sflag to game.cfg. */
+	  fwrite( cFlagString, 1, nFlagStringSize, pConfig );					/* write sflag to game.cfg. */
 	nFlagStringSize = sprintf( cFlagString, "\r\ndflag = %i ;", nDigging );
-	  fwrite( &cFlagString, 1, nFlagStringSize, pConfig );					/* write dflag to game.cfg. */
+	  fwrite( cFlagString, 1, nFlagStringSize, pConfig );					/* write dflag to game.cfg. */
 	nFlagStringSize = sprintf( cFlagString, "\r\ncflag = %i ;", nCollectables );
-	  fwrite( &cFlagString, 1, nFlagStringSize, pConfig );					/* write cflag to game.cfg. */
+	  fwrite( cFlagString, 1, nFlagStringSize, pConfig );					/* write cflag to game.cfg. */
 	nFlagStringSize = sprintf( cFlagString, "\r\noflag = %i ;", nObject );
-	  fwrite( &cFlagString, 1, nFlagStringSize, pConfig );					/* write oflag to game.cfg. */
+	  fwrite( cFlagString, 1, nFlagStringSize, pConfig );					/* write oflag to game.cfg. */
 	nFlagStringSize = sprintf( cFlagString, "\r\nlflag = %i ;", nLadder );
-	  fwrite( &cFlagString, 1, nFlagStringSize, pConfig );					/* write lflag to game.cfg. */
-	nFlagStringSize = sprintf( cFlagString, "\r\nclwflag = %i ;", nCLW );
-	  fwrite( cFlagString, 1, nFlagStringSize, pConfig );					/* write clwflag to game.cfg. */
-//	nFlagStringSize = sprintf( cFlagString, "\r\nrflag = %i ;", flagR );
-//	  fwrite( cFlagString, 1, nFlagStringSize, pConfig );					/* write rflag to game.cfg. */
+	  fwrite( cFlagString, 1, nFlagStringSize, pConfig );					/* write lflag to game.cfg. */
+	nFlagStringSize = sprintf( cFlagString, "\r\nbflag = %i ;", flagB );
+	  fwrite( cFlagString, 1, nFlagStringSize, pConfig );					/* write bflag to game.cfg. */
+	nFlagStringSize = sprintf( cFlagString, "\r\nrflag = %i ;", flagR );
+	  fwrite( cFlagString, 1, nFlagStringSize, pConfig );					/* write rflag to game.cfg. */
 	fclose( pConfig );
-
 	return ( nErrors );
 }
 
@@ -1492,6 +1526,7 @@ void CreateMessages( void )
 	nNextLabel = 0;
 
 	cObjt = cStart + ( nCurrent - nAddress );
+	WriteText("\ndata_start:");
 	WriteText( "\nmsgdat:" );
 
 	while ( ( cSrc - cBuff ) < lSize )
@@ -1579,13 +1614,15 @@ void CreateBlocks( void )
 	while ( ( cSrc - cBuff ) < lSize );
 
 	/* Now do the block attributes. */
-	WriteText( "\nbcol:" );
-	nData = 0;
-	while ( nData < nCounter )
-	{
-		WriteText( "\n        .byte " );
-		WriteNumber( nAttr[ nData++ ] );
-	}
+//	if (flagK == 1)    {
+		WriteText( "\nbCol:" );
+		nData = 0;
+		while ( nData < nCounter )
+		{
+			WriteText( "\n        .byte " );
+			WriteNumber( nAttr[ nData++ ] );
+		}
+//	}
 
 	/* Now do the block properties. */
 	WriteText( "\nbprop:" );
@@ -1609,8 +1646,7 @@ void CreateSprites( void )
 	short int nLoop = 0;
 	unsigned char cByte[ 3 ];
 	char cFrames[ 256 ];
-	int i;
-	char sprarray[32];
+	char szString[ 50 ];
 
 	/* define max sprite value upon flagB */
 	if (flagB)
@@ -1630,7 +1666,6 @@ void CreateSprites( void )
 	{
 		nShiftsMax = 4;
 	}
-
 
 	/* Set up source address. */
 	cSrc = cBufPos;
@@ -1655,7 +1690,6 @@ void CreateSprites( void )
 				cSrc = cBufPos;
 				WriteText( "\n        .byte " );						/* start of text message */
 				nData = 0;
-				i=0;
 				while ( nData++ < nDataMax )
 				{
 					cByte[ 0 ] = *cSrc++;
@@ -1671,20 +1705,10 @@ void CreateSprites( void )
 						cByte[ 0 ] |= cByte[ 2 ];
 					}
 
-//					WriteNumber( cByte[ 0 ] );						/* write byte of data */
-//					WriteText( "," );								/* put a comma */
-//					WriteNumber( cByte[ 1 ] );						/* write byte of data */
-//					if ( nData < nDataMax )
-//					{
-//						WriteText( "," );							/* more to come; put a comma */
-//					}
-					sprarray[i]=(cByte[0]) ;
-					sprarray[i+16]=(cByte[1]) ;
-					i++;
-				}
-				for (i = 0; i < 32; i++){
-					WriteNumber( sprarray[i] & 0xff );						/* write byte of data */
-					if ( i < 31 )
+					WriteNumber( cByte[ 0 ] );						/* write byte of data */
+					WriteText( "," );								/* put a comma */
+					WriteNumber( cByte[ 1 ] );						/* write byte of data */
+					if ( nData < nDataMax )
 					{
 						WriteText( "," );							/* more to come; put a comma */
 					}
@@ -1696,8 +1720,8 @@ void CreateSprites( void )
 
 		nCounter++;
 	}
-	while ( ( cSrc - cBuff ) < lSize );
 
+	while ( ( cSrc - cBuff ) < lSize );
 	/* Now do the frame list. */
 	WriteText( "\nfrmlst:" );
 	nData = 0;
@@ -1720,14 +1744,14 @@ void CreateSprites( void )
 void CreateScreens( void )
 {
 	short int nThisScreen = 0;
-	short int nBytes = 0;								/* bytes to write. */
+	short int nBytes = 0;										/* bytes to write. */
 	short int nByteCount;
 	short int nColumn = 0;
 	short int nCount = 0;
 	short int nByte = 0;
 	short int nFirstByte = -1;
 	short int nScreenSize = 0;
-	unsigned char *cSrc;								/* source pointer. */
+	unsigned char *cSrc;										/* source pointer. */
 
 	/* Set up source address. */
 	cSrc = cBufPos;
@@ -1750,12 +1774,12 @@ void CreateScreens( void )
 		while ( nBytes > 0 )
 		{
 			nCount = 0;
-			nFirstByte = *cSrc;						/* fetch first byte. */
+			nFirstByte = *cSrc;									/* fetch first byte. */
 
 			do
 			{
 				nByte = *++cSrc;
-				nCount++;						/* count the bytes. */
+				nCount++;										/* count the bytes. */
 				nBytes--;
 			}
 			while ( nByte == nFirstByte && nCount < 256 && nBytes > 0 );
@@ -2110,8 +2134,8 @@ unsigned short int NextKeyword( void )
 	unsigned short int nWord = 0;
 	unsigned short int nLength = 0;							/* length of literal string. */
 	const unsigned char *cRes;								/* reserved word pointer. */
-	unsigned char *cSrcSt;									/* source pointer, word start. */
-	unsigned char *cSrc;									/* source pointer. */
+	unsigned char * cSrcSt;									/* source pointer, word start. */
+	unsigned char * cSrc;									/* source pointer. */
 	unsigned char cText;
 	unsigned char cEnd = 0;
 
@@ -2703,6 +2727,9 @@ void Compile( unsigned short int nInstruction )
 		case INS_PLOT:
 			CR_Plot();
 			break;
+		case INS_CALL:
+			CR_Call();
+			break;
 		case INS_UNDOSPRITEMOVE:
 			CR_UndoSpriteMove();
 			break;
@@ -2753,6 +2780,36 @@ void Compile( unsigned short int nInstruction )
 			break;
 		case INS_CONTROLMENU:
 			CR_ControlMenu();
+			break;
+		case INS_AUXCOLOUR:
+			CR_AuxColour();
+			break;
+		case INS_LOAD:
+			CR_Load();
+			break;
+		case INS_MUSICINIT:
+			CR_MusicInit();
+			break;
+		case INS_MUSICON:
+			CR_MusicOn();
+			break;
+		case INS_MUSICOFF:
+			CR_MusicOff();
+			break;
+		case INS_MODE:
+			CR_Mode();
+			break;
+		case INS_DISPLAYON:
+			CR_DisplayOn();
+			break;
+		case INS_DISPLAYOFF:
+			CR_DisplayOff();
+			break;
+		case INS_DISPLAYUP:
+			CR_DisplayUp();
+			break;
+		case INS_DISPLAYDOWN:
+			CR_DisplayDown();
 			break;
 		case CMP_EVENT:
 			CR_Event();
@@ -3347,7 +3404,7 @@ void CR_Key( void )
 		CompileKnownArgument( nArg );							/* puts argument into accumulator. */
 		WriteText ( " 	; KEY" );
 		WriteInstruction( "tay" );						/* keys. */
-		WriteInstruction( "lda keys,y" );							/* key number in de. */
+		WriteInstruction( "lda keys,y" );
 		WriteInstruction( "jsr ktest" );						/* test it now. */
 		WriteInstruction( "bcc :+" );
 		WriteInstruction( "jmp       " );
@@ -3363,10 +3420,9 @@ void CR_DefineKey( void )
 	char szInstruction[ 15 ];
 	unsigned short int nNum = NumberOnly();
 
-	sprintf( szInstruction, "lda #%d", Joystick( nNum ) );
+	sprintf( szInstruction, "ldx #%d", Joystick( nNum ) );
 	WriteInstruction( szInstruction );
 	WriteText ( " 	; DEFINEKEY" );
-	WriteInstruction( "tax" );
 	WriteInstruction( "jsr kget" );
 	WriteInstruction( "sta keys,x" );
 	}
@@ -3808,7 +3864,10 @@ void CR_Sound( void )
 //	WriteInstruction( "adc z80_h" );
 //	WriteInstruction( "sta z80_h" );
 //	WriteInstruction( "jsr isnd" );
-	WriteInstruction( "; SOUND command");
+
+	CompileArgument();
+	WriteText( ";		SOUND command");
+	WriteInstruction( "jsr playsound" );
 }
 
 void CR_Beep( void )
@@ -3818,10 +3877,10 @@ void CR_Beep( void )
 	if ( nArg == INS_NUM )									/* literal number. */
 	{
 		nArg = GetNum( 8 );
-//		if ( nArg > 127 )
-//		{
-//			nArg = 127;
-//		}
+		if ( nArg > 127 )
+		{
+			nArg = 127;
+		}
 		WriteInstruction( "lda #" );
 		WriteNumber( nArg );
 		WriteText ( "		; BEEP" );
@@ -3830,45 +3889,62 @@ void CR_Beep( void )
 	{
 		CompileKnownArgument( nArg );						/* puts argument into accumulator. */
 		WriteText ( "	; BEEP" );
-//		WriteInstruction( "and 127" );						/* reset white noise flag. */
+		WriteInstruction( "and #127" );						/* reset white noise flag. */
 	}
 
-	WriteInstruction( "asl a" );
+//	WriteInstruction( "asl a" );
 	WriteInstruction( "sta sndtyp" );
 }
 
 void CR_Crash( void )
 {
-//	unsigned short int nArg = NextKeyword();
-//
-//	if ( nArg == INS_NUM )									/* literal number. */
-//	{
-//		nArg = GetNum( 8 );
-//		if ( nArg < 128 )
-//		{
-//			nArg += 128;
-//		}
-//		else
-//		{
-//			nArg = 255;
-//		}
-//		WriteInstruction( "ld a," );
-//		WriteNumber( nArg );
-//	}
-//	else													/* work out sound address. */
-//	{
-//		CompileKnownArgument( nArg );						/* puts argument into accumulator. */
-//		WriteInstruction( "or 128" );						/* set white noise flag. */
-//	}
-//
-//	WriteInstruction( "ld (sndtyp),a" );
-	WriteInstruction( "; CRASH command");
+	unsigned short int nArg = NextKeyword();
+
+	if ( nArg == INS_NUM )									/* literal number. */
+	{
+		nArg = GetNum( 8 );
+		if ( nArg < 128 )
+		{
+			nArg += 128;
+		}
+		else
+		{
+			nArg = 255;
+		}
+		WriteInstruction( "lda #" );
+		WriteNumber( nArg );
+		WriteText ( "		; CRASH" );
+	}
+	else													/* work out sound address. */
+	{
+		CompileKnownArgument( nArg );						/* puts argument into accumulator. */
+		WriteInstruction( "ora #128" );						/* set white noise flag. */
+	}
+
+	WriteInstruction( "sta sndtyp" );
 }
 
 void CR_ClS( void )
 {
 	WriteInstruction( "jsr cls		; CLS" );
 }
+
+
+void CR_AuxColour( void )
+{
+	CompileArgument();
+	WriteText( " 	; AUXCOLOUR" );						/* set the background colour */
+	WriteInstruction("asl a");
+	WriteInstruction("asl a");
+	WriteInstruction("asl a");
+	WriteInstruction("asl a");
+	WriteInstruction("sta tmp");
+	WriteInstruction("lda RegE" );
+	WriteInstruction("and #%00001111");
+	WriteInstruction("ora tmp" );
+	WriteInstruction("sta RegE" );
+}
+
 
 void CR_Border( void )
 {
@@ -3898,7 +3974,7 @@ void CR_Paper( void )
 	WriteInstruction("asl a");
 	WriteInstruction("sta tmp");
 	WriteInstruction("lda RegF" );
-	WriteInstruction("and #%10001111");
+	WriteInstruction("and #%00001111");
 	WriteInstruction("ora tmp" );
 	WriteInstruction("sta RegF" );
 }
@@ -3951,6 +4027,55 @@ void CR_PrintMode( void )
 	CompileArgument();
 	WriteText ( "		; PRINTMODE" );
 	WriteInstruction( "sta prtmod" );					/* set print mode. */
+}
+
+void CR_Load( void )
+{
+	CompileArgument();
+	WriteText ( "		; LOAD" );
+	WriteInstruction( "jsr loadfile" );
+}
+
+void CR_MusicInit( void )
+{
+	WriteInstruction( "jsr $a900		; MUSICINIT" );		/* call music_init. */
+}
+
+void CR_MusicOn( void )
+{
+	WriteInstruction( "jsr $a903		; MUSICON" );		/* call music_on. */
+}
+
+void CR_MusicOff( void )
+{
+	WriteInstruction( "jsr $a906		; MUSICOFF" );		/* call music_off. */
+}
+
+void CR_Mode( void )
+{
+	CompileArgument();
+	WriteText ( "		; MODE" );
+	WriteInstruction( "jsr SetReg" );
+}
+
+void CR_DisplayOn( void )
+{
+	WriteInstruction( "jsr dispon		; DISPLAYON" );
+}
+
+void CR_DisplayOff( void )
+{
+	WriteInstruction( "jsr dispoff		; DISPLAYOFF" );
+}
+
+void CR_DisplayUp( void )
+{
+	WriteInstruction( "jsr dispup		; DISPLAYUP" );
+}
+
+void CR_DisplayDown( void )
+{
+	WriteInstruction( "jsr dispdown		; DISPLAYDOWN" );
 }
 
 void CR_At( void )
@@ -4138,7 +4263,6 @@ void CR_WaitKey( void )
 
 void CR_Jump( void )
 {
-	CompileArgument();
 	WriteInstruction( "jsr jump	; JUMP" );
 	nGravity++;
 	nUseHopTable++;
@@ -4153,14 +4277,14 @@ void CR_Fall( void )
 
 void CR_TableJump( void )
 {
-	WriteInstruction( "jsr hop	; TABLEJUMP" );
+	WriteInstruction( "jsr jump	; TABLEJUMP" );
 	nGravity++;
 	nUseHopTable++;
 }
 
 void CR_TableFall( void )
 {
-	WriteInstruction( "jsr tfall	; TABLEFALL" );
+	WriteInstruction( "jsr ifall	; TABLEFALL" );
 	nGravity++;
 	nUseHopTable++;
 }
@@ -4373,7 +4497,6 @@ void CR_ClW( void )
 {
 	WriteInstruction( "jsr clw" );
 	WriteInstruction( "; CLW command" );
-	nCLW = 1;
 }
 
 void CR_Palette( void )
@@ -4561,6 +4684,7 @@ void CR_Data( void )
 		WriteInstruction( "rts" );
 	}
 
+
 	cData = 1;												/* flag that we've found data. */
 
 	if ( nDataNums == 0 )
@@ -4694,22 +4818,34 @@ void CR_ControlMenu( void )
 {
 	WriteInstruction( "\nrtcon:			; CONTROLMENU" );
 	WriteInstruction( "jsr vsync" );
-	WriteInstruction( "lda #0" );		// Keyboard
+	WriteInstruction( "lda #0" );
 	WriteInstruction( "sta contrl" );
 	WriteInstruction( "lda keys+7" );
 	WriteInstruction( "jsr ktest" );
 	WriteInstruction( "bcc rtcon1" );
-	WriteInstruction( "lda #1" );		// Joystick 1
+	WriteInstruction( "lda #1" );
 	WriteInstruction( "sta contrl" );
 	WriteInstruction( "lda keys+8" );
 	WriteInstruction( "jsr ktest" );
-//	WriteInstruction( "bcc rtcon1" );
-//	WriteInstruction( "lda #2" );		// Joystick 2
-//	WriteInstruction( "sta contrl" );
-//	WriteInstruction( "lda keys+9" );
-//	WriteInstruction( "jsr ktest" );
 	WriteInstruction( "bcs rtcon" );
 	WriteInstruction( "rtcon1:" );
+}
+
+void CR_Call( void )
+{
+	char szInstruction[ 12 ];
+	unsigned short int nArg = NextKeyword();
+
+	if ( nArg == INS_NUM )									/* first argument is numeric. */
+	{
+		nArg = GetNum( 16 );								/* get the address. */
+		sprintf( szInstruction, "jsr %d\t; CALL", nArg );			/* compile a call instruction to this address. */
+		WriteInstruction( szInstruction );
+	}
+	else
+	{
+		Error( "CALL must be followed by address of routine" );
+	}
 }
 
 void CR_Plot( void )
@@ -4994,53 +5130,6 @@ void CR_DefineWindow( void )
 	}
 }
 
-// void CR_DefineSprite( void )
-//{
-//	unsigned short int nArg;
-//	char cChar;
-//	short int nDatum = 0;
-//	short int nFrames = 0;
-//
-//	if ( nEvent >= 0 && nEvent < NUM_EVENTS )
-//	{
-//		EndEvent();											/* always put a ret at the end. */
-//		nEvent = -1;
-//	}
-//
-//	nArg = NextKeyword();
-//	if ( nArg == INS_NUM )
-//	{
-//		nFrames = GetNum( 8 );
-//		fwrite( &nFrames, 1, 1, pWorkSpr );						/* write character to sprites workfile. */
-//	}
-//	else
-//	{
-//		Error( "Number of frames undefined for DEFINESPRITE" );
-//	}
-//
-//	while ( nFrames-- > 0 )
-//	{
-//		nDatum = 0;
-//		do
-//		{
-//			nArg = NextKeyword();
-//			if ( nArg == INS_NUM )
-//			{
-//				nArg = GetNum( 8 );
-//				cChar = ( char )nArg;
-//				fwrite( &cChar, 1, 1, pWorkSpr );				/* write character to sprites workfile. */
-//				nDatum++;
-//			}
-//			else
-//			{
-//				Error( "Missing data for DEFINESPRITE" );
-//				nDatum = 32;
-//			}
-//		}
-//		while ( nDatum < 32 );
-//	}
-//}
-
 void CR_DefineSprite( void )
 {
 	unsigned short int nArg;
@@ -5093,8 +5182,6 @@ void CR_DefineSprite( void )
 		while ( nDatum < nDataMax );
 	}
 }
-
-
 
 void CR_DefineScreen( void )
 {
@@ -5170,10 +5257,6 @@ void CR_SpritePosition( void )
 
 void CR_DefineObject( void )
 {
-	int tmp;
-	int i;
-	char objarray[36];
-
 	unsigned short int nArg;
 	short int nDatum = 0;
 	unsigned char cChar;
@@ -5184,52 +5267,20 @@ void CR_DefineObject( void )
 		nEvent = -1;
 	}
 
-	for (i = 0; i < 4; i++){
-		nArg = NextKeyword();
-			cChar = ( char )GetNum( 8 );
-			objarray[i]=cChar;
-	}
-
-	for (i = 4; i < 12; i++){
-		nArg = NextKeyword();
-			cChar = ( char )GetNum( 8 );
-			objarray[i]=cChar;
-		nArg = NextKeyword();
-			cChar = ( char )GetNum( 8 );
-			objarray[i + 8]=cChar;
-	}
-
-	for (i = 20; i < 28; i++){
-		nArg = NextKeyword();
-			cChar = ( char )GetNum( 8 );
-			objarray[i]=cChar;
-		nArg = NextKeyword();
-			cChar = ( char )GetNum( 8 );
-			objarray[i + 8]=cChar;
-	}
-
-// Test purpose
-//
-//	for (i = 0; i < 36; i++){
-//		printf("%02X ",objarray[i] & 255);
-//	}
-
 	do
 	{
-//		nArg = NextKeyword();
-//		if ( nArg == INS_NUM )
-//		{
-//			cChar = ( char )GetNum( 8 );
-//			fwrite( &cChar, 1, 1, pWorkObj );					/* write character to objects workfile. */
-			fwrite( &objarray[nDatum], 1, 1, pWorkObj );					/* write character to objects workfile. */
-
+		nArg = NextKeyword();
+		if ( nArg == INS_NUM )
+		{
+			cChar = ( char )GetNum( 8 );
+			fwrite( &cChar, 1, 1, pWorkObj );					/* write character to objects workfile. */
 			nDatum++;
-//		}
-//		else
-//		{
-//			Error( "Missing data for DEFINEOBJECT" );
-//			nDatum = 36;
-//		}
+		}
+		else
+		{
+			Error( "Missing data for DEFINEOBJECT" );
+			nDatum = 36;
+		}
 	}
 	while ( nDatum < 36 );
 

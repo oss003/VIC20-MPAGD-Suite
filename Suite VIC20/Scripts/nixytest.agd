@@ -1,0 +1,1079 @@
+
+DEFINEWINDOW    1 1 19 20
+
+DEFINEMESSAGES
+    "GAMEfOVER"
+    "GET READY"
+    "abbbbbcbbbbbcbbbbbca"
+    "aiiiiijiiiiijiiiiiia"
+    "dffffffffffffffffffg"
+    "effffffffffffffffffh"
+    "a"
+    "LIVESk"
+    "BLOOMSk"
+    "fffFINDfTHEfGAIAfSTONEfffff"
+    "ffNOWfFINDfTHEfMOONfPOOLff"
+    "ffNOWfFINDfTENfMOONfBLOOMSff"
+    "ffffRETURNfTHEfGAIAfSTONEffff"
+    "fTAKEfTHEfBLOOMSfTOfTHEfPOOLf"
+    "OUCHfTHATfHURTrr"
+    "lm"
+    "on"
+    "q"
+    "p"
+    "CONGRATULATIONSrr"
+    "NIXYfHASfSAVEDfTHEfGLADE"
+    "FROMfCERTAINfDOOM"
+    "BUTfWHEREfDIDfTHE"
+    "CORRUPTIONfCOMEfFROM?"
+    "afKEYBOARDfa"
+    "afKEMPSTONfa"
+    "afSINCLAIRfa"
+    "st"
+    "CHANGEKEYS"
+    "fPLAYGAMEf"
+    "PRESSfANYfKEY"
+    "NIXYf2"
+    "THEfSEEDSfOFfDOOM"
+    "COMINGfSOON"
+
+DEFINEFONT      205 154 138 62 70 50 141 92
+                50 143 92 62 100 71 205 236
+                126 205 24 129 201 0 0 0
+                0 108 254 108 108 254 108 0
+                0 24 126 120 126 30 126 24
+                0 230 236 24 48 110 206 0
+                0 48 120 48 126 204 126 0
+                0 24 48 0 0 0 0 0
+                0 12 24 24 24 24 12 0
+                0 96 48 48 48 48 96 0
+                0 0 60 24 126 24 60 0
+                0 0 24 24 126 24 24 0
+                0 0 0 0 0 24 24 48
+                0 0 0 0 126 0 0 0
+                0 0 0 0 0 56 56 0
+                0 0 6 12 24 48 96 0
+                0 60 66 66 132 132 120 0
+                0 24 40 16 16 32 112 0
+                0 60 66 4 124 128 248 0
+                0 28 34 2 28 132 120 0
+                0 6 10 20 36 126 8 0
+                0 62 32 120 4 132 120 0
+                0 60 66 120 132 132 120 0
+                0 62 2 4 28 8 8 0
+                0 24 36 124 132 132 120 0
+                0 28 34 66 60 132 120 0
+                0 0 0 48 0 0 48 0
+                0 0 48 0 0 48 48 96
+                0 0 12 24 48 24 12 0
+                0 0 0 126 0 126 0 0
+                0 0 48 24 12 24 48 0
+                0 14 17 1 6 0 8 0
+                0 124 222 254 254 192 124 0
+                0 28 34 66 124 132 132 0
+                0 56 36 124 66 130 252 0
+                0 60 66 64 128 132 120 0
+                0 60 34 66 68 132 248 0
+                0 62 32 124 64 128 252 0
+                0 62 32 120 64 128 128 0
+                0 60 66 64 140 132 120 0
+                0 34 34 124 68 136 136 0
+                0 62 8 8 16 16 124 0
+                0 14 2 4 68 136 112 0
+                0 36 40 112 72 132 132 0
+                0 16 16 32 32 66 124 0
+                0 20 42 74 66 132 132 0
+                0 34 34 84 84 136 136 0
+                0 60 66 66 132 132 120 0
+                0 60 34 68 120 128 128 0
+                0 60 66 66 148 140 122 0
+                0 60 34 66 124 136 132 0
+                0 60 66 56 4 132 120 0
+                0 126 8 16 16 32 32 0
+                0 34 34 68 68 136 240 0
+                0 68 72 72 80 80 96 0
+                0 33 33 66 82 148 236 0
+                0 34 36 24 24 36 68 0
+                0 34 68 68 56 8 136 112
+                0 63 2 12 48 64 252 0
+                0 30 24 24 24 24 30 0
+                0 0 192 96 48 24 12 0
+                0 240 48 48 48 48 240 0
+                0 48 120 252 48 48 48 0
+                0 0 0 0 0 0 0 255
+                0 60 102 248 96 96 254 0
+                48 70 146 156 57 73 98 12
+                0 195 36 8 16 36 195 0
+                0 195 60 66 66 60 195 0
+                66 66 36 16 8 36 66 66
+                66 90 36 36 36 36 90 66
+                0 0 0 0 0 0 0 0
+                66 66 36 8 16 36 66 66
+                66 90 36 36 36 36 90 66
+                0 195 36 16 8 36 195 0
+                0 195 60 66 66 60 195 0
+                0 0 0 8 0 16 0 0
+                15 31 63 63 102 106 102 106
+                224 240 248 252 156 172 156 188
+                252 156 108 236 220 188 124 252
+                127 121 118 119 123 125 126 127
+                0 0 0 0 72 80 82 84
+                0 0 0 2 1 9 5 21
+                0 4 4 8 8 0 16 0
+                0 120 134 145 96 0 0 0
+                0 0 6 137 97 30 0 0
+                0 0 204 204 204 204 120 0
+                0 0 204 204 120 120 48 0
+                0 0 204 252 252 252 120 0
+                33 0 253 1 64 2 62 8
+                95 126 187 194 223 124 124 198
+                91 87 93 197 229 1 7 7
+                205 241 137 225 193 60 18 35
+                11 120 177 194 198 124 201 0
+                0 240 48 28 48 48 240 0
+                0 60 120 0 0 0 0 0
+                124 198 187 227 227 187 198 124
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 0 0 0
+                71
+
+DEFINEBLOCK     WALLBLOCK
+                97 212 208 102 13 77 6 8
+                65
+
+DEFINEBLOCK     WALLBLOCK
+                134 41 13 134 48 73 104 50
+                1
+
+DEFINEBLOCK     EMPTYBLOCK
+                2 128 8 0 64 1 0 16
+                1
+
+DEFINEBLOCK     WALLBLOCK
+                96 238 238 6 112 119 55 6
+                67
+
+DEFINEBLOCK     WALLBLOCK
+                224 238 206 12 96 119 119 6
+                3
+
+DEFINEBLOCK     PLATFORMBLOCK
+                96 174 234 6 112 87 53 6
+                67
+
+DEFINEBLOCK     PLATFORMBLOCK
+                96 174 202 4 112 86 37 3
+                3
+
+DEFINEBLOCK     WALLBLOCK
+                96 108 14 46 0 11 3 0
+                3
+
+DEFINEBLOCK     WALLBLOCK
+                0 6 6 0 8 99 103 7
+                3
+
+DEFINEBLOCK     WALLBLOCK
+                0 192 208 0 100 112 118 6
+                67
+
+DEFINEBLOCK     WALLBLOCK
+                96 230 230 0 8 96 96 0
+                67
+
+DEFINEBLOCK     PLATFORMBLOCK
+                96 108 10 46 0 11 3 0
+                3
+
+DEFINEBLOCK     PLATFORMBLOCK
+                0 3 3 8 0 99 101 7
+                3
+
+DEFINEBLOCK     PLATFORMBLOCK
+                0 192 208 0 100 80 118 6
+                67
+
+DEFINEBLOCK     PLATFORMBLOCK
+                96 166 230 0 8 96 96 0
+                67
+
+DEFINEBLOCK     DEADLYBLOCK
+                96 249 158 159 255 255 253 255
+                69
+
+DEFINEBLOCK     DEADLYBLOCK
+                96 249 255 243 225 97 243 255
+                69
+
+DEFINEBLOCK     DEADLYBLOCK
+                96 249 255 191 251 255 239 255
+                69
+
+DEFINEBLOCK     COLLECTABLE
+                8 0 0 0 0 64 2 0
+                70
+
+DEFINEBLOCK     EMPTYBLOCK
+                56 116 220 240 164 109 7 1
+                66
+
+DEFINEBLOCK     EMPTYBLOCK
+                12 22 61 163 202 112 128 0
+                70
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 28 62 99 73 44 4 12
+                2
+
+DEFINEBLOCK     EMPTYBLOCK
+                24 44 60 122 70 18 24 56
+                70
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 30 63 97 77 42 24 24
+                70
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 204 50 40 20 20 16 32
+                4
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 51 78 18 36 36 4 0
+                4
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 64 166 41 84 16 16
+                4
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 8 9 37 21
+                4
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 32 160 146 84 85 85
+                4
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 56 206 51 29 13 7 1
+                4
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 28 51 108 220 184 224 0
+                4
+
+DEFINEBLOCK     LADDERBLOCK
+                1 1 193 48 13 7 3 0
+                68
+
+DEFINEBLOCK     LADDERBLOCK
+                0 128 131 140 80 224 192 128
+                68
+
+DEFINEBLOCK     LADDERBLOCK
+                0 128 128 128 0 128 128 128
+                68
+
+DEFINEBLOCK     LADDERBLOCK
+                1 1 1 0 1 1 1 0
+                68
+
+DEFINEBLOCK     PLATFORMBLOCK
+                0 107 221 119 18 64 2 64
+                68
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 24 164 36 194 7
+                4
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 24 37 68 82 224
+                4
+
+DEFINEBLOCK     EMPTYBLOCK
+                24 28 11 16 24 24 8 16
+                4
+
+DEFINEBLOCK     EMPTYBLOCK
+                24 24 8 208 56 24 8 16
+                4
+
+DEFINEBLOCK     EMPTYBLOCK
+                24 24 8 16 8 0 8 0
+                4
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 8 0 8 16 8 24 24
+                4
+
+DEFINEBLOCK     EMPTYBLOCK
+                76 20 12 84 12 20 76 16
+                2
+
+DEFINEBLOCK     LADDERBLOCK
+                1 1 1 0 29 35 41 198
+                68
+
+DEFINEBLOCK     LADDERBLOCK
+                0 128 128 128 0 156 178 201
+                68
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 57 127 198
+                2
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 1 3 31 124 241 198 24
+                2
+
+DEFINEBLOCK     EMPTYBLOCK
+                128 192 224 124 31 195 48 140
+                66
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 192 248 60 131
+                66
+
+DEFINEBLOCK     EMPTYBLOCK
+                85 107 85 171 213 235 46 50
+                66
+
+DEFINEBLOCK     EMPTYBLOCK
+                221 239 253 171 253 191 245 239
+                66
+
+DEFINEBLOCK     EMPTYBLOCK
+                221 239 253 171 253 191 245 239
+                2
+
+DEFINEBLOCK     PLATFORMBLOCK
+                1 238 153 255 85 170 21 0
+                2
+
+DEFINEBLOCK     WALLBLOCK
+                96 224 232 2 112 123 75 120
+                107
+
+DEFINEBLOCK     WALLBLOCK
+                0 14 14 46 0 119 87 118
+                107
+
+DEFINEBLOCK     PLATFORMBLOCK
+                0 128 96 191 217 102 157 0
+                2
+
+DEFINEBLOCK     EMPTYBLOCK
+                221 255 205 199 197 191 245 239
+                2
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 48 240 208 224 128 0
+                66
+
+DEFINEBLOCK     EMPTYBLOCK
+                28 31 23 9 6 1 0 0
+                2
+
+DEFINEBLOCK     CUSTOMBLOCK
+                132 17 64 5 16 129 4 32
+                4
+
+DEFINEBLOCK     CUSTOMBLOCK
+                192 80 136 176 18 141 180 19
+                68
+
+DEFINEBLOCK     CUSTOMBLOCK
+                198 90 137 182 18 141 180 19
+                68
+
+DEFINEBLOCK     CUSTOMBLOCK
+                6 10 105 38 26 197 180 19
+                68
+
+DEFINEBLOCK     CUSTOMBLOCK
+                192 86 2 88 10 96 43 1
+                68
+
+DEFINEBLOCK     DEADLYBLOCK
+                0 0 0 0 0 0 0 0
+                71
+
+DEFINEBLOCK     CUSTOMBLOCK
+                76 20 0 84 0 16 0 0
+                2
+
+DEFINEBLOCK     DEADLYBLOCK
+                224 184 252 158 159 253 223 251
+                69
+
+DEFINEBLOCK     DEADLYBLOCK
+                15 63 125 239 127 251 191 255
+                69
+
+DEFINEBLOCK     CUSTOMBLOCK
+                18 64 18 64 2 0 0 0
+                68
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 245 247 234 156 248 176 224
+                2
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 175 239 119 57 31 13 7
+                66
+
+DEFINEBLOCK     EMPTYBLOCK
+                7 13 31 57 119 235 175 255
+                66
+
+DEFINEBLOCK     EMPTYBLOCK
+                224 176 248 156 238 215 181 255
+                2
+
+DEFINEBLOCK     WATERBLOCK
+                154 0 164 0 1 8 64 0
+                111
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 184 124 190 156 64 60
+                3
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 29 62 125 57 2 60
+                2
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 198 41 16 169 70 0
+                68
+
+DEFINEBLOCK     COLLECTABLE
+                130 0 16 0 1 8 0 64
+                70
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 0 0 0
+                68
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 0 0 0
+                69
+
+DEFINEBLOCK     EMPTYBLOCK
+                24 24 8 16 24 24 8 16
+                4
+
+DEFINEBLOCK     EMPTYBLOCK
+                147 84 32 32 32 16 146 84
+                68
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 16 186 166 78 108 56
+                66
+
+DEFINEBLOCK     EMPTYBLOCK
+                24 38 36 48 216 86 20 16
+                69
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 68 84 146 186 186 84
+                67
+
+DEFINEBLOCK     DEADLYBLOCK
+                96 249 255 191 251 255 239 255
+                68
+
+DEFINEBLOCK     WATERBLOCK
+                0 0 64 2 0 0 4 0
+                111
+
+DEFINEBLOCK     COLLECTABLE
+                2 0 64 8 20 8 0 16
+                6
+
+DEFINEBLOCK     CUSTOMBLOCK
+                0 0 0 0 0 0 0 0
+                71
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 0 0 0
+                66
+
+DEFINEBLOCK     EMPTYBLOCK
+                32 128 32 32 128 32 0 32
+                4
+
+DEFINEBLOCK     WATERBLOCK
+                76 20 12 84 12 20 76 16
+                106
+
+DEFINEBLOCK     EMPTYBLOCK
+                64 164 74 4 32 82 37 2
+                3
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 3 24 64 0 128 32 0
+                71
+
+DEFINEBLOCK     EMPTYBLOCK
+                109 0 8 16 16 0 40 68
+                71
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 2 1 8 4 35 16 140
+                71
+
+DEFINEBLOCK     EMPTYBLOCK
+                188 38 94 37 37 16 14 0
+                71
+
+DEFINEBLOCK     EMPTYBLOCK
+                160 128 32 160 0 32 160 128
+                4
+
+DEFINEBLOCK     EMPTYBLOCK
+                5 1 4 5 0 5 4 1
+                4
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 5 1 4 5 0 1 0
+                4
+
+DEFINEBLOCK     EMPTYBLOCK
+                32 160 128 32 160 0 32 0
+                4
+
+DEFINEBLOCK     EMPTYBLOCK
+                36 8 4 40 4 8 36 8
+                2
+
+DEFINEBLOCK     PLATFORMBLOCK
+                0 106 213 116 17 68 16 0
+                68
+
+DEFINEBLOCK     PLATFORMBLOCK
+                0 43 85 23 68 17 4 0
+                4
+
+DEFINEBLOCK     EMPTYBLOCK
+                36 8 4 40 0 8 0 0
+                2
+
+DEFINEBLOCK     WALLBLOCK
+                0 0 0 0 0 0 0 0
+                71
+
+DEFINEBLOCK     EMPTYBLOCK
+                20 40 128 32 128 0 0 0
+                2
+
+DEFINEBLOCK     EMPTYBLOCK
+                40 20 1 4 1 0 0 0
+                2
+
+DEFINEBLOCK     EMPTYBLOCK
+                33 4 80 2 168 1 68 16
+                4
+
+DEFINEBLOCK     EMPTYBLOCK
+                72 130 20 65 8 162 8 82
+                68
+
+DEFINEBLOCK     COLLECTABLE
+                0 0 0 16 0 0 0 0
+                69
+
+DEFINEBLOCK     EMPTYBLOCK
+                224 56 28 14 14 7 7 7
+                70
+
+DEFINEBLOCK     EMPTYBLOCK
+                7 7 7 14 14 28 56 224
+                70
+
+DEFINEBLOCK     WALLBLOCK
+                0 107 221 119 18 64 2 64
+                68
+
+DEFINEBLOCK     EMPTYBLOCK
+                2 7 6 11 10 203 38 89
+                4
+
+DEFINEBLOCK     EMPTYBLOCK
+                192 96 224 80 208 83 228 154
+                4
+
+DEFINEBLOCK     EMPTYBLOCK
+                7 31 63 38 106 102 106 127
+                71
+
+DEFINEBLOCK     EMPTYBLOCK
+                224 248 252 156 174 158 190 254
+                7
+
+DEFINEBLOCK     EMPTYBLOCK
+                121 118 119 119 123 125 126 87
+                71
+
+DEFINEBLOCK     EMPTYBLOCK
+                158 110 238 238 222 190 126 218
+                7
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 4 5 73 74 42 42
+                4
+
+DEFINEBLOCK     PLATFORMBLOCK
+                0 107 221 119 170 85 136 0
+                68
+
+DEFINEBLOCK     WALLBLOCK
+                0 43 85 23 68 17 4 0
+                4
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 146 214 84 108 56 56 16
+                70
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 107 221 119 170 85 136 0
+                4
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 238 81 170 0 0 0
+                2
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 0 0 0
+                66
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 0 0 0
+                2
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 0 0 0
+                67
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 0 0 0
+                3
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 0 0 0
+                69
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 0 0 0
+                5
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 0 0 0
+                70
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 0 0 0
+                6
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 0 0 0
+                4
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 0 0 0
+                68
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 1 3 6 13 13 19
+                71
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 224 144 96 160 176 224
+                71
+
+DEFINEBLOCK     EMPTYBLOCK
+                192 0 64 64 192 96 144 192
+                71
+
+DEFINEBLOCK     EMPTYBLOCK
+                35 32 1 3 3 6 9 1
+                71
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 60 102 251 253 255 255 255
+                66
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 60 102 251 253 253 253 255
+                66
+
+DEFINEBLOCK     EMPTYBLOCK
+                127 63 31 15 7 3 1 0
+                66
+
+DEFINEBLOCK     EMPTYBLOCK
+                254 252 248 240 224 192 128 0
+                66
+
+DEFINEBLOCK     EMPTYBLOCK
+                102 255 255 255 126 60 24 0
+                66
+
+DEFINEBLOCK     COLLECTABLE
+                0 60 74 191 70 44 24 0
+                71
+
+DEFINEBLOCK     LADDERBLOCK
+                10 101 183 2 9 7 1 0
+                68
+
+DEFINEBLOCK     LADDERBLOCK
+                80 166 237 192 64 144 224 128
+                68
+
+DEFINEBLOCK     EMPTYBLOCK
+                128 0 0 0 0 0 0 0
+                71
+
+DEFINEBLOCK     WALLBLOCK
+                0 107 221 119 18 64 2 64
+                68
+
+DEFINEBLOCK     PLATFORMBLOCK
+                0 107 221 119 170 85 136 0
+                4
+
+
+DEFINESPRITE    4
+                0 0 3 224 7 240 11 232 13 216 13 216 13 216 6 176
+                16 132 27 108 11 232 3 224 6 48 5 80 3 96 3 96
+
+                0 0 3 224 7 240 11 232 13 232 13 232 14 216 23 80
+                24 64 11 168 3 236 7 244 12 24 3 72 3 96 0 96
+
+                0 0 3 224 7 240 11 232 13 216 13 216 13 216 6 176
+                16 132 27 108 11 232 3 224 6 48 5 80 3 96 0 0
+
+                0 0 3 224 7 240 11 232 11 216 11 216 13 184 5 116
+                1 12 10 232 27 224 23 240 12 24 9 96 3 96 3 0
+
+DEFINESPRITE    6
+                0 0 1 176 7 72 14 176 13 80 18 216 37 240 4 224
+                0 0 3 64 5 32 5 192 4 0 9 128 1 128 1 192
+
+                0 0 1 176 7 72 14 176 29 80 34 216 5 240 8 224
+                0 0 3 192 5 240 9 192 16 0 3 96 6 96 7 112
+
+                0 0 1 176 7 72 30 176 37 80 2 216 5 240 8 224
+                0 0 2 224 13 24 49 192 0 32 7 104 12 56 14 48
+
+                1 176 7 72 30 176 37 80 2 216 13 240 0 224 0 0
+                2 224 13 24 49 192 0 32 7 104 12 56 14 48 0 0
+
+                0 0 1 176 39 72 30 176 13 80 2 216 5 240 8 224
+                0 0 34 224 29 24 1 192 0 32 7 104 12 56 14 48
+
+                0 0 0 0 1 176 7 72 30 176 37 80 2 216 13 240
+                0 224 2 0 5 240 9 192 16 0 3 96 6 96 7 112
+
+DEFINESPRITE    6
+                0 0 13 128 18 224 13 112 10 176 27 72 15 164 7 32
+                0 0 2 192 4 160 3 160 0 32 1 144 1 128 3 128
+
+                0 0 13 128 18 224 13 112 10 184 27 68 15 160 7 16
+                0 0 3 192 15 160 3 144 0 8 6 192 6 96 14 224
+
+                0 0 13 128 18 224 13 120 10 164 27 64 15 160 7 16
+                0 0 7 64 24 176 3 140 4 0 22 224 28 48 12 112
+
+                13 128 18 224 13 120 10 164 27 64 15 176 7 0 0 0
+                7 64 24 176 3 140 4 0 22 224 28 48 12 112 0 0
+
+                0 0 13 128 18 228 13 120 10 176 27 64 15 160 7 16
+                0 0 7 68 24 184 3 128 4 0 22 224 28 48 12 112
+
+                0 0 13 128 18 224 13 112 10 184 27 68 15 160 7 16
+                0 0 3 192 15 160 3 156 0 0 6 192 6 96 14 224
+
+DEFINESPRITE    7
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 0 0 0 0 0 0 0 128 10 48
+
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 0 0 0 0 16 136 4 32 0 0
+
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 0 0 32 132 4 32 0 0 0 0
+
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 0 0 0 0 72 145 0 0 0 0
+
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 0 0 0 0 0 0 16 129 128 8
+
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 144 137
+
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+DEFINESPRITE    6
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 33 136 114 76 188 62 158 250 47 124 55 252 79 242
+
+                0 0 0 0 0 0 0 0 0 0 0 0 17 136 98 70
+                244 45 185 28 46 188 95 126 94 254 47 124 55 252 79 242
+
+                0 0 0 0 0 0 0 0 0 2 145 129 226 74 116 38
+                56 46 45 28 46 188 95 126 94 254 47 124 55 252 79 242
+
+                0 0 0 0 17 136 34 68 52 44 24 24 20 56 22 120
+                44 56 46 252 94 124 95 126 94 254 47 124 55 252 79 242
+
+                0 0 1 0 2 192 3 64 6 224 5 96 14 240 21 120
+                22 248 47 124 46 252 95 126 94 254 47 124 63 252 79 242
+
+                0 0 1 0 2 192 3 64 6 224 5 96 14 240 21 120
+                22 248 47 124 46 252 95 126 94 254 47 124 63 252 79 242
+
+DEFINESPRITE    4
+                7 128 30 224 59 240 95 184 112 236 22 62 5 142 15 162
+                3 156 0 0 2 128 3 64 0 0 6 192 6 96 14 224
+
+                0 0 7 128 30 224 27 240 127 184 112 236 23 62 5 142
+                15 162 3 156 0 0 11 160 0 16 1 128 1 128 3 128
+
+                7 128 30 224 59 240 95 184 112 236 22 62 5 142 15 162
+                3 156 0 0 2 128 3 64 0 0 6 192 6 96 14 224
+
+                7 128 30 224 59 240 95 184 112 236 22 62 5 142 15 162
+                3 156 0 0 7 128 11 160 0 0 22 224 28 48 12 112
+
+DEFINESPRITE    4
+                1 224 7 120 15 220 29 250 55 14 124 104 113 160 69 240
+                57 192 0 0 1 64 2 192 0 0 3 96 6 96 7 112
+
+                0 0 1 224 7 120 15 216 29 254 55 14 124 232 113 160
+                69 240 57 192 0 0 5 208 8 0 1 128 1 128 1 192
+
+                1 224 7 120 15 220 29 250 55 14 124 104 113 160 69 240
+                57 192 0 0 1 64 1 160 0 0 3 96 6 96 7 112
+
+                1 224 7 120 15 220 29 250 55 14 124 104 113 160 69 240
+                57 192 0 0 1 224 5 208 0 0 7 104 12 56 14 48
+
+DEFINESPRITE    4
+                2 0 1 0 1 0 3 0 7 128 15 192 10 192 10 192
+                7 128 3 0 0 32 15 192 23 128 3 192 1 192 0 96
+
+                0 128 1 0 0 128 1 128 3 192 7 224 5 96 5 96
+                3 192 1 128 12 0 3 240 3 192 1 192 1 128 0 128
+
+                0 64 0 128 0 128 0 192 1 224 3 240 3 80 3 80
+                1 224 0 192 4 0 3 240 1 232 3 192 3 128 6 0
+
+                1 0 0 128 1 0 1 128 3 192 7 224 6 160 6 160
+                3 192 1 128 0 48 15 192 3 192 3 128 1 128 1 0
+
+DEFINESPRITE    5
+                15 224 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+                7 192 3 128 3 128 1 0 0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+                3 128 1 0 2 128 2 128 1 0 0 0 0 0 0 0
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+                1 0 1 0 1 0 3 128 3 128 7 64 7 64 2 128
+                1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+                0 0 0 0 1 0 1 0 1 0 3 128 3 128 2 128
+                7 64 7 64 7 64 2 128 1 0 0 0 0 0 0 0
+
+DEFINESPRITE    8
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 0 0 0 0 0 0 3 128 7 192
+
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 1 0 1 0 4 64 1 0 27 176
+
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 0 0 1 0 17 16 8 32 0 0 0 0 49 24
+
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 1 0 1 0 48 24 0 0 0 0 0 0 65 4
+
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 0 0 1 0 33 8 64 4 0 0 0 0 0 0
+
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 1 0 65 4 64 4 0 0 0 0
+
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 0 0 0 0 1 0 64 4 0 0
+
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+DEFINESPRITE    1
+                0 0 3 128 6 64 15 160 14 160 31 208 28 80 31 208
+                60 104 58 168 59 168 28 112 26 176 15 224 5 64 0 0
+
+DEFINESPRITE    1
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+DEFINESPRITE    6
+                74 169 55 246 12 24 0 0 0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+                74 169 55 246 12 24 1 192 13 192 3 160 6 0 0 0
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+                74 169 55 246 12 24 1 192 1 192 27 128 7 0 14 128
+                12 64 12 0 10 0 0 0 0 0 0 0 0 0 0 0
+
+                74 169 55 246 12 24 1 192 1 192 3 128 3 192 3 32
+                7 0 3 128 1 224 0 192 1 192 0 192 0 128 0 0
+
+                74 169 55 246 12 24 1 192 1 192 0 216 0 224 0 224
+                1 100 2 120 0 48 0 56 0 88 0 12 0 0 0 0
+
+                74 169 55 246 12 24 1 192 1 192 0 216 0 224 0 224
+                1 100 2 121 0 62 0 28 0 0 0 0 0 0 0 0
+
+
+DEFINESCREEN      0   3   2   9   4   4   6   6   6  10 109 110 109 110 110 109 110 109 0 0
+                  3   2   9   4  11   3  39  30   3  12   6  10 108   9   6  10 107 110 0 0 
+                  3   1   4  11  41   0  41   0   0   3   3  12   6  11   3  12   6   6  0 0
+                  3   2   6   3   0   0   0   0   0   0   0   3   3   3   0   3   3   3   0 0
+                  3   1  12  10   0   0   0   0   0   0   0   0   0 134 133   0   0  80  0 0
+                  3 146   1   4   0   0   0   0   0   0   0   0  37 134 133  38   0  79  0 0
+                  3   2   9   4  21   0   0   0   9  10   0   9   4   6   5  10   0   9  0 0
+                  1   9   4  11   0   0 104 103   4  12   4  11   0   0   0  12   7  11   0 0
+                  2   4  11   3   0   0   0 108  12  10   3   3   0   0   0   3   3   3   0 0
+                  1  12   4 104 103   0   0   0  13  11   0   0   0   0   0   0   0   0  0 0
+                  2   9   4 107   0   0   0   0   4   0   0   0   0   0   0   0   0   0    0 0
+                  9   4  11   0   0   0   0   0   4  29   0   0   0   0   0   0   0   0   0 0
+                  4  11   3   0   0   0 104 151 151 122 122 103   0   0   0   0   0   0   0 0
+                  6  25   0   0   0   0   0 108   8   5 107  28   0  85   0   0   0  76   0 0
+                  4   0   0   0  37  38   0   0   0   8   4   6  10  82   9   7   6   4   0 0
+                  6   0   0   0 147 148   0   0  37   9   5   2  12   4   7   4  11   2  0 0
+                  8  10   0   0  35  33  30   0   9  11  12  10   1   2   1   2   1   3   0 0
+                  2   8  10  31  32  34   0   0   7   1   1   6   3   3   3   3   3   3   0 0
+                  3   1   5   0  35  34   0   0   5   1   1   4  18  17  16  18  18  16   0 0
+SPRITEPOSITION  3 4 40 112
+SPRITEPOSITION  0 1 88 88
+SPRITEPOSITION  3 4 104 168
+SPRITEPOSITION  3 12 64 112
+
+
+DEFINEOBJECT    71 16 64 184
+                1 0 19 144 27 176 29 112 13 96 11 160 5 64 0 0
+                2 128 25 0 37 0 90 0 114 112 66 140 1 120 1 0
+
+DEFINEOBJECT    71 5 120 48
+                1 0 19 144 27 176 29 112 13 96 11 160 5 64 0 0
+                2 128 25 0 37 0 90 0 114 112 66 140 1 120 1 0
+
+DEFINEOBJECT    71 7 40 144
+                1 0 19 144 27 176 29 112 13 96 11 160 5 64 0 0
+                2 128 25 0 37 0 90 0 114 112 66 140 1 120 1 0
+
+DEFINEOBJECT    71 4 24 224
+                1 0 19 144 27 176 29 112 13 96 11 160 5 64 0 0
+                2 128 25 0 37 0 90 0 114 112 66 140 1 120 1 0
+
+DEFINEOBJECT    71 3 56 168
+                1 0 19 144 27 176 29 112 13 96 11 160 5 64 0 0
+                2 128 25 0 37 0 90 0 114 112 66 140 1 120 1 0
+
+DEFINEOBJECT    71 14 72 136
+                1 0 19 144 27 176 29 112 13 96 11 160 5 64 0 0
+                2 128 25 0 37 0 90 0 114 112 66 140 1 120 1 0
+
+DEFINEOBJECT    71 17 80 40
+                1 0 19 144 27 176 29 112 13 96 11 160 5 64 0 0
+                2 128 25 0 37 0 90 0 114 112 66 140 1 120 1 0
+
+DEFINEOBJECT    71 0 96 168
+                1 0 19 144 27 176 29 112 13 96 11 160 5 64 0 0
+                2 128 25 0 37 0 90 0 114 112 66 140 1 120 1 0
+
+DEFINEOBJECT    71 15 80 184
+                1 0 19 144 27 176 29 112 13 96 11 160 5 64 0 0
+                2 128 25 0 37 0 90 0 114 112 66 140 1 120 1 0
+
+DEFINEOBJECT    71 22 56 128
+                1 0 19 144 27 176 29 112 13 96 11 160 5 64 0 0
+                2 128 25 0 37 0 90 0 114 112 66 140 1 120 1 0
+
+DEFINEOBJECT    71 23 128 128
+                0 0 7 224 31 216 54 124 126 102 203 230 207 254 120 60
+                2 128 3 128 2 192 1 64 1 192 1 64 2 160 3 96
+
+DEFINEOBJECT    71 24 104 56
+                0 0 7 224 31 216 54 124 126 102 203 230 207 254 120 60
+                2 128 3 128 2 192 1 64 1 192 1 64 2 160 3 96
+
+DEFINEOBJECT    71 19 56 144
+                0 0 7 224 31 216 54 124 126 102 203 230 207 254 120 60
+                2 128 3 128 2 192 1 64 1 192 1 64 2 160 3 96
+
+DEFINEOBJECT    71 25 112 144
+                0 0 7 224 31 216 54 124 126 102 203 230 207 254 120 60
+                2 128 3 128 2 192 1 64 1 192 1 64 2 160 3 96
+
+
+MAP             WIDTH 13
+                STARTSCREEN 0
+                255  17   6  20  16   7  26   2   1  18  19  21 255
+                255 255 255  14  23   5   4   8   9  25 255  22 255
+                255 255 255  13  12  11  10   0  15 255 255 255 255
+                255 255 255   3 255 255 255 255  24 255 255 255 255
+ENDMAP
+
+
+
+EVENT PLAYER
+
+EVENT SPRITETYPE1
+
+EVENT SPRITETYPE2
+
+EVENT SPRITETYPE3
+
+EVENT SPRITETYPE4
+
+EVENT SPRITETYPE5
+
+EVENT SPRITETYPE6
+
+EVENT SPRITETYPE7
+
+EVENT SPRITETYPE8
+
+EVENT INITSPRITE
+
+EVENT MAINLOOP1
+
+EVENT MAINLOOP2
+
+EVENT INTROMENU
+ CLS
+
+EVENT GAMEINIT
+
+EVENT RESTARTSCREEN
+
+EVENT FELLTOOFAR
+
+EVENT KILLPLAYER
+
+EVENT LOSTGAME
+
+EVENT COMPLETEDGAME
+
+EVENT NEWHIGHSCORE
+
+EVENT COLLECTBLOCK

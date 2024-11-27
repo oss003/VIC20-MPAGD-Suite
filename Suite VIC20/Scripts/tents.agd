@@ -1,0 +1,716 @@
+
+DEFINEWINDOW    1 2 22 30
+
+DEFINECONTROLS  'Q' 'A' 'O' 'P' 32 'C' 'X' '1' '2' '3' '4'
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 0 0 0 96
+
+DEFINEBLOCK     WALLBLOCK
+                127 127 127 0 247 247 247 0 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 0 0 0 0 0 0 0 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                128 128 128 128 128 128 128 128 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                1 1 1 1 1 1 1 1 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 0 0 0 255 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 128 128 128 128 128 128 128 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 0 0 0 255 0 0 0 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                128 128 128 128 255 128 128 128 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 1 221 145 157 133 157 1 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 128 130 129 129 131 131 135 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                135 143 143 159 159 191 191 128 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 0 64 128 128 64 64 32 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                32 16 16 8 8 4 252 0 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 128 135 136 144 144 144 144 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                144 136 135 129 129 129 129 128 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 0 240 8 4 4 4 4 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                4 8 240 192 192 192 192 0 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 128 160 132 128 144 130 128 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 0 65 8 0 0 34 0 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                128 162 128 136 128 130 160 128 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                0 64 8 0 2 64 8 0 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                255 1 1 1 1 1 1 1 96
+
+DEFINEBLOCK     EMPTYBLOCK
+                1 1 1 1 255 1 1 1 96
+
+
+DEFINESPRITE    2
+                0 0 127 255 127 255 127 255 127 255 127 255 127 255 127 255
+                127 255 127 255 127 255 127 255 127 255 127 255 127 255 127 255
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+DEFINESPRITE    1
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+DEFINEOBJECT    96 255 8 8
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+                0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+DEFINESCREEN      0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   6   2   2   2   2   2   2   2  22
+                  6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   3   3   0   0   0   0   0   0   0   4
+                  3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   8   7   7   7   7   7   7   7  23
+                  6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   3   3   0   0   0   0   0   0   0   4
+                  3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   3   0   0   0   0   0   0   0   4
+                  6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   3   3   0   0   0   0   0   0   0   4
+                  3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   3   0   0   0   0   0   0   0   4
+                  6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   3   3   0   0   0   0   0   0   0   4
+                  3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   3   0   0   0   0   0   0   0   4
+                  6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   3   3   0   0   0   0   0   0   0   4
+                  3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   3   0   0   0   0   0   0   0   4
+                  6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   3   3   0   0   0   0   0   0   0   4
+                  3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   3   0   0   0   0   0   0   0   4
+                  6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   3   3   0   0   0   0   0   0   0   4
+                  3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   3   0   0   0   0   0   0   0   4
+                  6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   3   3   0   0   0   0   0   0   0   4
+                  3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   3   0   0   0   0   0   0   0   4
+                  6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   3   3   0   0   0   0   0   0   0   4
+                  3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   8   7   7   7   7   7   7   7  23
+                  6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   3   3   0   0   0   0   0   0   0   4
+                  3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   3   0   0   0   0   0   0   0   4
+                  2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   0   2   2   2   2   2   2   2   2   2
+SPRITEPOSITION  0 0 16 16
+
+DEFINESCREEN      0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   6   2   2   2   2   2   2   2  22
+                  6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   3   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   0   0   0   8   7   7   7   7   7   7   7  23
+                  6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   3   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   3   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   3   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   3   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   3   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   3   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  6   2   6   2   6   2   6   2   6   2   6   2   6   2   6   2   3   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   3   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   2   0   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   8   7   7   7   7   7   7   7  23
+                  0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   2   2   2   2   2   2   2   2   2
+SPRITEPOSITION  0 0 16 16
+
+DEFINESCREEN      0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   6   2   2   2   2   2   2   2  22
+                  6   2   6   2   6   2   6   2   6   2   6   2   3   0   0   0   0   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  3   0   3   0   3   0   3   0   3   0   3   0   3   0   0   0   0   0   0   0   0   8   7   7   7   7   7   7   7  23
+                  6   2   6   2   6   2   6   2   6   2   6   2   3   0   0   0   0   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  3   0   3   0   3   0   3   0   3   0   3   0   3   0   0   0   0   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  6   2   6   2   6   2   6   2   6   2   6   2   3   0   0   0   0   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  3   0   3   0   3   0   3   0   3   0   3   0   3   0   0   0   0   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  6   2   6   2   6   2   6   2   6   2   6   2   3   0   0   0   0   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  3   0   3   0   3   0   3   0   3   0   3   0   3   0   0   0   0   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  6   2   6   2   6   2   6   2   6   2   6   2   3   0   0   0   0   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  3   0   3   0   3   0   3   0   3   0   3   0   3   0   0   0   0   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  6   2   6   2   6   2   6   2   6   2   6   2   3   0   0   0   0   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  3   0   3   0   3   0   3   0   3   0   3   0   3   0   0   0   0   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  2   2   2   2   2   2   2   2   2   2   2   2   0   0   0   0   0   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   8   7   7   7   7   7   7   7  23
+                  0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   3   0   0   0   0   0   0   0   4
+                  0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   2   2   2   2   2   2   2   2   2
+SPRITEPOSITION  0 0 16 16
+
+MAP             WIDTH 3
+                STARTSCREEN 0
+                255   0 255
+ENDMAP
+
+DEFINEFONT      0 0 0 0 0 0 0 0
+                20 28 8 16 16 0 48 0
+                34 102 68 136 0 0 0 0
+                108 36 126 72 252 72 144 0
+                8 28 42 16 24 108 56 32
+                0 62 84 104 22 58 76 0
+                24 44 40 50 84 204 114 0
+                8 24 16 32 0 0 0 0
+                8 16 32 32 32 48 28 0
+                16 8 4 4 4 12 56 0
+                0 34 52 30 120 44 68 0
+                0 8 8 126 16 16 0 0
+                0 0 0 0 8 24 16 32
+                0 0 0 255 0 0 0 0
+                0 0 0 0 0 24 16 0
+                4 8 24 16 32 64 96 0
+                28 38 66 66 66 100 56 0
+                16 48 16 16 16 20 56 0
+                24 36 70 4 24 34 126 0
+                56 36 2 28 6 68 56 0
+                4 20 36 68 126 8 8 0
+                62 32 92 102 2 70 60 0
+                28 50 96 76 82 102 60 0
+                126 132 8 24 16 32 48 0
+                60 98 38 24 100 70 60 0
+                60 102 74 50 6 76 56 0
+                0 0 24 16 0 24 16 0
+                0 0 24 16 8 24 16 32
+                0 0 8 16 48 24 12 0
+                0 0 126 0 126 0 0 0
+                0 0 16 8 12 24 48 0
+                28 38 4 8 28 0 24 0
+                56 68 148 168 178 196 120 0
+                12 12 20 36 108 86 132 0
+                92 226 68 92 98 66 124 0
+                28 34 66 128 128 130 124 0
+                56 196 66 66 68 76 240 0
+                92 226 64 120 192 66 124 0
+                124 194 64 248 64 64 192 0
+                28 34 64 142 132 140 122 0
+                66 198 66 126 66 66 66 132
+                56 80 16 16 16 20 56 0
+                62 8 8 4 132 136 112 0
+                66 198 72 112 72 68 66 128
+                64 192 64 64 64 98 220 0
+                132 204 180 148 132 197 134 0
+                198 98 82 74 70 66 66 4
+                24 36 66 130 130 132 120 0
+                92 226 68 88 96 64 96 128
+                28 38 66 130 146 204 121 6
+                92 226 68 88 104 69 198 0
+                12 20 32 28 2 134 124 0
+                124 146 16 16 16 16 48 0
+                68 66 66 130 132 200 112 0
+                102 162 34 36 40 48 32 0
+                66 198 66 82 90 102 66 0
+                50 84 24 24 40 74 140 0
+                98 164 36 24 16 16 24 0
+                60 68 8 16 32 66 252 0
+                60 32 32 32 32 48 76 0
+                16 16 16 16 16 16 16 16
+                8 8 8 8 8 8 8 8
+                16 16 40 108 170 40 40 40
+                0 0 0 0 0 0 0 255
+                12 18 16 126 16 32 114 140
+                0 52 76 132 132 140 114 0
+                64 204 82 98 66 100 88 0
+                0 24 36 64 64 68 56 0
+                6 50 74 70 66 70 58 0
+                0 24 36 72 80 100 56 0
+                28 36 32 120 32 32 48 64
+                0 26 36 68 56 4 66 252
+                192 64 88 100 66 67 66 0
+                24 16 8 24 8 8 12 0
+                12 8 4 12 4 4 8 48
+                192 64 76 84 104 90 196 0
+                48 16 16 16 16 20 56 0
+                0 108 212 84 84 86 84 0
+                0 72 212 100 68 70 68 0
+                0 28 34 66 66 100 56 0
+                0 88 228 66 98 92 64 64
+                0 60 68 132 140 116 6 4
+                0 54 90 16 16 24 32 0
+                0 26 36 16 72 132 120 0
+                8 16 126 16 16 20 24 0
+                0 76 132 132 132 206 116 0
+                0 70 194 66 68 104 48 0
+                0 66 129 129 137 217 110 0
+                0 34 84 24 24 164 66 0
+                0 98 34 68 60 4 114 140
+                0 62 68 8 16 34 124 0
+                0 0 0 31 16 16 16 16
+                16 16 16 31 0 0 0 0
+                0 0 0 248 8 8 8 8
+                8 8 8 248 0 0 0 0
+                60 102 219 177 177 219 102 60
+EVENT PLAYER
+
+;-----------------------------------------------------
+; Invert field at startup
+;-----------------------------------------------------
+
+IF Y 200
+  LET Y 16
+ENDIF
+
+;-----------------------------------------------------
+; Keycheck
+;-----------------------------------------------------
+
+IF KEY RIGHT			; Check moving right
+  IF X < M
+    ADD 16 TO X
+    LET FRAME 0
+    WHILE KEY RIGHT
+    ENDWHILE
+    EXIT
+  ENDIF
+ENDIF
+
+IF KEY LEFT			; Check moving left
+  IF X > 16
+    SUBTRACT 16 FROM X
+    LET FRAME 0
+    WHILE KEY LEFT
+    ENDWHILE
+    EXIT
+  ENDIF
+ENDIF
+
+IF KEY UP			; Check moving up
+  IF Y > 16
+    SUBTRACT 16 FROM Y
+    LET FRAME 0
+    WHILE KEY UP
+    ENDWHILE
+    EXIT
+  ENDIF
+ENDIF
+
+IF KEY DOWN			; Check moving down
+  IF Y < M
+    ADD 16 TO Y
+    LET FRAME 0
+    WHILE KEY DOWN
+    ENDWHILE
+    EXIT
+  ENDIF
+ENDIF
+
+IF KEY FIRE			; Check pressing Space
+  LET F 1
+ENDIF
+
+;IF KEY FIRE2			; Check pressing 'C'
+;  LET F 2
+;ENDIF
+
+;-----------------------------------------------------
+; Check flag set
+;
+; F = 0, No action
+; F = 1, Change tile
+; F = 2, Display (not) solved puzzle text
+;-----------------------------------------------------
+
+IF F 1				; Change tile?
+  IF FRAME 1			; If frame black
+    LET H X			; Get H,V in matrix
+    DIVIDE H BY 16
+    SUBTRACT 1 FROM H
+    LET V Y
+    DIVIDE V BY 16
+    SUBTRACT 1 FROM V
+    USER 4 			; Action at H,V
+
+    LET I H			; Set H,V on screen
+    MULTIPLY I BY 2
+    ADD 2 TO I
+    LET J V
+    MULTIPLY J BY 2
+    ADD 2 TO J
+    AT J,I
+
+    IF OPT 0			; Empty field
+      PUTBLOCK 6:PUTBLOCK 2
+      ADD 1 TO J
+      AT J,I
+      PUTBLOCK 3:PUTBLOCK 0
+    ENDIF
+
+    IF OPT 1			; Marked field
+      PUTBLOCK 18:PUTBLOCK 19
+      ADD 1 TO J
+      AT J,I
+      PUTBLOCK 20:PUTBLOCK 21
+    ENDIF
+
+    IF OPT 2			; Tent field
+      PUTBLOCK 10:PUTBLOCK 12
+      ADD 1 TO J
+      AT J,I
+      PUTBLOCK 11:PUTBLOCK 13
+    ENDIF
+
+    IF OPT 3			; Tree field
+      PUTBLOCK 14:PUTBLOCK 16
+      ADD 1 TO J
+      AT J,I
+      PUTBLOCK 15:PUTBLOCK 17
+    ENDIF
+
+    WHILE KEY FIRE
+    ENDWHILE
+    LET F 0
+  ENDIF
+ENDIF
+
+;IF F 2				; Display (not) solved puzzle text?
+;  IF FRAME 1
+;    USER 3			; Check if puzzle solved
+;    AT 21,24
+;    IF OPT 0			; Not solved
+;      PRINT "WRONG!"
+;    ELSE 			; Solved
+;      PRINT "SOLVED"
+;      USER 0			; Generate new puzzle
+;      LET Y 200
+;      LET X 16
+;      ADD 1 TO G
+;    ENDIF
+;    DELAY 20			; Delay
+ ;   WAITKEY			; Wait keypress
+ ;   AT 21,24:PRINT"      "
+;    LET Z 1			; Reset display grid flag
+;;    LET F 0			; Reset action flag
+;    EXIT
+;  ENDIF
+;ENDIF
+
+ANIMATE VERYSLOW
+EVENT SPRITETYPE1
+
+
+EVENT SPRITETYPE2
+
+
+EVENT SPRITETYPE3
+
+
+EVENT SPRITETYPE4
+
+
+EVENT SPRITETYPE5
+
+
+EVENT SPRITETYPE6
+
+
+EVENT SPRITETYPE7
+
+
+EVENT SPRITETYPE8
+
+
+EVENT INITSPRITE
+
+IF TYPE 0		; Move sprite offscreen
+  LET X 16
+  LET Y 200
+ENDIF
+EVENT MAINLOOP1
+
+;-----------------------------------------------------
+; Display grid if flag set
+;-----------------------------------------------------
+
+IF Z 1
+  LET J 2				; Set screen column pointer
+  LET H 0				; Reset matrix column pointer
+  LET V 0				; Reset matrix row pointer
+
+; Place tiles
+
+  REPEAT S				; For every row
+    LET I 2				; Set screen row pointer
+    LET H 0
+
+    REPEAT S				; For every column
+      USER 1				; Read tile from matrix
+      AT J,I
+
+      IF OPT 0				; Empty field
+        PUTBLOCK 6:PUTBLOCK 2
+        ADD 1 TO J
+        AT J,I
+        PUTBLOCK 3:PUTBLOCK 0
+      ENDIF
+
+      IF OPT 1				; Marked field
+        PUTBLOCK 18:PUTBLOCK 19
+        ADD 1 TO J
+        AT J,I
+        PUTBLOCK 20:PUTBLOCK 21
+      ENDIF
+
+      IF OPT 2				; Tent field
+        PUTBLOCK 10:PUTBLOCK 12
+        ADD 1 TO J
+        AT J,I
+        PUTBLOCK 11:PUTBLOCK 13
+      ENDIF
+
+      IF OPT 3				; Tree field
+        PUTBLOCK 14:PUTBLOCK 16
+        ADD 1 TO J
+        AT J,I
+        PUTBLOCK 15:PUTBLOCK 17
+      ENDIF
+   
+      ADD 1 TO H			; Next matrix column
+      ADD 2 TO I			; Next screen column pointer
+      SUBTRACT 1 FROM J			; Correction Y-pos
+
+    ENDREPEAT
+
+    ADD 1 TO V				; Next matrix row
+    ADD 2 TO J				; Next screen row
+
+  ENDREPEAT
+
+; Places horizontal hints
+
+  LET I 0				; Reset column pointer
+  AT 1,3
+  REPEAT S				; For every column
+    USER 6				; Count tents in column
+    DISPLAY OPT				; Display nr of tents in column
+    PRINT " "
+    ADD 1 TO I				; Next column
+  ENDREPEAT
+
+; Place vertical hints
+
+  LET I 0				; Reset row pointer
+  LET J 3				; Set Y-pos
+  REPEAT S
+    USER 5				; Count tents in row
+    AT J,1
+    DISPLAY OPT				; Display nr of tents in row
+    ADD 1 TO I				; Next row
+    ADD 2 TO J				; Next Y-pos
+  ENDREPEAT
+
+; Place text
+
+  AT 2,24:PRINT "GRID ":DISPLAY DOUBLEDIGITS G
+
+  AT 5,24:PRINT "KEYS:"
+  AT 7,24:PRINT "Q:Up"
+  AT 8,24:PRINT "A:Down"
+  AT 9,24:PRINT "O:Left"
+  AT 10,24:PRINT "P:Right"
+  AT 11,24:PRINT "@:Fire"
+  AT 13,24:PRINT "X:Exit"
+
+  LET Z 0				; Reset display grid flag
+
+ENDIF
+
+IF KEY FIRE3				; Quit game
+  KILL
+ENDIF
+EVENT MAINLOOP2
+
+AT 20,25
+DISPLAY DOUBLEDIGITS O
+PRINT":"
+DISPLAY DOUBLEDIGITS P
+
+ADD 1 TO Q
+IF Q 25
+  ADD 1 TO P
+  IF P 60
+    ADD 1 TO O
+    LET P 0
+  ENDIF
+  LET Q 0
+ENDIF
+
+USER 3			; Check if puzzle solved
+AT 21,24
+IF OPT 1			; Not solved
+  LET I S
+  DIVIDE I BY 2
+  ADD 2 TO I
+  AT I,0  
+  PRINT "{---------------------}"
+  ADD 1 TO I
+  AT I,0
+  PRINTMODE 1
+  PRINT "\   CONGRATULATIONS!  ]"
+  PRINTMODE 0
+  ADD 2 TO I
+  AT I,0
+  PRINT "\You solved the puzzle]"
+  ADD 1 TO I
+  AT I,0
+  PRINT "\    in "
+  DISPLAY DOUBLEDIGITS O:PRINT":"
+  DISPLAY DOUBLEDIGITS P:PRINT " min     ]"
+  ADD 1 TO I
+  AT I,0
+  PRINT "|---------------------~"
+  WAITKEY			; Wait keypress
+  USER 0			; Generate new puzzle
+  LET Z 1			; Reset display grid flag
+  LET F 0			; Reset action flag
+  ADD 1 TO G
+  DELAY 50			; Delay
+  CLS
+  RESTART
+  LET O 0
+  LET P 0
+  LET Q 0
+ENDIF
+EVENT INTROMENU
+
+CLS
+
+PRINTMODE 1
+AT 1,9:PRINT "Trees & Tents"
+PRINTMODE 0
+;               0....5....0....5....0....5....0.. 
+AT  4, 0:PRINT " Tents is a logic puzzle with"
+AT  5, 0:PRINT " simple rules and challenging"
+AT  6, 0:PRINT " solutions."
+AT  8, 0:PRINT " The rules of Tents are simple:"
+AT 10, 0:PRINT " - Pair each tree with a tent"
+AT 11, 0:PRINT "   adjacent horizontally or"
+AT 12, 0:PRINT "   vertically. This should be"
+AT 13, 0:PRINT "   a 1 to 1 relation."
+AT 15, 0:PRINT " - Tents never touch each other"
+AT 16, 0:PRINT "   even diagonally."
+AT 18, 0:PRINT " - The clues outside the grid"
+AT 19, 0:PRINT "   indicate the number of tents"
+AT 20, 0:PRINT "   on that row/column."
+AT 22, 0:PRINT "     Press a key to continue"
+WAITKEY
+
+CLS
+PRINTMODE 1
+AT 2,9:PRINT "Trees & Tents"
+PRINTMODE 0
+;               0....5....0....5....0....5....0.. 
+AT  7, 7:PRINT " The controls are:"
+AT  9,10:PRINT "  O  - Left"
+AT 11,10:PRINT "  P  - Right"
+AT 13,10:PRINT "  Q  - Up"
+AT 15,10:PRINT "  A  - Down"
+AT 17, 1:PRINT " SPC - Toggle Mark/Tent/Empty"
+
+AT 21, 0:PRINT "     Press a key to continue"
+WAITKEY
+
+CLS
+PRINTMODE 1
+AT 4,9:PRINT "Trees & Tents"
+PRINTMODE 0
+
+AT 9,8:PRINT "1.  6 x  6 grid"
+AT 11,8:PRINT "2.  8 x  8 grid"
+AT 13,8:PRINT "3. 10 x 10 grid"
+AT 17,6:PRINT "Make your selection:"
+
+CONTROLMENU
+
+IF KEY OPTION1
+  LET S 6
+  LET M 96 
+ENDIF
+
+IF KEY OPTION2
+  LET S 8
+  LET M 128
+ENDIF
+
+IF KEY OPTION3
+  LET S 10
+  LET M 160
+ENDIF
+
+LET CONTROL 0
+
+USER 0
+CLS
+
+LET O 0
+LET P 0
+LET Q 0
+
+EVENT GAMEINIT
+
+LET F 0
+LET Z 1
+LET G 1
+
+IF S 6
+  LET SCREEN 2
+ENDIF
+
+
+IF S 8
+  LET SCREEN 1
+ENDIF
+
+
+IF S 10
+  LET SCREEN 0
+ENDIF
+
+RESTART
+
+EVENT RESTARTSCREEN
+
+EVENT FELLTOOFAR
+
+
+EVENT KILLPLAYER
+
+  LET LIVES 0
+
+EVENT LOSTGAME
+
+
+EVENT COMPLETEDGAME
+
+
+EVENT NEWHIGHSCORE
+
+
+EVENT COLLECTBLOCK
+
+

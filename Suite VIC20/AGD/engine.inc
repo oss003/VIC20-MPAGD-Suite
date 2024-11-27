@@ -1,130 +1,86 @@
-;--------------------------------------------------------------
+; Game engine code --------------------------------------------------------------
+
 ; Arcade Game Designer.
 ; (C) 2008 Jonathan Cauldwell.
-; ZX Spectrum Engine v0.10
-; VIC20 port by Mauro and K.v.Oss 2024
-;--------------------------------------------------------------
+; ZX Spectrum Next Engine v0.1.
 
-;--------------------------------------------------------------
 ; Conditional compilation flags
 ; Code is installed if flag is set
-; Flags are set in commandline assembly or by the compiler 
-; or by batchfile
-;--------------------------------------------------------------
+; Flags are set in commandline assembly or by the compiler
 
-; Flags set by the BUILD.BAT file
-;	modelflag		; model type PAL/NTSC
-;
 ; Flags set by AGD compiler
-;	cflag			; collectable blocks
-;	dflag 			; digging mode
-;	lflag			; ladders
 ;	mflag  			; MENU + INV
-;	oflag			; objects
 ;	pflag 			; particle engine
 ;	sflag 			; scrollytext
-;	clwflag			; CLW code
-;	bigflag			; Bigtext code -> Will not be used
+;	dflag 			; digging mode
+;	cflag			; collectable blocks
+;	oflag			; objects
+;	lflag			; ladders
+;	bflag			; big sprites (16x24)
+;	rflag			; Pre-shifted byte tables
 ;
-; Flags set manually in commandline
+; Flags set manually
 ;	aflag			; adventure mode
-;	bflag			; big sprites (16x24) -> Will not be used
-;	crflag			; crumbling blocks -> Will not be used
-;	fflag			; floppy version (skip #0axx)-> Will not be used
-;	gflag			; graphic colour mode -> Will not be used
-;	hflag			; hidden sprite mode-> Will not be used
 ;	iflag			; invert mode
-;	kflag			; color attributes control (Breakanoid) -> Will not be used
-;	rflag			; RAM Pre-Shifted Tables -> Will not be used
-;	xflag			; metablocks (16x16)-> Will not be used
 
-;--------------------------------------------------------------
-; Temporary setting of flags
-; Needs to be updated for VIC usage
-;--------------------------------------------------------------
-
-	aflag 	= 0		; adventure mode
-;	bflag	= 0		; big sprites (16x24)
-;	bigflag = 0		; Bigtext code
-;	crflag 	= 0		; crumbling blocks
-;	fflag 	= 0		; floppy version (skip #0axx)
-;	gflag 	= 0		; graphic colour mode
-;	hflag 	= 0		; hidden sprite mode
-	iflag 	= 0		; invert mode
-;	kflag 	= 0		; color attributes control (Breakanoid)
-;	rflag 	= 0		; RAM Pre-Shifted Tables
-;	xflag 	= 0		; metablocks (16x16)
-
-;.if aflag
-;	.out "- Adventure mode enabled" 
-;.endif
-;.if bflag
-;	.out "- Big Sprites (16x24) enabled" 
-;.endif
-;.if bigflag
-;	.out "- Big Text enabled" 
-;.endif
-.if cflag
-	.out "- Collectable blocks enabled" 
-.endif
-;.if crflag 
-;	.out "- Crumbled blockmode enabled"  
-;.endif
-.if dflag
-	.out "- Digging enabled" 
-.endif
-;.if gflag
-;	.out "- Colourmode enabled" 
-;.endif
-;.if hflag
-;	.out "- Hidden sprites/foregroundblocks enabled" 
-;.endif
-.if iflag
-	.out "- Invert mode enabled" 
-.endif
-;.if kflag
-;	.out "- Save colour table enabled" 
-;.endif
-.if lflag
-	.out "- Ladders enabled" 
-.endif
 .if mflag 
 	.out "- MEN/INV enabled"  
-.endif
-.if oflag
-	.out "- Objects enabled" 
 .endif
 .if pflag 
 	.out "- Particles enabled" 
 .endif
-;.if rflag
-;	.out "- RAM saving spritemode enabled" 
-;.endif
 .if sflag 
 	.out "- Scrolling enabled" 
 .endif
-;.if xflag
-;	.out "- Metablocksmode enabled" 
-;.endif
+.if dflag
+	.out "- Digging enabled" 
+.endif
+.if cflag
+	.out "- Collectable blocks enabled" 
+.endif
+.if oflag
+	.out "- Objects enabled" 
+.endif
+.if lflag
+	.out "- Ladders enabled" 
+.endif
+.if aflag
+	.out "- Adventure mode enabled" 
+.endif
+.if bflag
+	.out "- Big Sprites (16x24) enabled" 
+.endif
+.if iflag
+	.out "- Invert mode enabled" 
+.endif
+.if rflag
+	.out "- Pre-shifted byte tables enabled" 
+.endif
 
 ;------------------------------------------------------------
 ; VIC20 check for PAL or NTSC
 ;------------------------------------------------------------
 
 .if modelflag
-	ScrWidth	= 24	; PAL settings
-	ScrHeight	= 24
-	CentreX		= 10
-	CentreY		= 33
-	timervalue	= 43450	; = 40000 * 1,108/1,02
-	.out "- PAL" 
+	ScrWidth	= 22	; PAL settings
+	ScrHeight	= 22
+	CentreX		= 12
+	CentreY		= 38
+	CentreXMP   = 14
+	CentreYMP   = 36	
+	timervalue	= 24000
+	timerint	= 24000			; Interrupt timer 1/50 sec
+	.out "- PAL"
 .else
-	ScrWidth	= 24	; NTSC settings
-	ScrHeight	= 24
-	CentreX		= 2
-	CentreY		= 24
-	timervalue	= 40000
-	.out "- NTSC" 
+	ScrWidth	= 22	; NTSC settings
+	ScrHeight	= 22
+	CentreX		= 4
+	CentreY		= 27
+	CentreXMP   = 6
+	CentreYMP   = 24
+	timervalue	= 20000
+	timerint	= 20000			; Interrupt timer 1/50 sec
+ 	.out "- NTSC"
 .endif
 .out ""
 
@@ -132,306 +88,92 @@
 ; Constants MPAGD
 ;------------------------------------------------------------
 
-; Global definitions 
+; Global definitions
 
-	MAP 		= MapAddr	; properties map buffer (3x256 bytes)
-	SCROFF_lb 	= MAP+3*256	; screen address line table lo-byte (24 bytes)
-	SCROFF_hb 	= SCROFF_lb+ScrHeight	; screen address line table hi-byte (24 bytes)
-	SHRAPN 		= SCROFF_hb+ScrHeight	; shrapnel table (55x6 bytes)
+	FONT 		= font 
+	MAP 		= MapAddr		; properties map buffer (3x256 bytes)
+	SCADTB_lb	= MAP + $300		; Screen address table
+	SCADTB_hb	= SCADTB_lb + $100
+	SHRAPN 		= SCADTB_hb + $100	; shrapnel table (55x6 bytes)
+	COLATTTB_lb	= SHRAPN + 55*6		; Colour attribute address table
+	COLATTTB_hb	= COLATTTB_lb + 11
 
 ; Block characteristics.
 
-	PLATFM		= 1		; platform.
-	WALL		= PLATFM + 1	; solid wall.
-	LADDER		= WALL + 1	; ladder.
-	FODDER		= LADDER + 1	; fodder block.
-	DEADLY		= FODDER + 1	; deadly block.
-	CUSTOM		= DEADLY + 1	; custom block.
-	WATER		= CUSTOM + 1	; water block.
-        COLECT		= WATER + 1	; collectable block.
-	HIDDEN 		= COLECT + 1	; hide behind block
-        NUMTYP		= COLECT + 1	; number of types.
+	PLATFM	= 1		; platform.
+	WALL	= PLATFM + 1	; solid wall.
+	LADDER	= WALL + 1	; ladder.
+	FODDER	= LADDER + 1	; fodder block.
+	DEADLY	= FODDER + 1	; deadly block.
+	CUSTOM	= DEADLY + 1	; custom block.
+	WATER	= CUSTOM + 1	; water block.
+        COLECT	= WATER + 1	; collectable block.
+        NUMTYP	= COLECT + 1	; number of types.
 
 ; Sprites.
 
-	SPR_HGT 	= 16		; Sprite height
-	SPR_WID 	= 16		; Sprite width
-	NUMSPR		= 12		; number of sprites.
-	COLDISTY 	= 16		; Collision distance
+.if bflag 
+	SPR_HGT	= 24		; Sprite height
+	SPR_WID = 16		; Sprite width
+	NUMSPR	= 8		; number of sprites.
+.else				; 16x16 sprites
+	SPR_HGT = 16		; Sprite height
+	SPR_WID = 16		; Sprite width
+	NUMSPR	= 12		; number of sprites.
+.endif
+	TABSIZ = 17			; size of each entry.
+	SPRBUF = NUMSPR * TABSIZ; size of entire table.
+	NMESIZ = 4			; bytes stored in nmetab for each sprite.
 
-	TABSIZ 		= 17		; size of each entry.
-	SPRBUF 		= NUMSPR*TABSIZ	; size of entire table.
-	NMESIZ 		= 4		; bytes stored in nmetab for each sprite.
-	var_X  		= 8		; new x coordinate of sprite.
-	var_Y  		= var_X + 1	; new y coordinate of sprite.
-	PAM1ST 		= 5		; first sprite parameter, old x (ix+5).
-	COLDISTX 	= 16		; Collision distance
+; Sprite table variable offsets.
+
+	var_Type = 0		; sprite type
+	var_Image = 1		; sprite time number
+	var_Frame = 2		; sprite frame
+	var_Y = 3			; sprite y coordinate
+	var_X = 4			; sprite X coordinate
+
+	var_newType = 5		; sprite new type
+	var_newImage = 6	; sprite new image number
+	var_newFrame = 7	; sprite new frame
+	var_newY = 8		; sprite new y coordinate
+	var_newX = 9		; sprite new x coordinate
+	
+	var_Direction = 10	; sprite direction
+	var_Param1 = 11		; sprite parameter 1
+	var_Param2 = 12		; sprite parameter 2
+
+	var_jumpLo = 13		; sprite jump ptr low
+	var_jumpHi = 14		; sprite jump ptr high
+	var_dataLo = 15		; sprite data ptr low
+	var_dataHi = 16		; sprite data ptr high
 
 ; Particle engine.
 
-	NUMSHR 		= 55		; pieces of shrapnel.
-	SHRSIZ 		= 6		; bytes per particle.
+	NUMSHR = 55			; pieces of shrapnel.
+	SHRSIZ = 6			; bytes per particle.
 
-;============================================================
-; PLATFORM MACROS
-;============================================================
+.if iflag
+	TxtInvert   = $ff	; Invert byte for character printing
+	ScrFillByte = $ff	; Screen fill byte for CLS
+.else
+	TxtInvert   = $00	; Invert byte for character printing
+	ScrFillByte = $00	; Screen fill byte for CLS
+.endif
 
-
-SLOT_NUM = $80
-POS_X_CHAR = $81
-POS_Y_CHAR = $82
-OFFSET_X = $83
-OFFSET_Y = $84
-TEMP_PTR = $85
-;TEMP_PTR+1 = $86
-SPRITE_PTR = $87
-;SPRITE_PTR+1 = $88
-CHAR_RAM_PTR = $89
-;CHAR_RAM_PTR+1 = $8a
-
-
-.macro  AddTo16bitPtrValue toAdd, pointer
-    clc
-    lda pointer
-    adc toAdd
-    sta pointer
-    bcc :+
-    inc pointer+1
-:
-.endmacro
-
-.macro  AddTo16bitPtrValueDest toAdd, sourcePtr, destPtr
-    clc
-    lda sourcePtr
-    adc toAdd
-    sta destPtr
-    lda sourcePtr+1
-    adc #$00
-    sta destPtr+1
-.endmacro
-
-.macro  AddTo16bitPtrDest AddValuePtr, SourcePtr, DestPtr
-    clc
-    lda SourcePtr
-    adc AddValuePtr
-    sta DestPtr
-    lda SourcePtr+1
-    adc AddValuePtr+1
-    sta DestPtr+1
-.endmacro
-
-
-.macro  SubFrom16bitPtrValue toSub, pointer
-    sec
-    lda pointer
-    sbc toSub
-    sta pointer
-    bcs :+
-    dec pointer+1
-:
-.endmacro
-
-.macro MS_SET_CHAR_RAM_PTR
-    ; Set char ram to be used by the current sprite
-    lda SLOT_NUM
-    asl ; multiply by two
-    tay ; move to y
-    lda SpritesPosCharRam,y ; Points to the ram for each slot
-    sta CHAR_RAM_PTR
-    lda SpritesPosCharRam+1,y
-    sta CHAR_RAM_PTR+1
-.endmacro
-
-.macro MS_POS_CHAR_ON_SCREEN
-    ; Check position of the sprite on screen
-    lda dispx
-    lsr
-    lsr
-    lsr ; Divide by 8
-    sta POS_X_CHAR
-
-    lda dispx
-    lsr
-    and #%00000011
-    sta OFFSET_X
-
-    lda dispy
-    lsr
-    lsr
-    lsr ; Divide by 8
-    sta POS_Y_CHAR
-
-    lda dispy
-    and #%00000110
-    sta OFFSET_Y
-.endmacro
-
-.macro MS_CLEAN_SPRITE_RAM
-    ;Find background element
-    ; ldx POS_X_CHAR
-    ; ldy POS_Y_CHAR
-    ; jsr findElementInBackground
-
-    ; ldy #0
-    ; lda (TABLE_BKG_PTR),y
-
-    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
-
-    ; ldy #24
-    ; lda (TABLE_BKG_PTR),y
-
-    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
-
-    ; ldy #48
-    ; lda (TABLE_BKG_PTR),y
-
-    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
-
-    ; ldy #1
-    ; lda (TABLE_BKG_PTR),y
-
-    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
-
-    ; ldy #25
-    ; lda (TABLE_BKG_PTR),y
-
-    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
-
-    ; ldy #49
-    ; lda (TABLE_BKG_PTR),y
-
-    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
-
-    ; ldy #2
-    ; lda (TABLE_BKG_PTR),y
-
-    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
-
-    ; ldy #26
-    ; lda (TABLE_BKG_PTR),y
-
-    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
-
-    ; ldy #50
-    ; lda (TABLE_BKG_PTR),y
-
-    ; MS_WRITE_BACKGROUND_SPRITE_CHAR
-
-    ; SubFrom16bitPtrValue #72, CHAR_SPRITE_PTR
-
-	ldy #0
-	lda #0
-:
-	sta (CHAR_RAM_PTR),y
-	iny
-	cpy #72
-	bne :-
-.endmacro
-
-.macro MS_COPY_SPRITE_CHAR_RAM
-    ; Copy selected sprite from table to char ram
-    ; moved to the right position in the 3x3 sprite char
-    ; and merged with background
-
-    ; First column (uses the left side of the sprite)
-    AddTo16bitPtrValueDest OFFSET_Y, CHAR_RAM_PTR, TEMP_PTR
-    MS_COPY_8x24_SPRITE_CHAR_RAM z80_c
-
-    ; Third column (uses the left side of the sprite - different filter)
-    AddTo16bitPtrValue #48, TEMP_PTR
-    MS_COPY_8x24_SPRITE_CHAR_RAM z80_b      
-
-    ; Second column (uses the right side of the sprite no filter)
-    AddTo16bitPtrValue #16, SPRITE_PTR
-    SubFrom16bitPtrValue #24, TEMP_PTR
-    MS_COPY_8x24_SPRITE_CHAR_RAM_NO_FILTER  
-.endmacro
-
-.macro MS_COPY_8x24_SPRITE_CHAR_RAM FILTER_SPRITE
-    ldy #$0f
-:  
-    lda (SPRITE_PTR),y
-    and FILTER_SPRITE
-    ora (TEMP_PTR),y    
-    sta (TEMP_PTR),y
-    dey
-    bpl :-
-.endmacro
-
-.macro MS_COPY_8x24_SPRITE_CHAR_RAM_NO_FILTER
-    ldy #$0f
-:  
-    lda (SPRITE_PTR),y
-    ora (TEMP_PTR),y
-    sta (TEMP_PTR),y
-    dey
-    bpl :-
-.endmacro
-
-.macro MS_DRAW_SPRITE_ON_SCREEN
-    ; Draw the entire sprite on screen
-
-    lda SLOT_NUM    ; Load the number into the accumulator
-    asl         ; Shift left (multiply by 2)
-    asl         ; Shift left (multiply by 4)
-    asl         ; Shift left (multiply by 8)
-    clc         ; Clear the carry flag
-    adc SLOT_NUM    ; Add the original number
-    tax         ; Store the result in x
-
-    lda SpriteSlotPositionCharRam,x
-    inx
-    ldy #0
-    sta (scraddr),y
-    lda SpriteSlotPositionCharRam,x
-    inx
-    iny
-    sta (scraddr),y
-    lda SpriteSlotPositionCharRam,x
-    inx
-    iny
-    sta (scraddr),y
-    lda SpriteSlotPositionCharRam,x
-    inx
-    ldy #24
-    sta (scraddr),y
-    lda SpriteSlotPositionCharRam,x
-    inx
-    iny
-    sta (scraddr),y
-    lda SpriteSlotPositionCharRam,x
-    inx
-    iny
-    sta (scraddr),y
-    lda SpriteSlotPositionCharRam,x
-    inx
-    ldy #48
-    sta (scraddr),y
-    lda SpriteSlotPositionCharRam,x
-    inx
-    iny
-    sta (scraddr),y
-    lda SpriteSlotPositionCharRam,x
-    inx
-    iny
-    sta (scraddr),y
-.endmacro
+	ASCII_NEWLINE = 13
 
 ;===============================================================
 ; Game starts here
 ;===============================================================
 
-	jsr Init
+;--------------------------------------------------------------
+; If a font is required...
+;--------------------------------------------------------------
 
-;-------------------------------------------------------------------
-; Clear ZP variables
-;-------------------------------------------------------------------
-; - Clears addresses $00-$ff, Beware of interrupts!
-; - Input :
-;	-
-; - Output:
-;	Addresses $00-$ff = 0
-;-------------------------------------------------------------------
+start:
+
+; Clear variables
 
 	lda #0
 	tax
@@ -440,1378 +182,52 @@ clrloop:
 	inx
 	bne clrloop
 
-;------------------------------------------------------------------
-; Start game
-;------------------------------------------------------------------
-
-	jsr cls				; Clear screen
-start:
 	jsr game	 		; start the game.
 	jmp start
-
-;------------------------------------------------------------------
-; Sprite table 
-;------------------------------------------------------------------
-
-; ix+0  = type.
-; ix+1  = sprite image number.
-; ix+2  = frame.
-; ix+3  = y coord.
-; ix+4  = x coord.
-
-; ix+5  = new type.
-; ix+6  = new image number.
-; ix+7  = new frame.
-; ix+8  = new y coord.
-; ix+9  = new x coord.
-
-; ix+10 = direction.
-; ix+11 = parameter 1.
-; ix+12 = parameter 2.
-; ix+13 = jump pointer low.
-; ix+14 = jump pointer high.
-; ix+15 = data pointer low.
-; ix+16 = data pointer high.
-
-; block NUMSPR * TABSIZ,255
-
-sprtab:	.res NUMSPR*TABSIZ,255		; Sprite on screen variable table
-
-ssprit:	.byte 255,255,255,255,255	; Temp. sprite storage
-	.byte 255,255,0,192,120
-	.byte 0,0,0,255,255
-	.byte 255,255
-
-roomtb:	.byte 7				; start room map offset.
-
-;-------------------------------------------------------------------
-; Initialize a sprite
-;-------------------------------------------------------------------
-; - Copy SPRITEPOSITION data to sprite on screen table
-; - Call INITSPRITE event
-; - Input :
-;	HL = Sprite variable address
-;	IX = Sprite on screen table address
-; - Output:
-;	Updated sprite on screen table
-;-------------------------------------------------------------------
-
-cpsp:
-	ldy #0				; fetch byte from table.
-	lda (z80_hl),y
-	sta (z80_ix),y			; set up type.
-	ldy #PAM1ST
-	sta (z80_ix),y 			; set up type.
-
-	inc z80_l 			; move to next byte.
-	bne :+
-	inc z80_h
-:
-	ldy #0 				; fetch byte from table.
-	lda (z80_hl),y
-	ldy #6
-	sta (z80_ix),y			; set up image.
-
-	inc z80_l 			; move to next byte.
-	bne :+
-	inc z80_h
-:
-	ldy #0
-	lda (z80_hl),y 			; fetch byte from table.
-	ldy #8
-	sta (z80_ix),y 			; set up coordinate.
-
-	lda #200 			; set initial coordinate off screen.
-	ldy #3
-	sta (z80_ix),y
-
-	inc z80_l 			; move to next byte.
-	bne :+
-	inc z80_h
-:
-	ldy #0 				; fetch byte from table.
-	lda (z80_hl),y
-	ldy #9
-	sta (z80_ix),y 			; set up coordinate.
-
-	inc z80_l 			; move to next byte.
-	bne :+
-	inc z80_h
-:
-	lda #0				; zeroes in accumulator.
-	ldy #7 				; reset frame number.
-	sta (z80_ix),y
-	ldy #10 			; reset direction.
-	sta (z80_ix),y
-	ldy #13				; reset jump pointer low.
-	sta (z80_ix),y
-	iny	 			; reset jump pointer high.
-	sta (z80_ix),y
-
-	lda #255 			; reset data pointer to auto-restore.
-	ldy #16
-	sta (z80_ix),y
-evis0:
-	lda z80_i
-	pha
-	lda z80_x
-	pha
-	lda z80_h
-	pha
-	lda z80_l
-	pha
-
-	jsr evnt09 			; perform event.
-
-	pla
-	sta z80_l
-	pla
-	sta z80_h
-	pla
-	sta z80_x
-	pla
-	sta z80_i
-
-	clc
-	lda z80_x 			; distance to next odd/even entry.
-	adc #TABSIZ		 	; next sprite.
-	sta z80_x
-	bcc :+
-	inc z80_i
-:
-	rts
-
-;-------------------------------------------------------------------
-; Locate screen number in mapdat.
-;-------------------------------------------------------------------
-; - Input :
-;	A = Screennr
-; - Output:
-;	roomtb = index to location in mapdat
-;	Draw new room
-;-------------------------------------------------------------------
-
-nwscr:
-	ldx #0				; start of map data.
-nwscr0:
-	cmp mapdat,x
-	beq nwscr1			; have we found a match for screen?
-	inx 				; next room.
-	bne nwscr0			; keep looking.
-	rts
-nwscr1:
-	stx roomtb			; set the map position.
-	jmp scrl1			; draw new room.
-
-;-------------------------------------------------------------------
-; Gravity processing
-;-------------------------------------------------------------------
-; - There are 2 ways a sprite can fall:
-;	New gravity
-;	Old gravity
-; - New gravity:
-;	Falling distance is calculated
-;	After 8 iterations, FELLTOOFAR event is called
-; - Old gravity:
-;	(compatabe with 4.6 and 4.7)
-;	After exceeding the jumptable, FELLTOOFAR event is called
-; - Input :
-;	IX = Sprite variable address
-; - Output:
-;	Updated y-coordinate sprite
-;-------------------------------------------------------------------
-
-grav:
-grav_skip:
-	ldy #13				; in-air flag.
-	lda (z80_ix),y
-	beq gravex			; are we in the air?
-	clc
-	adc #1				; increment it.
-	beq ogrv			; set to 255, use old gravity.
-	sta (z80_ix),y			; write new setting.
-	lsr a				; every other frame.
-	bcs grav0			; don't apply gravity this time.
-	iny				; pixels to move.
-	lda (z80_ix),y
-	cmp #16				; reached maximum?
-	beq grav0			; yes, continue.
-	clc				; slow down ascent/speed up fall.
-	adc #1
-	sta (z80_ix),y
-grav0:	ldy #14				; get distance to move.
-	lda (z80_ix),y
-	pha
-	asl a
-	pla
-	ror a				; divide by 2.
-grav1:	beq gravex			; any movement required?
-	cmp #128			; is it up or down?
-	bcs gravu			; it's up.
-gravd:	sta z80_b			; set pixels to move.
-gravd0:	jsr cangd			; can we go down?
-	bne gravst			; can't move down, so stop.
-	ldy #8				; adjust new x coord.
-	lda (z80_ix),y
-	clc
-	adc #1
-	sta (z80_ix),y
-	dec z80_b
-	bne gravd0
-gravex:	rts				; ret
-
-gravu:	eor #$ff			; flip the sign so it's positive.
-	clc
-	adc #1
-	sta z80_b			; set pixels to move.
-gravu0:	jsr cangu			; can we go up?
-	beq :+
-	jmp ifalls			; can't move up, go down next.
-:
-	ldy #8				; adjust new x coord.
-	lda (z80_ix),y
-	sec
-	sbc #1
-	sta (z80_ix),y
-	dec z80_b
-	bne gravu0
-	rts				; ret
-gravst:	ldy #14				; jump pointer high.
-	lda (z80_ix),y
-	pha
-	lda #0
-	sta (z80_ix),y			; store new speed.
-	dey
-	sta (z80_ix),y			; reset falling flag.
-	pla
-	cmp #8				; was speed the maximum?
-evftf:	bne :+
-	jmp evnt15			; yes, fallen too far.
-:
-	rts				; ret
-
-; Old gravity processing for compatibility with 4.6 and 4.7.
-
-ogrv:
-	ldy #14				; get index to table.
-	lda (z80_ix),y			; pixels to move.
-	tax
-	lda jtab,x			; jump table.
-	cmp #99				; reached the end?
-	bne ogrv0			; no, continue.
-	dex				; go back to previous value.
-	lda jtab,x			; fetch that from table.
-	jmp ogrv1
-ogrv0:
-	pha
-	ldy #14				; point to next table entry.
-	lda (z80_ix),y
-	clc
-	adc #1
-	sta (z80_ix),y
-	pla
-ogrv1:					; any movement required?
-	beq ogrvex			; no, not this time.
-	cmp #128			; is it up or down?
-	bcs ogrvu			; it's up.
-ogrvd:	sta z80_b			; set pixels to move.
-ogrvd0:	jsr cangd			; can we go down?
-	bne ogrvst			; can't move down, so stop.
-	ldy #8				; adjust new x coord.
-	lda (z80_ix),y
-	clc
-	adc #1
-	sta (z80_ix),y
-	dec z80_b
-	bne ogrvd0
-	rts				; ret
-
-ogrvu:	eor #$ff			; flip the sign so it's positive.
-	clc
-	adc #1
-	sta z80_b			; set pixels to move.
-ogrvu0:	jsr cangu			; can we go up?
-	bne ogrv2			; can't move up, go down next.
-	ldy #8				; adjust new x coord.
-	lda (z80_ix),y
-	sec
-	sbc #1
-	sta (z80_ix),y
-	dec z80_b
-	bne ogrvu0
-ogrvex:	rts				; ret
-
-ogrvst:	ldy #14				; get index to table.
-	lda (z80_ix),y			; points to jump value.
-	tax
-	lda #0
-	sta (z80_ix),y			; reset jump flag.
-	dey
-	sta (z80_ix),y			; reset pointer.
-	lda jtab,x			; fetch byte from table.
-	cmp #99				; is it the end marker?
-	bne :+
-	jmp evnt15			; yes, fallen too far.
-:
-	rts				; ret
-
-ogrv2:	ldx #0				; jump table.
-	lda #0				; offset into table.
-	sta z80_b
-ogrv4:	lda jtab,x			; fetch table byte.
-	cmp #100			; hit end or downward move?
-	bcc ogrv3			; yes.
-	inx				; next byte of table.
-	inc z80_b			; next offset.
-	jmp ogrv4			; keep going until we find crest/end of table.
-ogrv3:	ldy #14				; set next table offset.
-	lda z80_b
-	sta (z80_ix),y
-	rts				; ret
-
-; Initiate fall check.
-
-ifall:	ldy #13				; jump pointer flag.
-	lda (z80_ix),y			; are we in the air?
-	beq :+				; if set, we're already in the air.
-	rts
-:
-	ldy #9				; y coordinate.
-	lda (z80_ix),y
-	sta dispx
-	ldy #8				; add x coordinate.
-	lda (z80_ix),y
-	clc
-	adc #SPR_HGT			; look down 16 pixels.
-	sta dispy			; coords in hl.
-	jsr tstbl			; get map address.
-	jsr plchk			; block, platform check.
-	beq :+				; it's solid, don't fall.
-	rts
-:
-	inc bufaddr			; look right one cell.
-	jsr plchk			; block, platform check.
-	beq :+	
-	rts				; it's solid, don't fall.
-:
-	lda dispx			; y coordinate.
-	and #7				; position straddling block cells.
-	beq ifalls			; no more checks needed.
-	inc bufaddr			; look to third cell.
-	jsr plchk			; block, platform check.
-	beq ifalls
-	rts				; it's solid, don't fall.
-
-ifalls:	ldy #13				; set in air flag.
-	lda (z80_ix),y
-	clc
-	adc #1
-	sta (z80_ix),y
-	lda #0				; initial speed = 0
-	iny
-	sta (z80_ix),y
-	rts				; ret
-
-tfall:	ldy #13				; jump pointer flag.
-	lda (z80_ix),y
-	beq :+				; are we in the air?
-	rts				; if set, we're already in the air.
-:	jsr ifall			; do fall test.
-	ldy #13				; get falling flag.
-	lda (z80_ix),y
-	bne :+				; is it set?
-	rts				; no.
-:	lda #255
-	sta (z80_ix),y			; we're using the table.
-	jmp ogrv2			; find position in table.
-
-;-------------------------------------------------------------------
-; Get frame data for a particular sprite.
-;-------------------------------------------------------------------
-; - Calculate frame data address
-; - Input :
-;	A = Framenumber
-; - Output:
-;	HL = Frame data address
-;-------------------------------------------------------------------
-
-gfrm:
-	asl a	 		 	; multiple of 2.
-	clc
-	adc #<frmlst 			; frames used by game.
-	sta z80_l
-	lda #>frmlst
-	adc #0
-	sta z80_h 			; point to frame start.
-	rts
-
-;-------------------------------------------------------------------
-; Find spriteposition list for current room.
-;-------------------------------------------------------------------
-; - Calculate SPRITEPOSITION list address for screen
-; - Input :
-;	scno
-; - Output:
-;	HL = Address SPRITEPOSITION list for screen scno
-;-------------------------------------------------------------------
-
-sprlst:
-	lda #<nmedat 			; list of enemy sprites.
-	sta z80_l
-	lda #>nmedat
-	sta z80_h
-	ldx scno 			; screen number.
-	bne sprls2 			; is it the first screen?
-	rts 				; yes, don't need to search data.
-sprls2:
-	ldy #0
-sprls1:
-	lda (z80_hl),y 			; fetch type of sprite.
-	cmp #255			; is it an end marker?
-	beq sprls0 			; yes, end of this room.
-
-	clc 				; point to next sprite in list.
-	lda z80_l
-	adc #NMESIZ
-	sta z80_l
-	bcc :+
-	inc z80_h
-:
-	jmp sprls1 			; continue until end of room.
-sprls0:
-	inc z80_l 			; point to start of next screen.s
-	bne :+
-	inc z80_h
-:
-	dex
-	bne sprls1 			; continue until room found.
-	rts
-
-
-;-------------------------------------------------------------------
-; Clear all but a single player sprite.
-;-------------------------------------------------------------------
-; - Set spritetype = 255 for every sprite in sprite on screen table
-;   Except for the player
-; - Input :
-;	-
-; - Output:
-;	All spritetypes in sprite on screen table are 255 except player
-;-------------------------------------------------------------------
-
-nspr:
-	lda #NUMSPR			; sprite slots in table.
-	sta sprcnt
-	lda #<sprtab 			; sprite table.
-	sta z80_x
-	lda #>sprtab
-	sta z80_i
-nspr0:
-	ldy #0 				; fetch sprite type.
-	lda (z80_ix),y 			; is it a player?
-	beq nspr1 			; yes, keep this one.
-
-	lda #255
-	ldy #0 				; fetch sprite type.
-	sta (z80_ix),y 			; delete sprite.
-	ldy #5
-	sta (z80_ix),y 			; remove next type.
-
-	clc	 			; next sprite.
-	lda z80_x
-	adc #TABSIZ 			; distance to next odd/even entry.
-	sta z80_x
-	bcc :+
-	inc z80_i
-:
-	dec sprcnt	 		; one less space in the table.
-	bne nspr0
-	rts
-nspr1:
-	lda #255
-	ldy #0
-	sta (z80_ix),y 			; delete sprite.
-
-	clc	 			; point to next sprite.
-	lda z80_x
-	adc #TABSIZ 			; distance to next odd/even entry.
-	sta z80_x
-	bcc :+
-	inc z80_i
-:
-	dec sprcnt	 		; one less to do.
-	bne nspr2
-	rts
-nspr2:
-	lda #255
-	ldy #0
-	sta (z80_ix),y 			; delete sprite.
-	ldy #5
-	sta (z80_ix),y 			; remove next type.
-
-	clc	 			; next sprite.
-	lda z80_x
-	adc #TABSIZ 			; distance to next odd/even entry.
-	sta z80_x
-	bcc :+
-	inc z80_i
-:
-	dec sprcnt	 		; one less space in table.
-	bne nspr2
-	rts
-
-;-------------------------------------------------------------------
-; Two initialisation routines.
-;-------------------------------------------------------------------
-; - Initialise sprites
-; - Set spritetype = 255 for every disabled sprite
-; - Find free slot and copy everything from list to table.
-; - Input :
-;	HL = Address SRITEPOSITION list
-; - Output:
-;	Spritedata new sprite copied into sprite on screen table
-;-------------------------------------------------------------------
-
-ispr:
-	lda #NUMSPR			; sprite slots in table.
-	sta sprcnt
-	lda #<sprtab			; sprite table.
-	sta z80_x
-	lda #>sprtab
-	sta z80_i
-ispr2:
-	ldy #0
-	lda (z80_hl),y 			; fetch byte.
-	cmp #255 			; is it an end marker?
-	bne :+
-	rts 				; yes, no more to do.
-:
-ispr1:
-	ldy #0
-	lda (z80_ix),y 			; fetch sprite type.
-	cmp #255 			; is it enabled yet?
-	bne ispr4			; yes, try another slot.
-
-	ldy #5
-	lda (z80_ix),y		 	; next type.
-	cmp #255 			; is it enabled yet?
-	beq ispr3 			; no, process this one.
-ispr4:
-	clc 				; next sprite.
-	lda z80_x
-	adc #TABSIZ		 	; distance to next odd/even entry.
-	sta z80_x
-	bcc :+
-	inc z80_i
-:
-	dec sprcnt
-	bne ispr1 			; repeat for remaining sprites.
-	rts  				; no more room in table.
-ispr3:
-	jsr cpsp			; initialise a sprite.
-	dec sprcnt			; one less space in the table.
-	bne ispr2
-	rts
-
-
-;-------------------------------------------------------------------
-; Initialise sprites
-;-------------------------------------------------------------------
-; - but not player, we're keeping the old one.
-;-------------------------------------------------------------------
-
-kspr:
-	ldx #NUMSPR			; sprite slots in table.
-	lda #<sprtab 			; sprite table.
-	sta z80_x
-	lda #>sprtab
-	sta z80_i
-kspr2:
-	ldy #0
-	lda (z80_hl),y 			; fetch byte.
-	cmp #255 			; is it an end marker?
-	bne :+
-	rts 				; yes, no more to do.
-:
-	cmp #0
-	bne kspr1 			; no, add to table as normal.
-
-	clc 				; next sprite.
-	lda z80_l
-	adc #NMESIZ		 	; distance to next odd/even entry.
-	sta z80_l
-	bcc :+
-	inc z80_h
-:
-	jmp kspr2
-kspr1:
-	ldy #0 				; fetch sprite type.
-	lda (z80_ix),y
-	cmp #255 			; is it enabled yet?
-	bne kspr4 			; yes, try another slot.
-
-	ldy #5 				; next type.
-	lda (z80_ix),y
-	cmp #255 			; is it enabled yet?
-	beq kspr3 			; no, process this one.
-kspr4:
-	clc 				; next sprite.
-	lda z80_x
-	adc #TABSIZ		 	; distance to next odd/even entry.
-	sta z80_x
-	bcc :+
-	inc z80_i
-:
-	dex	 			; repeat for remaining sprites.
-	bne kspr1
-	rts  				; no more room in table.
-kspr3:
-	jsr cpsp 			; copy sprite to table.
-	dex	 			; one less space in the table.
-	bne kspr2
-	rts
-
-;-----------------------------------------------------------
-; Animates a sprite.
-;
-; Input:
-;  IX = sprite address
-;  HL = last sprite address
-;-----------------------------------------------------------
-
-animsp:
-	and frmno
-	beq :+
-	rts
-:
-	ldy #6
-	lda (z80_ix),y			; sprite image
-	jsr gfrm			; get frame data.
-
-	inc z80_l			; point to frames.
-	bne :+
-	inc z80_h
-:
-	ldy #7
-	lda (z80_ix),y			; sprite frame.
-	clc
-	adc #1				; next one along.
-	ldy #0
-	cmp (z80_hl),y			; reached the last frame?
-	bcc anims0			; no, not yet.
-	lda #0				; start at first frame.
-anims0:
-	ldy #7
-	sta (z80_ix),y			; new frame.
-	rts
-
-;--------------------------------------------------------------
-; Animate back
-;
-; Input:
-;  IX = sprite address
-;  HL = last sprite address
-;--------------------------------------------------------------
-
-animbk:
-	and frmno
-	beq :+
-	rts
-:
-	ldy #6
-	lda (z80_ix),y			; sprite image.
-	jsr gfrm			; get frame data.
-
-	inc z80_l 			; point to frames.
-	bne :+
-	inc z80_h
-:
-	ldy #7
-	lda (z80_ix),y 			; sprite frame.
-	beq :+
-	jmp rtanb0 			; yes, start at end.
-:
-	ldy #0
-	lda (z80_hl),y 			; last sprite.
-rtanb0:
-	sec
-	sbc #1				; next one along.
-	jmp anims0			; set new frame.
-
-;--------------------------------------------------------------
-; Check for collision with other sprite, strict enforcement.
-;
-; Input:
-;  b		= sprite to test for
-;  ix		= current sprite pointer
-;
-; global:	b
-; local:	x,y,hl,de,skptr
-; calls:	-
-;--------------------------------------------------------------
-
-sktyp:
-	lda #<sprtab			; sprite table.
-	sta z80_l
-	lda #>sprtab
-	sta z80_h
-numsp2:
-	lda #NUMSPR			; number of sprites.
-	sta sktptr
-sktyp0:
-	lda z80_l 			; store pointer to sprite.
-	sta skptr
-	lda z80_h
-	sta skptr+1
-
-	ldy #0
-	lda (z80_hl),y 			; get sprite type.
-	cmp z80_b			; is it the type we seek?
-	beq coltyp			; yes, we can use this one.
-sktyp1:
-	clc
-	lda skptr			; retrieve sprite pointer.
-	adc #TABSIZ			; size of each entry.
-	sta z80_l
-	lda skptr+1
-	adc #0
-	sta z80_h
-	dec sktptr			; one less iteration.
-	bne sktyp0			; keep going until we find a slot.
-	lda #0				; default to ROM address - no sprite.
-	sta z80_l
-	sta z80_h
-	sta skptr			; store pointer to sprite.
-	sta skptr+1
-
-	clc				; don't return with zero flag set.
-	rts 				; didn't find one.
-
-;skptr:	.word 0				; search pointer.
-;sktptr:	.byte 0
-
-coltyp:
-	ldy #0
-	lda (z80_ix),y			; current sprite type.
-	cmp z80_b			; seeking sprite of same type?
-	beq colty1			; yes, need to check we're not detecting ourselves.
-colty0:
-	ldy #9				; distance to x position in table.
-	lda (z80_hl),y			; fetch x coordinate.
-	sta z80_e
-	dey
-	lda (z80_hl),y			; fetch y coordinate.
-	sta z80_d
-
-; Drop into collision detection.
-
-colc16:
-	ldy #9
-	lda (z80_ix),y		 	; x coord.
-	sec				; subtract x.
-	sbc z80_e
-	bcs  colc1a 			; result is positive.
-	eor #$ff			; make negative positive.
-	clc
-	adc #1
-colc1a:
-	cmp #COLDISTX			; within x range?
-	bcs sktyp1			; no - they"ve missed.
-	sta z80_c			; store difference.
-
-	ldy #8
-	lda (z80_ix),y			; y coord.
-	sec
-	sbc z80_d			; subtract y.
-	bcs colc1b			; result is positive.
-	eor #$ff			; make negative positive.
-	clc
-	adc #1
-colc1b:
-	cmp #COLDISTY			; within y range?
-	bcs sktyp1 			; no - they've missed.
-	clc				; add x difference.
-	adc z80_c
-	cmp #COLDISTX+COLDISTY-5	; only 5 corner pixels touching?
-	bcs :+
-	sec
-	rts 				; carry set if there's a collision.
-:
-	jmp sktyp1			; try next sprite in table.
-colty1:
-	lda z80_x  			; compare the two.
-	cmp z80_l
-	bne end_col
-	lda z80_i
-	cmp z80_h
-	bne end_col
-	jmp sktyp1 			; addresses are identical.
-end_col:
-	jmp colty0
-
-;-----------------------------------------------------------
-; Display number, left aligned
-; 
-; Input:
-;  a		= number
-;
-; global:	-
-; local:	a,y,bc,hl,displ0
-; calls:	num2ch,dmsg3
-;-----------------------------------------------------------
-
-disply:
-	sta z80_a
-	lda #<displ0			; display workspace.
-	sta z80_c
-	lda #>displ0
-	sta z80_b
-	lda z80_a
-	jsr num2ch			; convert accumulator to string.
-displ1:
-	dec z80_c			; back one character.
-	bne :+
-	dec z80_b
-:
-	ldy #0
-	lda (z80_bc),y			; fetch digit.
-	ora #128			; insert end marker.
-	sta (z80_bc),y			; new value.
-
-	lda #<displ0			; display space.
-	sta z80_l
-	lda #>displ0
-	sta z80_h
-	jmp dmsg3			; display the string.
-
-displ0:	.byte 0,0,0,13+128
-
-;----------------------------------------------------------------
-; Initialise screen.
-;
-; global:	roomtb,scno
-; local:	-
-; calls:	tstcs
-;----------------------------------------------------------------
-
-initsc:
-	lda roomtb 			; whereabouts in the map are we?
-	jsr tstsc 			; find displacement.
-	cmp #255 			; is it valid?
-	beq init_end 			; no, it's rubbish.
-	sta scno			; store new room number.
-init_end:
-	rts
-
-;----------------------------------------------------------------
-; Test screen.
-;
-; global:	-
-; local:	x
-; calls:	-
-;----------------------------------------------------------------
-
-tstsc:
-	sta tmproom
-	clc
-	adc #MAPWID 			; add width in case we"re negative.
-	tax 				; add displacement to map data.
-	lda mapdat-MAPWID,x 		; find room number there.
-	rts
-
-;tmproom:	.byte 0
-
-;--------------------------
-; Screen left.
-;--------------------------
-
-scrl:
-	lda roomtb 			; present room table pointer.
-	sec
-	sbc #1				; room left.
-scrl0:
-	jsr tstsc			; test screen.
-	cmp #255			; is there a screen this way?
-	bne :+
-	rts				; no, return to loop.
-:
-	lda tmproom			; restore room displacement.
-	sta roomtb			; new room table position.
-scrl1:
-	jsr initsc 			; set new screen.
-	lda #2
-	sta restfl 			; set it.
-	rts
-scrr:
-	lda roomtb 			; room table pointer.
-	clc
-	adc #1				; room right.
-	jmp scrl0
-scru:
-	lda roomtb 			; room table pointer.
-	sec
-	sbc #MAPWID 			; room up.
-	jmp scrl0
-scrd:
-	lda roomtb 			; room table pointer.
-	clc
-	adc #MAPWID 			; room down.
-	jmp scrl0
-
-;----------------------------------------------------------------------
-; Line drawn, now work out next target address.
-;----------------------------------------------------------------------
-
-nline:
-	clc
-	lda scraddr 			; get low byte of address.
-	adc #ScrHeight
-	sta scraddr 			; new low byte of address.
-	bcc :+
-	inc scraddr+1 			; new high byte of address.
-:
-	rts
-
-;-----------------------------------------
-; Get sprite address calculations.
-; gspran = new sprite, gsprad = old sprite.
-;
-; Input:
-;  IX = sprite address
-;-----------------------------------------
-
-gspran:
-	ldy #8
-	lda (z80_ix),y 			; new y coordinate.
-	sta dispy
-	ldy #9
-	lda (z80_ix),y 			; new x coordinate.
-	sta dispx
-	ldy #6
-	lda (z80_ix),y 			; new sprite image.
-	jsr gfrm			; fetch start frame for this sprite.
-
-	ldy #0
-	lda (z80_hl),y 			; frame in accumulator.
-	ldy #7
-	clc
-	adc (z80_ix),y 			; new add frame number.
-	sta frmnr			; store frame number
-	jmp gspra0
-
-; Address of each sprite type's routine.
-
-evtyp0:	.word evnt00
-evtyp1:	.word evnt01
-evtyp2:	.word evnt02
-evtyp3:	.word evnt03
-evtyp4:	.word evnt04
-evtyp5:	.word evnt05
-evtyp6:	.word evnt06
-evtyp7:	.word evnt07
-evtyp8:	.word evnt08
-
-;--------------------------------------------------------------
-; Display sprites.
-;
-; Input:
-;  IX = sprite table
-;--------------------------------------------------------------
-
-dspr:
-	lda #(NUMSPR/2)			; number of sprites to display.
-	sta sprcnt
-dspr0:
-lda $7fff
-	ldy #0
-	lda (z80_ix),y 			; get sprite type.
-	cmp #255 			; is it enabled?
-	bne dspr1 			; yes, it needs deleting.
-dspr5:
-	ldy #5
-	lda (z80_ix),y 			; new type.
-	cmp #255			; is it enabled?
-	bne dspr3 			; yes, it needs drawing.
-dspr2:
-	ldy #5
-	lda (z80_ix),y 			; copy new type.
-	ldy #0
-	sta (z80_ix),y
-	ldy #6
-	lda (z80_ix),y 			; copy new image number.
-	ldy #1
-	sta (z80_ix),y
-	ldy #7
-	lda (z80_ix),y 			; copy new frame.
-	ldy #2
-	sta (z80_ix),y
-	ldy #8
-	lda (z80_ix),y 			; copy new y.
-	ldy #3
-	sta (z80_ix),y
-	ldy #9
-	lda (z80_ix),y 			; copy new x.
-	ldy #4
-	sta (z80_ix),y
-
-	clc
-	lda z80_x
-	adc #(TABSIZ*2)			; distance to next odd/even entry.
-	sta z80_x
-	lda z80_i
-	adc #0
-	sta z80_i 			; next sprite.
-	dec sprcnt
-	bne dspr0			; repeat for remaining sprites.
-	rts
-dspr1:
-	ldy #5
-	lda (z80_ix),y 			; type of new sprite.
-	cmp #255			; is this enabled?
-	bne dspr4 			; yes, display both.
-dspr6:
-	jsr sspria 			; show single sprite.
-	jmp dspr2
-
-; Displaying two sprites.  Don't bother redrawing if nothing has changed.
-
-dspr4:
-	ldy #4
-	lda (z80_ix),y			; old x.
-	ldy #9
-	cmp (z80_ix),y 			; compare with new value.
-	bne dspr7 			; they differ, need to redraw.
-
-	ldy #3
-	lda (z80_ix),y			; old y.
-	ldy #8
-	cmp (z80_ix),y 			; compare against new value.
-	bne dspr7			; they differ, need to redraw.
-
-	ldy #2
-	lda (z80_ix),y 			; old frame.
-	ldy #7
-	cmp (z80_ix),y 			; compare against new value.
-	jmp dspr7 			; they differ, need to redraw.
-
-	ldy #1
-	lda (z80_ix),y 			; old image.
-	ldy #6
-	cmp (z80_ix),y 			; compare against new value.
-	beq dspr2			; everything is the same, don't redraw.
-dspr7:
-	jsr sspric 			; delete old sprite, draw new one simultaneously.
-	jmp dspr2
-dspr3:
-	jsr ssprib 			; show single sprite.
-	jmp dspr2
-
-;sprcnt:	.byte 0
-
-;-----------------------------------------------------------
-; Bubble sort.
-;-----------------------------------------------------------
-
-;bsort:
-;	lda #NUMSPR - 1			; sprites to swap.
-;	sta qscnt
-
-;	lda #<sprtab 			; sprite table.
-;	sta z80_x
-;	lda #>sprtab
-;	sta z80_i
-;bsort0:
-;	ldy #0
-;	lda (z80_ix),y 			; first sprite type.
-;	cmp #255 			; is it switched off?
-;	beq swemp			; yes, may need to switch another in here.
-
-;	ldy #TABSIZ
-;	lda (z80_ix),y 			; check next slot exists.
-;	cmp #255 			; is it enabled?
-;	beq bsort2 			; no, nothing to swap.
-
-;	ldy #TABSIZ+3
-;	lda (z80_ix),y 			; fetch next sprite's coordinate.
-;	ldy #3
-;	cmp (z80_ix),y 			; compare with this x coordinate.
-;	bcc bsort1			; next sprite is higher - may need to switch.
-;bsort2:
-;	clc
-;	lda z80_x
-;	adc #TABSIZ 			; distance to next odd/even entry.
-;	sta z80_x
-;	bcc :+
-;	inc z80_i
-;:
-;	dec qscnt 
-;	bne bsort0			; repeat for remaining sprites.
-;	rts
-
-;qscnt:	.byte 0
-
-;bsort1:
-;	ldy #TABSIZ
-;	lda (z80_ix),y			; sprite on/off flag.
-;	cmp #255			; is it enabled?
-;	beq bsort2			; no, nothing to swap.
-;	jsr swspr			; swap positions.
-;	jmp bsort2
-;swemp:
-;	ldy #TABSIZ
-;	lda (z80_ix),y			; next table entry.
-;	cmp #255			; is that one on?
-;	beq bsort2			; no, nothing to swap.
-;	jsr swspr			; swap positions.
-;	jmp bsort2
-
-; Swap sprites.
-
-;swspr:
-;	lda z80_x			; table address 
-;	sta z80_e			; copy to de pair.
-;	sta z80_l			; copy to hl pair.
-;	lda z80_i
-;	sta z80_h
-;	sta z80_d
-
-;	clc
-;	lda z80_l
-;	adc #TABSIZ			; distance to second entry.
-;	sta z80_l
-;	bcc :+
-;	inc z80_h
-;:
-;	lda #TABSIZ			; bytes to swap.
-;	sta z80_b
-;	ldy #0
-;swspr0:
-;	lda (z80_hl),y			; fetch second byte.
-;	pha
-;	lda (z80_de),y 			; fetch first byte.
-;	sta (z80_hl),y 			; copy to second.
-;	pla
-;	sta (z80_de),y 			; copy to first sprite entry.
-
-;	inc z80_e 			; next byte.
-;	bne :+	
-;	inc z80_d
-;:
-;	inc z80_l 			; next byte.
-;	bne :+
-;	inc z80_h
-;:
-;	dec z80_b
-;	bne swspr0 			; swap all bytes in table entry.
-;	rts
-
-;--------------------------------------------------------------
-; Get messagenr x in hl
-;
-; Input:
-;  HL = pointer to message list
-;  X  = message number.
-;--------------------------------------------------------------
-
-getwrd:
-	cpx #0
-	bne:+ 				; first word in list?
-	rts 				; yep, don't search.
-:
-	ldy #0
-getwd0:
-	lda (z80_hl),y
-	pha
-	inc z80_l
-	bne :+
-	inc z80_h
-:
-	pla
-	cmp #128			; found end?
-	bmi getwd0			; no, carry on.
-	dex				; until we have right number.
-	bne getwd0
-	rts
-
-;-------------------------------------------------
-; Get next print column position.
-;-------------------------------------------------
-
-nexpos:
-	inc dispx			; move along one position.
-	lda dispx 			; get coordinate.
-;	and #31
-	rts 				; return with status in zero flag.
-
-;-------------------------------------------------
-; Get next print line position.
-;-------------------------------------------------
-
-nexlin:
-	inc dispy 			; newline.
-	lda dispy			; vertical position.
-	cmp #ScrHeight			; past screen edge?
-	bcs :+
-	rts				; no, still okay.
-:
-	lda #0				; restart at top.
-	sta dispy
-	rts
-
-; Definition of variables
-; Make sure pointers are arranged in the same order as the data itself.
-
-;msgptr:		.word msgdat	; messages
-;blkptr:		.word chgfx	; block graphics.
-;proptr:		.word bprop	; address of char properties.
-;sptptr:		.word sprgfx	; sprite graphics
-;frmptr:		.word frmlst	; sprite frames.
-;scrptr:		.word scdat	; address of screens.
-;nmeptr:		.word nmedat	; enemy start positions.
-;objptr:		.word objdta	; object graphics
 
 ; Don't change the order of these four.  
 ; Menu routine relies on winlft following wintop.
 
-wintop:		.byte WINDOWTOP	; top of window.
-winlft:		.byte WINDOWLFT	; left edge.
-winhgt:		.byte WINDOWHGT	; window height.
-winwid:		.byte WINDOWWID	; window width.
-numob:		.byte NUMOBJ	; number of objects in game.
+wintop:	.byte WINDOWTOP		; top of window.
+winlft:	.byte WINDOWLFT		; left edge.
+winhgt:	.byte WINDOWHGT		; window height.
+winwid:	.byte WINDOWWID		; window width.
+numob:	.byte NUMOBJ		; number of objects in game.
 
-tmpscr:		.byte 0
-sndtyp:		.byte 0
-colpatt:	.byte 0
-
-;----------------------------------------------------
-; Wait for keypress.
-;----------------------------------------------------
-
-prskey:
-	tya
-	pha
-prsloop:
-	jsr vsync
-	jsr READKEY
-	cpy #255
-	beq prsloop			; wait until key pressed
-
-prsrelease:
-	jsr vsync
-	jsr READKEY
-	cpy #255
-	bne prsrelease			; wait until key pressed
-
-	jsr joykey
-	pla
-	tay
-	rts
-
-;----------------------------------------------------
-; Process sprites.
-;----------------------------------------------------
-
-pspr:
-	lda #NUMSPR		; sprites to process.
-	sta sprptr
-
-	lda #<sprtab 		; sprite table.
-	sta z80_x
-	lda #>sprtab
-	sta z80_i
-pspr1:
-	ldy #0
-	lda (z80_ix),y		; fetch sprite type.
-	cmp #9 			; within range of sprite types?
-	bcs :+
-	jsr pspr2 		; yes, process this one.
-:
-	clc
-	lda z80_x
-	adc #TABSIZ 		; distance to next odd/even entry.
-	sta z80_x
-	bcc :+
-	inc z80_i		; next sprite.
-:
-	dec sprptr 		; repeat for remaining sprites.
-	bne pspr1
-	rts
-
-;sprptr:	.byte 0
-
-pspr2:
-	lda z80_x 		; store original sprite pointer.
-	sta ogptr
-	lda z80_i
-	sta ogptr+1
-	jsr pspr3		; do the routine.
-rtorg:
-	lda ogptr 		; restore original pointer to sprite.
-	sta z80_x
-	lda ogptr+1
-	sta z80_i
-rtorg0:
-	rts
-
-pspr3:
-	lda #<evtyp0		; sprite type events list.
-	sta z80_l
-	lda #>evtyp0
-	sta z80_h
-pspr4:
-	lda (z80_ix),y
-	asl a			; double accumulator.
-	clc
-	adc z80_l
-	sta z80_l
-	bcc :+
-	inc z80_h
-:
-	lda (z80_hl),y
-	sta z80_e 		; copy to de.
-	pha
-
-	inc z80_l 		; next byte of address.
-	bne :+
-	inc z80_h
-:
-	lda (z80_hl),y 		; address high.
-	sta z80_d
-
-	pha	 		; swap address into hl.
-	lda z80_h
-	sta z80_d
-	pla
-	sta z80_h
-	pla
-	sta z80_l
-	lda z80_l
-	sta z80_e
-	
-	jmp (z80_hl) 		; go there.
-
-; Variables start here.
 ; Pixel versions of wintop, winlft, winhgt, winwid.
 
-wntopx:		.byte (8 * WINDOWTOP)
-wnlftx:		.byte (8 * WINDOWLFT)
-wnbotx:		.byte ((WINDOWTOP * 8) + (WINDOWHGT * 8) - 16)
-wnrgtx:		.byte ((WINDOWLFT * 8) + (WINDOWWID * 8) - 16)-2
+wntopx:	.byte (8 * WINDOWTOP)
+wnlftx:	.byte (8 * WINDOWLFT)
+wnbotx:	.byte ((WINDOWTOP * 8) + (WINDOWHGT * 8) - 16)
+wnrgtx:	.byte ((WINDOWLFT * 8) + (WINDOWWID * 8) - 16)
+
+; Make sure pointers are arranged in the same order as the data itself.
+
+frmptr:	.word frmlst        ; sprite frames.
 
 ; Assorted game routines which can go in contended memory.
 
 ;--------------------------------------------------------------
-; Entry for inventory called by the INV command
+; Modify for inventory.
+; called by the INV command
 ;
 ; Input:
 ;  X   = message nr with objects seperated with ,
 ;
 ; Output:
-;  OPT = selected objectnr of INV menu
+;  OPT = selected line nr of INV menu
 ;--------------------------------------------------------------
 
 .if mflag
 minve:
+.if xflag
+	lda #WINDOWHGT
+	asl a
+	sta winhgt
+	lda #WINDOWWID
+	asl a
+	sta winwid
+.endif
 	lda #<(invdis)		; routine address.
 	sta mod0+1		; set up menu routine.
 	sta mod2+1		; set up count routine.
@@ -1825,7 +241,8 @@ minve:
 	jmp dbox		; do menu routine.
 
 ;--------------------------------------------------------------
-; Entry for menu called by the MENU command
+; Modify for menu.
+; called by the MENU command
 ;
 ; Input:
 ;  X   = message nr with menu items seperated with ,
@@ -1854,9 +271,9 @@ mmenu:
 ;--------------------------------------------------------------
 
 dbox:
-	lda #<(msgdat)		; pointer to messages.
+	lda #<msgdat		; pointer to messages.
 	sta z80_l
-	lda #>(msgdat)
+	lda #>msgdat
 	sta z80_h
 	
 	jsr getwrd		; get message number.
@@ -1890,7 +307,7 @@ dbox6:
 	lda z80_a		; reached end of line?
 	cmp #','
 	beq dbox3		; yes.
-	cmp #13
+	cmp #ASCII_NEWLINE
 	beq dbox3		; yes.
 	inc z80_b		; add to this line"s width.
 	lda z80_a
@@ -1944,9 +361,9 @@ dbox8:
 	adc winlft		; add left edge of window.
 	sta blft		; box left.
 
-	lda #<(font-256)	; font.
+	lda #<(FONT-256)		; font.
 	sta grbase		; set up for text display.
-	lda #>(font-256)
+	lda #>(FONT-256)
 	sta grbase+1
 
 	lda TmpAddr+1		; restore message pointer.
@@ -1972,14 +389,14 @@ mod0:
 	lda bwid		; box width.
 	sta z80_b		; store width.
 dbox0:
-	ldy #0
-	lda (z80_hl),y		; get character.
+	ldy #0			; get character.
+	lda (z80_hl),y
 	cmp #','		; end of line?
 	beq dbox1		; yes, next one.
-	cmp #13			; end of line?
+	cmp #ASCII_NEWLINE			; end of line?
 	beq dbox1		; yes, next one.
 
-	cmp #141		; end of line?
+	cmp #141			; end of line?
 	bne :+
 	dec bwid
 	jmp dbox7		; yes, next one.
@@ -2018,7 +435,7 @@ dbox9:
 :
 	cmp #','		; another line?
 	beq dbox10		; yes, do next line.
-	cmp #13			; another line?
+	cmp #ASCII_NEWLINE	; another line?
 	beq dbox10		; yes, do next line.
 	cmp #128		; end of message?
 	bcs :+
@@ -2065,8 +482,6 @@ dbox14:
 	jsr joykey		; get controls.
 	cmp #$7f		; anything pressed?
 	bne dbox14		; yes, debounce it.
-	lda #2
-	sta tmp
 	jsr dbar		; draw bar.
 dbox12:
 	jsr joykey		; get controls.
@@ -2077,8 +492,6 @@ dbox12:
 mod1:
 	jmp fstd		; yes, job done.
 :
-	lda #0
-	sta tmp
 	jsr dbar		; delete bar.
 
 	lda joyval		; joystick reading.
@@ -2119,6 +532,7 @@ dbox13:
 	ldy #0
 	lda (z80_hl),y		; get character.
 	inc z80_l		; next one.
+
 	bne :+
 	inc z80_h
 :
@@ -2126,7 +540,7 @@ dbox13:
 	bne :+
 	jmp dbox2		; yes, do next line.
 :
-	cmp #13			; another line?
+	cmp #ASCII_NEWLINE			; another line?
 	bne :+
 	jmp dbox2		; yes, do next line.
 :
@@ -2136,6 +550,12 @@ dbox13:
 :
 	jmp dbox13
 dbox15:
+.if xflag
+	lda #WINDOWWID
+	sta winwid
+	lda #WINDOWHGT
+	sta winhgt
+.endif
 	lda TmpAddr		; pop message pointer from the stack.
 	sta z80_h
 	lda TmpAddr+1
@@ -2155,14 +575,22 @@ dbar:
 	sta z80_c		; loop counter in c.
 	lda z80_h		
 	sta z80_d		; store screen address high byte.
-
-	jsr gaadd
 dbar1:
-	lda tmp
-	ldy #0
-	sta (bufaddr),y		; Set colour
+	ldx #7			; pixel height in b.
+dbar0:
+	ldy scrtab,x
+	lda (scraddr),y		; get screen byte.
+	eor #255		; reverse all bits.
+	sta (scraddr),y		; write back to screen.
+	dex			; next line down.
+	bpl dbar0		; draw rest of character.
 
-	inc bufaddr		; Next char
+	lda scraddr
+	adc #16
+	sta scraddr
+	bcc :+
+	inc scraddr+1
+:
 	dec z80_c		; decrement character counter.
 	bne dbar1		; repeat for whole line.
 	rts
@@ -2171,7 +599,7 @@ dbar1:
 ; Point to object
 ;
 ; Input:
-;  combyt
+;  -
 ;
 ; Output:
 ;  A = object number, A=255 if already in possession
@@ -2231,13 +659,7 @@ fobj:
 	rts
 :
 	jmp fobj		; yes, it's on the list.
-
-;bwid:	.byte 0              ; box/menu width.
-;blen:	.byte 0              ; box/menu height.
-;btop:	.byte 0              ; box coordinates.
-;blft:	.byte 0
 .endif
-
 
 ;----------------------------------------------------
 ; Clear sprite table.
@@ -2263,7 +685,7 @@ xspr0:
 
 .if oflag
 iniob:
-	lda #<objdta 		; objects table.
+	lda #<objdta		; objects table.
 	sta z80_x
 	lda #>objdta
 	sta z80_i
@@ -2295,11 +717,7 @@ iniob0:
 	dex 			; repeat.
 	bne iniob0
 
-	jsr clrobjslots		; Clear objslots
-	jsr clrsprslots		; Clear sprslots
-
 	rts
-
 .endif
 
 ;-----------------------------------------------
@@ -2309,14 +727,18 @@ iniob0:
 ;-----------------------------------------------
 
 redraw:
+.if xflag
+	lda #WINDOWWID
+	sta winwid
+	lda #WINDOWHGT
+	sta winhgt
+.endif
 	lda z80_i 		; place sprite pointer on stack.
 	pha
 	lda z80_x
 	pha
 
 	jsr droom		; show screen layout.
-
-
 .if oflag
 	jsr shwob		; draw objects.
 .endif
@@ -2334,12 +756,13 @@ redrw0:
 	cmp #255		; is it enabled?
 	beq redrw1 		; no, find next one.
 
-	ldy #3
+	ldy #var_Y
 	lda (z80_ix),y 		; sprite y.
-	cmp #177		; beyond maximum?
+	cmp #SpriteMaxY		; beyond maximum?
 	bcs redrw1		; yes, nothing to draw.
 
 	jsr sspria		; show single sprite.
+
 redrw1:
 	clc			; next sprite.
 	lda z80_x
@@ -2350,6 +773,7 @@ redrw1:
 :
 	dec tmp			; repeat for remaining sprites.
 	bne redrw0
+
 rpblc1:
 ;	jsr dshrp		; redraw shrapnel.
 
@@ -2360,6 +784,57 @@ rpblc1:
 	sta z80_x
 	pla
 	sta z80_i
+
+	rts
+
+;----------------------------------------------------------------------
+; Clear screen routine.
+;
+; Fill screenmem $9400-$97ff with ScrFillByte
+;----------------------------------------------------------------------
+
+cls:
+	lda #>CharAddress	; Character RAM address.
+	sta clrdata+2
+
+; Clear bitmap data
+
+	lda #ScrFillByte	; Clear screen
+	ldy #0
+	ldx #16
+clrdata:
+	sta CharAddress,y
+	iny
+	bne clrdata
+	inc clrdata+2
+	dex
+	bne clrdata
+
+; Clear colour attributes
+
+	lda fontcol
+	ldx #0
+clrcolour:
+	sta ColorAttr-$200,x
+	sta ColorAttr,x
+	inx
+	bne clrcolour
+	rts
+
+;----------------------------------------------------------------------
+; Clear colour attributes
+;
+; Reset colour attributes to fontcol
+;----------------------------------------------------------------------
+
+clrcol:
+	lda fontcol		; Clear colour attributes
+	ldx #0
+clscol:
+	sta ColorAttr,x
+	inx
+	cpx #242
+	bne clscol
 
 	rts
 
@@ -2402,6 +877,18 @@ fdchk:
 .endif
 
 ;----------------------------------------------------
+; Scrolly text and puzzle variables.
+;----------------------------------------------------
+
+.if sflag
+txtbit:	.byte 128		; bit to write.
+txtwid:	.byte 16		; width of ticker message.
+txtpos:	.word msgdat
+txtini:	.word msgdat
+txtscr:	.word ScreenAddr
+.endif
+
+;----------------------------------------------------
 ; Specialist routines.
 ; Process shrapnel.
 ;----------------------------------------------------
@@ -2438,8 +925,6 @@ proshx:
 	rts
 
 .if pflag
-;shrctr:	.byte 0
-
 ;----------------------------------------------------
 ; Proces shrapnel piece
 ;----------------------------------------------------
@@ -2599,16 +1084,14 @@ chkxy:
 	ldy #3
 	lda (z80_ix),y	 	; fetch shrapnel coordinate.
 	cmp wntopx		; window top.
-	beq kill
 	bcs :+			; compare with top window limit.
-kill:	jmp kilshr		; out of window, kill shrapnel.
+	jmp kilshr		; out of window, kill shrapnel.
 :
 ; left:   X>L		X=L	Ok
 
 	ldy #5
 	lda (z80_ix),y	 	; fetch shrapnel coordinate.
 	cmp wnlftx		; left edge.
-	beq kill
 	bcs :+			; compare with left window limit.
 	jmp kilshr		; out of window, kill shrapnel.
 :
@@ -2619,7 +1102,6 @@ kill:	jmp kilshr		; out of window, kill shrapnel.
 	adc #15
 	ldy #3
 	cmp (z80_ix),y	 	; fetch shrapnel coordinate.
-	beq kill
 	bcs :+			; compare with shrapnel x coordinate.
 	jmp kilshr		; off screen, kill shrapnel..
 :
@@ -2630,7 +1112,6 @@ kill:	jmp kilshr		; out of window, kill shrapnel.
 	adc #15
 	ldy #5
 	cmp (z80_ix),y	 	; fetch shrapnel coordinate.
-	beq kill
 	bcs :+			; compare with window limit.
 	jmp kilshr		; off screen, kill shrapnel.
 :
@@ -2779,7 +1260,7 @@ laser:
 	ldy #1
 	lda (z80_ix),y 		; direction.
 	ror a 			; left or right?
-	bcc :+
+	bcs :+
 	jmp laserl		; move left.
 :
 ; Laser right
@@ -2818,7 +1299,7 @@ laserm:
         jmp trailk              ; destroy laser.
 :
 .endif
-        rts                     ; no, ignore it.
+	rts
 
 ;----------------------------------------------------
 ; Dots mask
@@ -2857,7 +1338,7 @@ shoot:
 	clc
 shoot1:
 	adc #(SPR_HGT/2-1)	; down 7 pixels.
-	sta z80_l 		; put y coordinate in l.
+	sta z80_l 		; puty y coordinate in l.
 
 	ldy #9
 	lda (z80_ix),y 		; x coordinate in h.
@@ -3179,8 +1660,6 @@ expld1:
 	bne expld2 		; back to main explosion loop.
 	jmp expld3 		; restore sprite pointer and exit.
 
-;explcnt:	.byte 0
-
 ;----------------------------------------------------
 ; Quick random
 ;----------------------------------------------------
@@ -3190,8 +1669,6 @@ qrand:
 	eor seed3		; combine with seed.
 	sta seed3 		; new seed.
 	rts
-
-;seed3:	.byte 0
 
 ;----------------------------------------------------
 ; Display all shrapnel.
@@ -3270,13 +1747,11 @@ lcol3:
 :
 	dec z80_b		; repeat for all shrapnel.
 	bne lcol0
+	clc
 	rts 			; no collision, carry not set.
 lcol1:
 	ldy #3
 	lda (z80_hl),y		; get y.
-;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-;	sta dispy		; store y
-;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	sec
 	ldy #8
 	sbc (z80_ix),y		; subtract sprite y.
@@ -3287,9 +1762,6 @@ lcolh:
 :
 	ldy #5
 	lda (z80_hl),y 		; get x.
-;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-;	sta dispx		; store x
-;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	sec
 	ldy #9
 	sbc (z80_ix),y 		; subtract sprite y.
@@ -3300,17 +1772,6 @@ lcolh:
 lcol2:
 	jmp lcol3
 lcol4:
-;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-;	lda #200		; set off-screen to kill vapour trail.
-;	ldy #3
-;	sta (z80_hl),y		; set laser off screen
-;	jsr scadd		; calculate screenaddress
-;	ldy #0
-;	lda (scraddr),y		; get screen byte
-;	eor #255		; remove laser
-;	sta (scraddr),y		; store screen byte
-;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 	sec
 	rts 			; return with carry set for collision.
 .endif
@@ -3321,13 +1782,61 @@ lcol4:
 ;------------------------------------------------------
 
 game:
-	jsr setpal 		; set up colour palette.
+
+; Set up screen address table.
+
+setsat:
+	lda #<CharAddress	; start of screen.
+	sta scraddr
+	lda #>CharAddress
+	sta scraddr+1
+
+	ldy #0			; vertical lines on screen.
+setsa0:
+	lda scraddr
+	sta SCADTB_lb,y		; write low byte.
+	lda scraddr+1
+	sta SCADTB_hb,y		; write high byte.
+	jsr nline		; next line down.
+	iny			; next position in table.
+	bne setsa0
+
+; Set up colour address table
+
+setsof:
+	lda #<ColorAttr		; start of colour attributes
+	sta bufaddr
+	lda #>ColorAttr
+	sta bufaddr+1
+
+	ldy #0			; vertical lines on screen.
+setof0:
+	lda bufaddr
+	sta COLATTTB_lb,y	; write low byte.
+	lda bufaddr+1
+	sta COLATTTB_hb,y	; write high byte.
+	clc			; next line down.
+	lda bufaddr
+	adc #ScrWidth
+	sta bufaddr
+	bcc :+
+	inc bufaddr+1
+:
+	iny			; next position in table.
+	cpy #ScrHeight/2
+	bne setof0
+
+; Init graphics mode
+
+	jsr init
+
+; Init joysticks
+	jsr joyinit		; VIC20 joystick
 
 rpblc2:
 .if pflag
 	jsr inishr 		; initialise particle engine.
 .endif
-
 evintr:
 	jsr evnt12 		; call intro/menu event.
 
@@ -3336,8 +1845,7 @@ evintr:
 clrmap:
 	sta MAP,x 		; block properties.
 	sta MAP+256,x
-	sta MAP+512,x
-	inx			; next byte.
+	inx
 	bne clrmap
 
 .if oflag
@@ -3358,7 +1866,6 @@ inipbl:
 	lda #>eop
 	sta pbptr+1
 .endif
-
 	jsr initsc 		; set up first screen.
 
 	lda #<ssprit 		; default to spare sprite in table.
@@ -3376,7 +1883,6 @@ rstrt:
 	jsr xspr 		; clear sprite table.
 	jsr sprlst 		; fetch pointer to screen sprites.
 	jsr ispr 		; initialise sprite table.
-
 	jmp rstrt0
 
 ; Second restart - clear all but player, and don't initialise him.
@@ -3396,7 +1902,6 @@ rstrt0:
 	sta deadf 		; reset dead flag.
 
 	jsr droom 		; show screen layout.
-
 rpblc0:
 .if pflag
 	jsr inishr 		; initialise particle engine.
@@ -3413,7 +1918,6 @@ rpblc0:
 	lda #>sprtab
 	sta z80_i
 	jsr dspr 		; display sprites.
-
 	lda #<(sprtab+TABSIZ) 	; address of first odd sprite.
 	sta z80_x
 	lda #>(sprtab+TABSIZ)
@@ -3421,6 +1925,7 @@ rpblc0:
 	jsr dspr 		; display sprites.
 mloop:
 	jsr vsync 		; synchronise with display.
+
 	lda #<sprtab 		; address of sprite table, even sprites.
 	sta z80_x
 	lda #>sprtab
@@ -3428,6 +1933,7 @@ mloop:
 	jsr dspr 		; display even sprites.
 
 ;	jsr plsnd 		; play sounds.
+	jsr vsync 		; synchronise with display.
 	jsr proshr
 
 	lda #<(sprtab+TABSIZ) 	; address of first odd sprite.
@@ -3453,16 +1959,12 @@ evlp1:
 evlp2:
 	jsr evnt11 		; called once per main loop.
 bsortx:
-;	jsr bsort 		; sort sprites.
+	jsr bsort 		; sort sprites.
 
 	lda nexlev		; finished level flag.
-	beq :+
-	jmp newlev		; is set, go to next level.
-:
+	bne newlev		; is set, go to next level.
 	lda gamwon		; finished game flag.
-	beq :+
-	jmp evwon		; is set, finish the game.
-:
+	bne evwon		; is set, finish the game.
 	lda restfl 		; finished level flag.
 	cmp #1			; has it been set?
 	bne :+
@@ -3473,9 +1975,8 @@ bsortx:
 	jmp rstrtn		; yes, go to next level.
 :
 	lda deadf 		; dead flag.
-	beq :+
-	jmp pdead		; yes, player dead.
-:
+	bne pdead		; yes, player dead.
+
 ; back to start of main loop.
 
 	inc frmno
@@ -3488,7 +1989,7 @@ bsortx:
 
 .if aflag
 rbloc:
-	lda #<eop		; reset temp blockpointer
+	lda #<eop		; reset blockpointer
 	sta pbbuf
 	lda #>eop
 	sta pbbuf+1
@@ -3533,7 +2034,7 @@ newlev:
 	lda scno 			; current screen.
 	clc
 	adc #1				; next screen.
-	cmp numsc			; total number of screens.
+	cmp numsc 			; total number of screens.
 	bcs evwon			; yes, game finished.
 	sta scno			; set new level number.
 	jmp rstrt			; restart, clearing all aliens.
@@ -3549,7 +2050,6 @@ evwon:
 pdead:
 	lda #0				; zeroise accumulator.
 	sta deadf			; reset dead flag.
-	sta clock
 evdie:
 	jsr evnt16 			; death subroutine.
 	lda numlif			; number of lives.
@@ -3558,6 +2058,7 @@ evdie:
 :
 evfail:
 	jsr evnt17 			; failure event.
+	jmp game			; restart game
 
 ;----------------------------------------------------------
 ; Tidy things up
@@ -3578,7 +2079,7 @@ tidyu0:
 	sta z80_c
 	lda #>score
 	sta z80_b
-	jmp game			; restart game
+	rts
 tidyu1:
 	ldy #5
 tidyu3:
@@ -3599,6 +2100,7 @@ rsevt:
 	sta z80_x
 	lda #>ssprit
 	sta z80_i
+
 evrs:
 	jmp evnt14	 		; call restart event.
 
@@ -3631,7 +2133,7 @@ numdg2:
 	ldx #1			; units column.
 	stx z80_e
 numdg:
-	lda #48 			; clear digit.
+	lda #48			; clear digit.
 	sta z80_a
 numdg1:
 	lda z80_d
@@ -3668,8 +2170,6 @@ num2td:
 	lda #1
 	sta flag
 	jmp numdg3
-
-;flag:	.byte 0
 
 ;---------------------------------------------------------
 ; Reset score to "000000"
@@ -3723,7 +2223,7 @@ imul1:
 	sta z80_h
 	clc 			; reset carry.
 imul2:
-	asl z80_e 		; shift de 1 bit left.
+	rol z80_e 		; shift de 1 bit left.
 	rol z80_d
 	dec z80_b
 	bne imul1		; repeat 8 times.
@@ -3767,10 +2267,11 @@ plsnd:
 ;---------------------------------------------------
 ; Objects handling.
 ; 32 bytes for image
-; 4 for colour, room, y and x
+; 1 for colour
+; 3 for room, y and x
 ; 3 for starting room, y and x.
 ; 254 = disabled.
-; 255 = object in player's pockets.
+; 255 = object in player"s pockets.
 ;---------------------------------------------------
 
 ;---------------------------------------------------
@@ -3779,13 +2280,12 @@ plsnd:
 
 .if oflag
 shwob:
-	lda #<objdta 			; objects table.
+	lda #<objdta			; objects table.
 	sta z80_l
 	lda #>objdta
 	sta z80_h
-
-	lda #0
-	sta objnr
+	lda numob 			; number of objects in the game.
+	sta sprcnt
 shwob0:
 	ldy #33 			; distance to room number.
 	lda (z80_hl),y 			; same as an item?
@@ -3800,9 +2300,7 @@ shwob0:
 	lda z80_h
 	adc #0
 	sta z80_h	 		; point to it.
-	inc objnr
-	lda objnr
-	cmp numob
+	dec sprcnt
 	bne shwob0 			; repeat for others.
 	rts
 
@@ -3815,23 +2313,18 @@ shwob0:
 ;---------------------------------------------------
 
 dobj:
-	jsr findfreeslot		; Find free slot
-	bcc :+
-	rts
-:
-	jsr copyobj2chr			; Copy object data to char ram
 	ldy #32
-	lda (z80_hl),y 			; get object colour
+	lda (z80_hl),y 			; point to y.
 	sta objcol
 	ldy #34
-	lda (z80_hl),y 			; get object y.
+	lda (z80_hl),y 			; point to y.
 	sta dispy
 	iny
-	lda (z80_hl),y 			; get object x.
+	lda (z80_hl),y 			; point to x.
 	sta dispx
+dobj1:
+	jmp sprite 			; draw this sprite.
 
-	jmp displayobj		; draw this sprite.
- 
 ;--------------------------------------
 ; Remove an object.
 ;
@@ -3840,7 +2333,6 @@ dobj:
 ;--------------------------------------
 
 remob:
-	sta objnr
 	cmp numob			; number of objects in game.
 	bcc :+				; are we checking past the end?
 	rts				; yes, can't get non-existent item.
@@ -3886,7 +2378,7 @@ getob1:
 	ldy #35
 	lda (z80_hl),y 		; x coord.
 	sta dispx
-	jmp eraseobj 		; delete object sprite.
+	jmp dobj1 		; delete object sprite.
 getob0:
 	lda #255
 	sta (z80_hl),y 		; pick it up.
@@ -3948,7 +2440,6 @@ fndob1:
 
 .if oflag
 drpob:
-	sta objnr
 	cmp numob 		; are we checking past the end?
 	bcc :+
 	rts			; yes, can't drop non-existent item.
@@ -3960,7 +2451,7 @@ drpob:
 :
 	ldy #33
 	lda scno
-	sta (z80_hl),y		; get screen.
+	sta (z80_hl),y		; bring onto screen.
 	lda dispy		; sprite y coordinate.
 	iny 
 	sta (z80_hl),y		; point to object y.
@@ -4008,17 +2499,17 @@ skobj1:
 	ldy #34			; point to y coordinate.
 	lda (z80_hl),y		; point to y coordinate.
 	sec
-	ldy #8
+	ldy #var_newY
 	sbc (z80_ix),y 		; subtract sprite y.
 	clc
-	adc #15			; add object height minus one.
-	cmp #16+COLDISTY-1	; within range?
+	adc #15			; add sprite height minus one.
+	cmp #31			; within range?
 	bcs skobj2		; no, ignore object.
 
 	ldy #35			; point to x coordinate now.
 	lda (z80_hl),y 		; get coordinate.
 	sec
-	ldy #9
+	ldy #var_newX
 	sbc (z80_ix),y 		; subtract the sprite x.
 	clc			; add sprite width minus one.
 	adc #15
@@ -4039,8 +2530,6 @@ skobj2:
 ; Spawn a new sprite.
 ;---------------------------------------------------------------------
 
-  offset = 20
-
 spawn:
 	lda #<sprtab		; sprite table.
 	sta z80_l
@@ -4050,10 +2539,11 @@ numsp1:
 	lda #NUMSPR		; number of sprites.
 	sta spcnt
 spaw0:
-	ldy #0
+	ldy #var_Type
 	lda (z80_hl),y		; get sprite type.
 	cmp #255		; is it an unused slot?
-	beq spaw1
+	beq spaw1 		; yes, we can use this one.
+
 	clc 			; point to next sprite in table.
 	lda z80_l
 	adc #TABSIZ		; size of each entry.
@@ -4078,21 +2568,21 @@ spaw1:
 	sta spptr+1
 
 	lda z80_c
-	ldy #0
+	ldy #var_Type
 	sta (z80_hl),y 		; set the type.
-	ldy #5
+	ldy #var_newType
 	sta (z80_hl),y		; copy
 
 	lda z80_b
-	ldy #1
+	ldy #var_Image
 	sta (z80_hl),y		; set the image.
-	ldy #6
+	ldy #var_newImage
 	sta (z80_hl),y		; copy
 
-	lda #0 			; frame zero.
-	ldy #2
+	lda #0 				; frame zero.
+	ldy #var_Frame
 	sta (z80_hl),y		; set frame.
-	ldy #7
+	ldy #var_newFrame
 	sta (z80_hl),y		; copy
 
 	ldy #8
@@ -4109,12 +2599,12 @@ spaw1:
 	ldy #9
 	sta (z80_hl),y		; copy
 
-	ldy #10			; direction of original.
+	ldy #10				; direction of original.
 	lda (z80_ix),y
 	sta (z80_hl),y		; direction
 
 	lda #0
-	ldy #11
+	ldy #var_jumpLo
 	sta (z80_hl),y		; reset parameter.
 	iny
 	sta (z80_hl),y		; reset parameter.
@@ -4123,29 +2613,33 @@ spaw1:
 	iny
 	sta (z80_hl),y		; reset parameter.
 rtssp:
-	lda spptr		; address of new sprite.
+	lda spptr			; address of new sprite.
 	sta z80_x
 	lda spptr+1
 	sta z80_i
 evis1:
-	jsr evnt09 		; call sprite initialisation event.
+	jsr evnt09 			; call sprite initialisation event.
 
-	lda spptr 		; address of new sprite.
+	lda spptr 			; address of new sprite.
 	sta z80_x
 	lda spptr+1
 	sta z80_i
-	jsr sspria 		; display the new sprite.
 
-	pla			; address of original sprite.
+	; _BEEB clipping code copied from CPC Engine - MISSING?!
+	ldy #var_Y
+	lda (z80_hl), y		; old x coord
+	cmp #SpriteMaxY     ; beyond maximum?
+	bcs :+				; yes, don't draw it.
+
+	jsr sspria 			; display the new sprite.
+:
+	pla					; address of original sprite.
 	sta z80_x
 	pla
 	sta z80_i
 
 	rts
 
-;spcnt:	.byte 0
-;spptr:	.word 0			; spawned sprite pointer.
-;seed:	.byte 0			; seed for random numbers.
 score:	.byte "000000"		; player"s score.
 hiscor:	.byte "000000"		; high score.
 bonus:	.byte "000000"		; bonus.
@@ -4157,7 +2651,7 @@ grbase:	.word ScreenAddr	; graphics base address.
 
 checkx:
 	lda dispy		; y position.
-	cmp #ScrHeight		; off screen?
+	cmp #22			; off screen?
 	bcs :+
 	rts			; no, it's okay.
 :
@@ -4174,8 +2668,10 @@ checkx:
 dhisc:
 	lda #<hiscor 		; high score text.
 	sta dscor3+1
+	sta bscor3+1
 	lda #>hiscor
 	sta dscor3+2
+	sta bscor3+2
 	jmp dscor1		; check in printable range then show 6 digits.
 
 ;------------------------------------------------------
@@ -4185,20 +2681,34 @@ dhisc:
 dscor:
 	lda #<score		; score text.
 	sta dscor3+1
+	sta bscor3+1
 	lda #>score
 	sta dscor3+2
+	sta bscor3+2
 dscor1:
 	sty tmpscr
 	jsr preprt		; set up font and print position.
 	jsr checkx		; make sure we're in a printable range.
 
+;	lda #6			; digits to display.
+;	sta z80_b
+	lda prtmod		; get print mode.
+	beq :+			; standard size text?
+	jmp bscor0		; no, show double-height.
+:
 dscor0:
+;	ldy #0
+;	lda (z80_hl),y 		; fetch character.
 	ldy tmpscr
 dscor3:
 	lda score,y
 	jsr pchar 		; display character.
 	inc dispx		; move along x coordinate
 
+;	inc z80_l		; next score column.
+;	bne :+
+;	inc z80_h
+;:
 	inc tmpscr
 	dec z80_b
 	bne dscor0 		; repeat for all digits.
@@ -4208,6 +2718,35 @@ dscor2:
 	lda dispy
 	sta chary
 	rts
+
+tmpscr:	.byte 0
+;------------------------------------------------------
+; Displays the current score in double-height characters.
+;
+; Input:
+;  B  = digit number
+;  HL = score string
+;------------------------------------------------------
+
+bscor0:
+;	ldy #0
+
+;	lda (z80_hl),y 		; fetch character.
+	ldy tmp
+bscor3:
+	lda score,y
+	jsr bchar 		; display big char.
+
+;	inc z80_l 		; next score column.
+;	bne :+
+;	inc z80_h
+;:
+	inc tmp
+	dec z80_b
+	beq :+
+	jmp bscor0 		; repeat for all digits.
+:
+	jmp dscor2 		; tidy up line and column variables.
 
 ;-----------------------------------------------------
 ; Adds number in the hl pair to the score.
@@ -4360,36 +2899,76 @@ swpsb0:
 	rts
 
 ;----------------------------------------------------
-; Get screen address at (dispx, dispy).
-; 
-; Output:
-;  scraddr = SCREEN + dispy*24 + dispx
+; Get print address.
 ;----------------------------------------------------
 
 gprad:
-	jsr getoffset
+	tya
+	pha
 
-	lda bufaddr
+	lda dispx 		; x coordinate.
 	sta scraddr
-	clc
-	lda bufaddr+1
-	adc #>ScreenAddr
+	lda #0
 	sta scraddr+1
-	rts
+	asl scraddr  		; multiply char by 16
+	rol scraddr+1
+	asl scraddr
+	rol scraddr+1
+	asl scraddr
+	rol scraddr+1
+	asl scraddr
+	rol scraddr+1
 
+	lda dispy		; y coordinate.
+	asl a
+	asl a
+	asl a			; multiply char by 8
+	tay
+
+	clc
+	lda scraddr
+	adc SCADTB_lb,y
+	sta scraddr
+	lda scraddr+1
+	adc SCADTB_hb,y
+	sta scraddr+1
+
+	lda prtmod		; Double line if bigtxt
+	beq noskip
+	lda dispx
+	and #$e0
+	beq noskip
+	inc scraddr+1
+noskip:
+
+	pla
+	tay
+	rts
 ;--------------------------------------------------------------
-; Get property buffer address at (dispx, dispy).
+; Get property buffer address of char at (dispx, dispy) in hl.
 ; 
 ; Output:
-;  bufaddr = MAP + dispy*24 + dispx
+;  buffaddr = bufaddr = MAP + dispy*22 + dispx
 ;--------------------------------------------------------------
 
 pradd:
-
-	jsr getoffset
-
-	clc
+	lda dispy 		; y coordinate.
+	sta bufaddr
+	lda #0
+	sta bufaddr+1
+	asl bufaddr  		; multiply char by 32
+	rol bufaddr+1
+	asl bufaddr
+	rol bufaddr+1
+	asl bufaddr
+	rol bufaddr+1
+	asl bufaddr
+	rol bufaddr+1
+	asl bufaddr
+	rol bufaddr+1
+	clc			; add address of MAP graphics.
 	lda bufaddr
+	adc dispx
 	adc #<MAP
 	sta bufaddr
 	lda bufaddr+1
@@ -4401,24 +2980,22 @@ pradd:
 ; Get attribute address at (dispx, dispy).
 ; 
 ; Output:
-;  bufaddr = COLOR + dispy*24 + dispx
+;  bufaddr = COLOR + dispy*22 + dispx
 ;--------------------------------------------------------------
 
 gaadd:
-
-	jsr getoffset
-
-	clc
-	lda bufaddr
-	adc #<ColorAttr
-	sta bufaddr
-	lda bufaddr+1
-	adc #>ColorAttr
+	lda dispy
+	lsr a
+	tay
+	lda COLATTTB_hb,y
 	sta bufaddr+1
+	lda COLATTTB_lb,y
+	clc
+	adc dispx
+	sta bufaddr
 	rts
 
 ;----------------------------------------------
-
 ; Print attributes, properties and pixels.
 ;
 ; Input:
@@ -4440,23 +3017,43 @@ pattr:
 pattr2:
 	sta z80_b		; store cell in b register for now.
 	tax
-	lda bprop,x 		; get block property
-	sta z80_c		; save property
-	cmp #COLECT		; if not COLECT, skip
+	lda bprop,x 		; block properties.
+	sta z80_c
+	cmp #COLECT
 	bne :+
 	lda z80_b
-	sta colpatt		; save blocknr as COLECT for erasing
+	sta colpatt
 :
-	jsr pradd 		; get MAP address for storing property
-	lda z80_c		; Get block property
+	jsr pradd 		; get property buffer address.
+	lda z80_c
 	ldy #0
-	sta (bufaddr),y 	; store property in MAP
-
+	sta (bufaddr),y 	; write property.
+	lda z80_b 		; restore cell.
+	jmp panp
 ; Print attributes, no properties.
 
+;colpatt:	.byte 0
+
 panp:
-	ldx z80_b
-	lda bcol,x
+	sta z80_e		; displacement in e.
+	lda #0
+	sta z80_d		; no high byte.
+	asl z80_e  		; multiply char by 8.
+	rol z80_d
+	asl z80_e
+	rol z80_d
+	asl z80_e
+	rol z80_d
+	clc
+	lda z80_e
+	adc #<chgfx 		; address of graphics.
+	sta tileaddr
+	lda z80_d
+	adc #>chgfx
+	sta tileaddr+1
+
+	ldx z80_b		; set colour attribute
+	lda bCol,x
 	pha
 	jsr gaadd
 	ldy #0
@@ -4464,18 +3061,24 @@ panp:
 	sta (bufaddr),y
 
 	jsr gprad 		; get screen address.
-
-	lda z80_b		; get blocknr
-	clc
-	adc #96			; add 96 to skip font
+	ldx #7			; number of pixel rows to write.
+panp0:
 	ldy #0
+	lda (tileaddr),y 	; get image byte.
+.if iflag
+	eor #$ff		; Invert
+.endif
+	ldy scrtab,x
 	sta (scraddr),y 	; copy to screen.
+	inc tileaddr 		; next image byte.
+	bne :+
+	inc tileaddr+1
+:
+	dex	 		; repeat for 8 pixel rows.
+	bpl panp0
 	inc dispx 		; move along one.
 	inc charx
-
 	rts
-
-scrtab:		.byte $e0,$c0,$a0,$80,$60,$40,$20,$00
 
 ;----------------------------------------------
 ; Write block
@@ -4504,6 +3107,10 @@ wbloc:
 	rts
 .endif
 
+;.if kflag
+;panp:
+;.endif
+
 ;----------------------------------------------
 ; Print character pixels, no more.
 ;
@@ -4515,6 +3122,25 @@ pchr:
 	jsr pchar 		; show character in accumulator.
 	inc dispx		; move along one.
 	rts
+
+;----------------------------------------------------
+; Shifter sprite routine for objects.
+;----------------------------------------------------
+
+.if oflag
+sprit7:
+	lda z80_b
+	beq sprit0
+	sta z80_a
+sprit3:
+	lsr spr			; shift into position.
+	ror spr+1
+	ror spr+2
+	dec z80_a		; one less iteration.
+	bne sprit3
+sprit0:
+	rts 			; now apply to screen.
+.endif
 
 ;-----------------------------------------------------------
 ; Get room address.
@@ -4545,7 +3171,7 @@ groom1:
 	dex 			; one less iteration.
 	jmp groom1 		; loop until we reach the end.
 groom0:
-	lda numsc 		; add displacement.
+	lda numsc		; add displacement.
 	asl a
 	clc			; add double displacement to address.
 	adc z80_l
@@ -4560,8 +3186,6 @@ groom0:
 ;-----------------------------------------------------------
 
 droom:
-	jsr clrobjslots		; Clear object slots for redraw screen
-
 	lda wintop 		; window top.
 	sta dispy		; set cursor y position.
 droom2:
@@ -4577,18 +3201,20 @@ droom0:
 	sta rcol		; set column counter
 droom1:
 	jsr flbyt 		; decompress next byte on the fly.
-	jsr pattr2 		; set tile attribute in MAP and display tile.
-
+.if xflag
+	jsr drwmeta
+.else
+	jsr pattr2 		; show attributes and block.
+.endif
 	dec rcol		; one less column.
 	bne droom1 		; repeat for entire line.
 	inc dispy		; move down one line.
+.if xflag
+	inc dispy		; move down one line.
+.endif
 	dec rrow 		; one less row.
 	bne droom0 		; repeat for all rows.
-
 	rts
-
-;rcol:	.byte 0
-;rrow:	.byte 0
 
 ;----------------------------------------------
 ; Decompress bytes on-the-fly.
@@ -4624,6 +3250,48 @@ flbyt1:
 	dec comcnt		; one less.
 	lda combyt 		; byte to expand.
 	rts
+
+; ------------------------------------------------------------------------------------------------------------------------------------------
+; Drawing a MetaBlock (4 tiles 8x8 => 16x16)
+; param in regA tells the block number to use, if 0 use 0,0,0,0  else use N,N+2 || N+1,N+3
+; ------------------------------------------------------------------------------------------------------------------------------------------
+.if xflag
+drwmeta:
+	sta tmpblk	
+	jsr pattr2
+
+	inc dispy
+	dec dispx
+	ldx tmpblk
+	beq :+
+	inx
+:
+	txa
+	jsr pattr2
+
+	ldx tmpblk
+	beq :+
+	inx
+	inx
+	inx
+:
+	txa
+	jsr pattr2
+
+	dec dispy
+	dec dispx
+	ldx tmpblk
+	beq :+
+	inx
+	inx
+:
+	txa
+	jsr pattr2
+	rts
+
+tmpblk:	.byte 0
+
+.endif
 
 ;------------------------------------------
 ; Ladder down check.
@@ -4845,7 +3513,7 @@ cangh1:
 	pha
 	clc
 	lda bufaddr
-	adc #ScrWidth			; look down.
+	adc #32		; look down.
 	sta bufaddr
 	bcc :+
 	inc bufaddr+1
@@ -4874,7 +3542,6 @@ lrchk:
 
 	cmp #FODDER		; fodder has to be dug.
 	beq lrchkx		; not passable.
-lrlchkx:
 	lda #0
 	rts
 
@@ -4883,7 +3550,7 @@ lrlchkx:
 ;--------------------------------------------------------------
 
 always:
-	lda #0		; report it as okay.
+	lda #255		; report it as okay.
 	rts
 
 lrchkx:
@@ -4939,12 +3606,11 @@ plchkx:
 ldchk:
 	ldy #0
 	lda (bufaddr),y 	; fetch cell.
-	sta $f0
 	cmp #LADDER 		; is it a ladder?
-	beq :+
+	beq ldchk1
 	lda #1
 	rts  			; return with zero flag set accordingly.
-:
+ldchk1:
 	lda #0
 	rts
 .endif
@@ -5009,6 +3675,7 @@ gtblk:
 	lda z80_d
 	adc #>chgfx
 	sta tileaddr+1
+
 	jsr gprad 		; get screen address.
 	ldx #7			; number of pixel rows to write.
 gtblk0:
@@ -5170,37 +3837,43 @@ tded1:
 
 tstbl:
 	lda dispy 		; fetch y coord.
-	pha
 	lsr a			; bufaddr = y/8
 	lsr a
 	lsr a
-	sta dispy
+;	sta chary
+
+	sta bufaddr
+	lda #0
+	sta bufaddr+1
+
+	asl bufaddr  		; bufaddr = y/8 * 32
+	rol bufaddr+1
+	asl bufaddr
+	rol bufaddr+1
+	asl bufaddr
+	rol bufaddr+1
+	asl bufaddr
+	rol bufaddr+1
+	asl bufaddr
+	rol bufaddr+1
 
 	lda dispx		; x/8
-	pha
 	lsr a
 	lsr a
 	lsr a
-	sta dispx
+;	sta charx
 
-	jsr getoffset
-	clc
-	lda bufaddr
+	clc			; bufaddr = MAP + x/8 + y/8*32
+	adc bufaddr
 	adc #<MAP
 	sta bufaddr
 	lda bufaddr+1
 	adc #>MAP
 	sta bufaddr+1
 
-	pla
-	sta dispx
-	pla
-	sta dispy
-
 	ldy #0
 	lda (bufaddr),y 	; fetch byte there.
 	rts
-
 
 ;-------------------------------------------------------------------
 ; Jump - if we can.
@@ -5210,35 +3883,31 @@ tstbl:
 ;  IX = sprite address
 ;-------------------------------------------------------------------
 
-jump: 	eor #$ff	; jump   neg                 ; switch sign so we jump up.
-	clc
-	adc #1
-	sta z80_c	;        ld c,a              ; store in c register.
-jump0:	ldy #13		; jump0  ld a,(ix+13)        ; jumping flag.
-	lda (z80_ix),y
-			;        and a               ; is it set?
+jump:
+	ldy #var_jumpLo
+	lda (z80_ix),y		; jump table low.
+	ldy #var_jumpHi
+	ora (z80_ix),y		; jump table high.
 	beq :+
-	rts		;        ret nz              ; already in the air.
+	rts			; already in the air.
 :
-	clc
-	adc #1		;        inc (ix+13)         ; set it.
-	sta (z80_ix),y
-	lda z80_c	;        ld (ix+14),c        ; set jump height.
-	iny
-	sta (z80_ix),y
-	rts		;        ret
+	lda #>jtab
+	ldy #var_jumpHi
+	sta (z80_ix),y		; set jump high.
+	lda #<jtab		; jump table start.
+	ldy #var_jumpLo
+	sta (z80_ix),y		; set jump low.
+	rts
 
-hop:	ldy #13		; hop    ld a,(ix+13)        ; jumping flag.
-	lda (z80_ix),y
-			;        and a               ; is it set?
-	beq :+
-	rts		;        ret nz              ; already in the air.
-:	lda #255	;        ld (ix+13),255      ; set it.
-	sta (z80_ix),y
-	lda #0
-	iny		;        ld (ix+14),0        ; set jump table displacement.
-	sta (z80_ix),y
-	rts		;        ret
+; Jump table.
+; _BEEB - jump table must reside entirely in a page otherwise grav fn breaks
+;.align 32
+;jtab:
+;	.byte 248,250,252
+;	.byte 254,254,255
+;	.byte 255,255,0,0
+;	.byte 0,1,1,1,2,2
+;	.byte 4,6,8,8,8,99
 
 ;------------------------------------------------
 ; Random numbers code.
@@ -5258,16 +3927,16 @@ doEor:	eor #$1d
 noEor:	sta seed
 	rts
 
-	lda seed		; get last random number.
-	asl a
-	asl a
-	clc
-	adc seed
-	clc
-	adc #$45
-	sta seed		; store new seed.
-	sta varrnd		; return number in variable.
-	rts
+;	lda seed		; get last random number.
+;	asl a
+;	asl a
+;	clc
+;	adc seed
+;	clc
+;	adc #$45
+;	sta seed		; store new seed.
+;	sta varrnd		; return number in variable.
+;	rts
 
 ;-------------------------------------------------------
 ; Joystick and keyboard reading routines.
@@ -5347,6 +4016,8 @@ dmsg:
 dmsg3:
 	jsr preprt		; pre-printing stuff.
 	jsr checkx		; make sure we"re in a printable range.
+	lda prtmod		; print mode.
+	bne bmsg1		; no, double-height text.
 dmsg0:
 	lda z80_h		; store string pointer.
 	pha
@@ -5356,7 +4027,7 @@ dmsg0:
 	ldy #0
 	lda (z80_hl),y		; fetch byte to display.
 	and #127		; remove any end marker.
-	cmp #13
+	cmp #ASCII_NEWLINE
 	beq dmsg1
 	jsr pchar		; display character.
 	jsr nexpos 		; display position.
@@ -5382,7 +4053,7 @@ dmsg2:
 dmsg1:
 	inc dispy
 	lda dispy
-	cmp #ScrHeight
+	cmp #24
 	bcc dmsg4
 	lda #0
 	sta dispy
@@ -5391,11 +4062,113 @@ dmsg4:
 	sta dispx
 	jmp dmsg2
 
+
+;----------------------------------------------------------
+; Display message in big text.
+;
+; Input:
+;  HL = string pointer
+;----------------------------------------------------------
+
+bmsg1:
+	ldy #0
+	lda (z80_hl),y 		; get character to display.
+	and #127		; only want 7 bits.
+	cmp #ASCII_NEWLINE
+	beq bmsg2
+	jsr bchar 		; display big char.
+bmsg3:
+	ldy #0
+	lda (z80_hl),y 		; look at last character.
+	pha
+	inc z80_l 		; next character in list.
+	bne :+
+	inc z80_h
+:
+	pla
+	asl a  			; was terminator flag set?
+	bcc bmsg1		; no, keep going.
+
+	rts
+bmsg2:
+	lda #0
+	sta dispx
+	inc dispy
+	inc dispy
+	lda dispy
+	cmp #23
+	bcc bmsg3
+	lda #0
+	sta dispy
+	jmp bmsg3
+
+;----------------------------------------------------------
+; Big character display.
+;
+; Input:
+;  A = character
+;----------------------------------------------------------
+
+bchar:
+	sta z80_e		; save char in lb
+	lda #0
+	sta z80_d		; reset hb
+
+	asl z80_e 		; multiply char by 8.
+	rol z80_d
+	asl z80_e
+	rol z80_d
+	asl z80_e
+	rol z80_d		; de = a*8
+
+	clc			; de = #<(FONT-256) + a*8
+	lda z80_e
+	adc #<(FONT-256) 		; address of font.
+	sta z80_e
+	lda z80_d
+	adc #>(FONT-256)
+	sta z80_d
+
+	jsr gaadd		; set colour attribute
+	lda fontcol
+	ldy #0
+	sta (bufaddr),y
+
+	jsr gprad 		; get screen address.
+
+	ldx #0			; height of character in font.
+bchar0:
+	ldy #0
+	lda (z80_de),y 		; get a bit of the font.
+
+.if iflag
+	eor #$ff
+.endif
+
+	sta (scraddr),y
+	pha
+	jsr nline 		; next line down.
+	pla
+	sta (scraddr),y
+	jsr nline 		; next line down.
+
+	clc
+	inc z80_e 		; next line of font.
+	bne :+
+	inc z80_d
+:
+	inx
+	cpx #8
+	bne bchar0
+	
+	jsr nexpos		; display position.
+	bne bchar2 		; not on a new line.
 bchar3:
 	inc dispy
 	jsr nexlin 		; next line check.
 bchar2:
 	jmp dscor2		; tidy up line and column variables.
+
 
 ;-------------------------------------------------
 ; Display a character.
@@ -5408,20 +4181,57 @@ achar:
 	sta z80_b 		; copy to b.
 	jsr preprt 		; get ready to print.
 	lda z80_b		; character in accumulator.
+	ldx prtmod 		; print mode.
+	beq :+
+	jmp bchar 		; no, double-height text.
+:
 	jsr pchar 		; display character.
 	jsr nexpos 		; display position.
 	beq bchar3		; next line down.
 	jmp bchar2 		; tidy up.
 
 
+;-------------------------------------------------
+; Get next print column position.
+;-------------------------------------------------
+
+nexpos:
+	inc dispx		; move along one position.
+	lda dispx 		; get coordinate.
+	cmp #22
+	bne :+
+	lda #0
+	sta dispx
+	lda prtmod
+	beq :+
+	jsr nexlin
+	jmp nexlin
+:
+	rts
+
+;-------------------------------------------------
+; Get next print line position.
+;-------------------------------------------------
+
+nexlin:
+	inc dispy 		; newline.
+	lda dispy		; vertical position.
+	cmp #22			; past screen edge?
+	bcs :+
+	rts			; no, still okay.
+:
+	lda #0			; restart at top.
+	sta dispy
+	rts
+
 ;--------------------------------------------------------
 ; Pre-print preliminaries.
 ;--------------------------------------------------------
 
 preprt:
-	lda #<(font-256)	; font pointer.
+	lda #<(FONT-256)		; font pointer.
 	sta grbase		; set up graphics base.
-	lda #>(font-256)
+	lda #>(FONT-256)
 	sta grbase+1
 prescr:
 	lda charx 		; display coordinates.
@@ -5429,6 +4239,366 @@ prescr:
 	lda chary
 	sta dispy
 	rts
+
+;--------------------------------------------------------------
+; Get messagenr x in hl
+;
+; Input:
+;  HL = pointer to message list
+;  X  = message number.
+;--------------------------------------------------------------
+
+getwrd:
+	cpx #0
+	bne:+ 			; first word in list?
+	rts 			; yep, don't search.
+:
+	ldy #0
+getwd0:
+	lda (z80_hl),y
+	pha
+	inc z80_l
+	bne :+
+	inc z80_h
+:
+	pla
+	cmp #128		; found end?
+	bmi getwd0		; no, carry on.
+	dex			; until we have right number.
+	bne getwd0
+	rts
+
+;-----------------------------------------------------------
+; Bubble sort.
+;-----------------------------------------------------------
+
+bsort:
+	lda #NUMSPR - 1		; sprites to swap.
+	sta qscnt
+
+	lda #<sprtab 		; sprite table.
+	sta z80_x
+	lda #>sprtab
+	sta z80_i
+bsort0:
+	ldy #0
+	lda (z80_ix),y 		; first sprite type.
+	cmp #255 		; is it switched off?
+	beq swemp		; yes, may need to switch another in here.
+
+	ldy #TABSIZ
+	lda (z80_ix),y 		; check next slot exists.
+	cmp #255 		; is it enabled?
+	beq bsort2 		; no, nothing to swap.
+
+	ldy #TABSIZ+3
+	lda (z80_ix),y 		; fetch next sprite's coordinate.
+	ldy #3
+	cmp (z80_ix),y 		; compare with this x coordinate.
+	bcc bsort1		; next sprite is higher - may need to switch.
+bsort2:
+	clc
+	lda z80_x
+	adc #TABSIZ 		; distance to next odd/even entry.
+	sta z80_x
+	bcc :+
+	inc z80_i
+:
+	dec qscnt 
+	bne bsort0		; repeat for remaining sprites.
+	rts
+
+bsort1:
+	ldy #TABSIZ
+	lda (z80_ix),y		; sprite on/off flag.
+	cmp #255		; is it enabled?
+	beq bsort2		; no, nothing to swap.
+	jsr swspr		; swap positions.
+	jmp bsort2
+swemp:
+	ldy #TABSIZ
+	lda (z80_ix),y		; next table entry.
+	cmp #255		; is that one on?
+	beq bsort2		; no, nothing to swap.
+	jsr swspr		; swap positions.
+	jmp bsort2
+
+; Swap sprites.
+
+swspr:
+	lda z80_x		; table address 
+	sta z80_e		; copy to de pair.
+	sta z80_l		; copy to hl pair.
+	lda z80_i
+	sta z80_h
+	sta z80_d
+
+	clc
+	lda z80_l
+	adc #TABSIZ		; distance to second entry.
+	sta z80_l
+	bcc :+
+	inc z80_h
+:
+	lda #TABSIZ		; bytes to swap.
+	sta z80_b
+	ldy #0
+swspr0:
+	lda (z80_hl),y		; fetch second byte.
+	pha
+	lda (z80_de),y 		; fetch first byte.
+	sta (z80_hl),y 		; copy to second.
+	pla
+	sta (z80_de),y 		; copy to first sprite entry.
+
+	inc z80_e 		; next byte.
+	bne :+	
+	inc z80_d
+:
+	inc z80_l 		; next byte.
+	bne :+
+	inc z80_h
+:
+	dec z80_b
+	bne swspr0 		; swap all bytes in table entry.
+	rts
+
+;----------------------------------------------------
+; Process sprites.
+;----------------------------------------------------
+
+pspr:
+	lda #NUMSPR		; sprites to process.
+	sta sprptr
+
+	lda #<sprtab 		; sprite table.
+	sta z80_x
+	lda #>sprtab
+	sta z80_i
+pspr1:
+	ldy #0
+	lda (z80_ix),y		; fetch sprite type.
+	cmp #9 			; within range of sprite types?
+	bcs :+
+	jsr pspr2 		; yes, process this one.
+:
+	clc
+	lda z80_x
+	adc #TABSIZ 		; distance to next odd/even entry.
+	sta z80_x
+	bcc :+
+	inc z80_i		; next sprite.
+:
+	dec sprptr 		; repeat for remaining sprites.
+	bne pspr1
+	rts
+
+pspr2:
+	lda z80_x 		; store original sprite pointer.
+	sta ogptr
+	lda z80_i
+	sta ogptr+1
+	jsr pspr3		; do the routine.
+rtorg:
+	lda ogptr 		; restore original pointer to sprite.
+	sta z80_x
+	lda ogptr+1
+	sta z80_i
+rtorg0:
+	rts
+
+pspr3:
+	lda #<evtyp0		; sprite type events list.
+	sta z80_l
+	lda #>evtyp0
+	sta z80_h
+pspr4:
+	lda (z80_ix),y
+	asl a			; double accumulator.
+	clc
+	adc z80_l
+	sta z80_l
+	bcc :+
+	inc z80_h
+:
+	lda (z80_hl),y
+	sta z80_e 		; copy to de.
+	pha
+
+	inc z80_l 		; next byte of address.
+	bne :+
+	inc z80_h
+:
+	lda (z80_hl),y 		; address high.
+	sta z80_d
+
+	pha	 		; swap address into hl.
+	lda z80_h
+	sta z80_d
+	pla
+	sta z80_h
+	pla
+	sta z80_l
+	lda z80_l
+	sta z80_e
+	
+	jmp (z80_hl) 		; go there.
+
+; Address of each sprite type's routine.
+
+evtyp0:	.word evnt00
+evtyp1:	.word evnt01
+evtyp2:	.word evnt02
+evtyp3:	.word evnt03
+evtyp4:	.word evnt04
+evtyp5:	.word evnt05
+evtyp6:	.word evnt06
+evtyp7:	.word evnt07
+evtyp8:	.word evnt08
+
+;--------------------------------------------------------------
+; Display sprites.
+;
+; Input:
+;  IX = sprite table
+;--------------------------------------------------------------
+
+dspr:
+	lda #(NUMSPR/2)		; number of sprites to display.
+	sta sprcnt
+
+dspr0:
+	ldy #var_Type
+	lda (z80_ix),y 		; get sprite type.
+	cmp #255 		; is it enabled?
+	bne dspr1 		; yes, it needs deleting.
+dspr5:
+	ldy #var_newType
+	lda (z80_ix),y 		; new type.
+	cmp #255		; is it enabled?
+	beq dspr2
+	jmp dspr3 		; yes, it needs drawing.
+dspr2:
+	ldy #var_newType
+	lda (z80_ix),y 		; copy new type.
+	ldy #var_Type
+	sta (z80_ix),y
+	ldy #var_newImage
+	lda (z80_ix),y 		; copy new image number.
+	ldy #var_Image
+	sta (z80_ix),y
+	ldy #var_newFrame
+	lda (z80_ix),y 		; copy new frame.
+	ldy #var_Frame
+	sta (z80_ix),y
+	ldy #var_newY
+	lda (z80_ix),y 		; copy new y.
+	ldy #var_Y
+	sta (z80_ix),y
+	ldy #var_newX
+	lda (z80_ix),y 		; copy new x.
+	ldy #var_X
+	sta (z80_ix),y
+
+	clc
+	lda z80_x
+	adc #(TABSIZ*2)		; distance to next odd/even entry.
+	sta z80_x
+	lda z80_i
+	adc #0
+	sta z80_i 		; next sprite.
+	dec sprcnt
+	bne dspr0		; repeat for remaining sprites.
+	rts
+
+dspr1:
+	; _BEEB clipping code copied from CPC Engine
+	ldy #var_Y
+	lda (z80_ix), y		; old x coord
+	cmp #SpriteMaxY     	; beyond maximum?
+	bcs dspr5		; yes, don't delete it.
+
+	ldy #var_newType
+	lda (z80_ix),y 		; type of new sprite.
+	cmp #255		; is this enabled?
+	bne dspr4 		; yes, display both.
+
+dspr6:
+	jsr sspria 		; show single sprite.
+	jmp dspr2
+
+; Displaying two sprites.  Don't bother redrawing if nothing has changed.
+
+dspr4:
+	; _BEEB clipping code copied from CPC Engine
+	ldy #var_newY
+	lda (z80_ix), y		; old x coord
+	cmp #SpriteMaxY     	; beyond maximum?
+	bcs dspr6		; yes, don't display it.
+
+	ldy #var_X
+	lda (z80_ix),y		; old x.
+	ldy #var_newX
+	cmp (z80_ix),y 		; compare with new value.
+	bne dspr7 		; they differ, need to redraw.
+
+	ldy #var_Y
+	lda (z80_ix),y		; old y.
+	ldy #var_newY
+	cmp (z80_ix),y 		; compare against new value.
+	bne dspr7		; they differ, need to redraw.
+
+	ldy #var_Frame
+	lda (z80_ix),y 		; old frame.
+	ldy #var_newFrame
+	cmp (z80_ix),y 		; compare against new value.
+	bne dspr7 		; they differ, need to redraw.
+
+	ldy #var_Image
+	lda (z80_ix),y 		; old image.
+	ldy #var_newImage
+	cmp (z80_ix),y 		; compare against new value.
+	bne dspr7 		; they differ, need to redraw.
+	jmp dspr2		; everything is the same, don't redraw.
+dspr7:
+	jsr sspric 		; delete old sprite, draw new one simultaneously.
+	jmp dspr2
+dspr3:
+	; _BEEB clipping code copied from CPC Engine
+	ldy #var_newY
+	lda (z80_ix), y		; old x coord
+	cmp #SpriteMaxY     	; beyond maximum?
+	bcc :+			; no, continue
+	jmp dspr2		; yes, don't display it.
+:
+	jsr ssprib 		; show single sprite.
+	jmp dspr2
+
+;-----------------------------------------
+; Get sprite address calculations.
+; gspran = new sprite, gsprad = old sprite.
+;
+; Input:
+;  IX = sprite address
+;-----------------------------------------
+
+gspran:
+	ldy #var_newY
+	lda (z80_ix),y 		; new y coordinate.
+	sta dispy
+	ldy #var_newX
+	lda (z80_ix),y 		; new x coordinate.
+	sta dispx
+	ldy #var_newImage
+	lda (z80_ix),y 		; new sprite image.
+	jsr gfrm		; fetch start frame for this sprite.
+
+	ldy #0
+	lda (z80_hl),y 		; frame in accumulator.
+	ldy #var_newFrame
+	clc
+	adc (z80_ix),y 		; new add frame number.
+	jmp gspra0
 
 ;-----------------------------------------
 ; Calculate old sprite address
@@ -5444,24 +4614,54 @@ prescr:
 ;-----------------------------------------
 
 gsprad:
-	ldy #3
+	ldy #var_Y
 	lda (z80_ix),y		; y coordinate.
 	sta dispy
-	ldy #4
+	ldy #var_X
 	lda (z80_ix),y		; x coordinate.
 	sta dispx
-	ldy #1
+	ldy #var_Image
 	lda (z80_ix),y 		; sprite image.
 	jsr gfrm 		; fetch start frame for this sprite.
 
 	ldy #0
 	lda (z80_hl),y 		; frame in accumulator.
-	ldy #2
+	ldy #var_Frame
 	clc
 	adc (z80_ix),y 		; add frame number.
-	sta frmnr		; store frame number
 
 gspra0:
+.if rflag
+	sta z80_e		; multiply by 32.
+	lda #0
+	sta z80_d
+
+	asl z80_e
+	rol z80_d
+	asl z80_e
+	rol z80_d
+	asl z80_e
+	rol z80_d
+	asl z80_e
+	rol z80_d
+.if bflag
+	lda z80_e		; multiply by 48
+	sta tmp1
+	lda z80_d
+	sta tmp2
+.endif
+	asl z80_e
+	rol z80_d
+.if bflag
+	clc
+	lda z80_e
+	adc tmp1
+	sta z80_e
+	lda z80_d
+	adc tmp2
+	sta z80_d
+.endif
+.else
 	lsr a	  		; multiply by 128.
 	sta z80_d 		; store in d.
 	sta tmp1
@@ -5469,9 +4669,21 @@ gspra0:
 	ror a
 	sta z80_e 		; got low byte.
 	sta tmp2
+.if bflag
+	lsr tmp1		; multiply by 192
+	ror tmp2
+	clc
+	lda tmp2
+	adc z80_e
+	sta z80_e
+	lda tmp1
+	adc z80_d
+	sta z80_d
+.endif
+.endif
 	clc 			; address of play sprites.
 	lda z80_e
-	adc #<sprgfx
+	adc #<sprgfx 
 	sta z80_e
 	lda z80_d
 	adc #>sprgfx
@@ -5480,168 +4692,843 @@ gspra0:
 	lda dispx 		; y coordinate.
 	and #6 			; position within byte boundary.
 	tax	 		; low byte of table displacement.
-
+.if rflag
+	stx sprshft
+.else
 	asl a	  		; multiply by 32.
 	asl a  			; already a multiple
 	asl a  			; of 2, so just 4
+.if bflag
+	sta tmp1
 	asl a  			; shifts needed.
+	clc
+	adc tmp1
+.else
+	asl a  			; shifts needed.
+.endif
 	clc 			; add to sprite address.
 	adc z80_e
 	sta z80_e
 	bcc :+
 	inc z80_d
 :
+.endif
 	lda spmask,x		 ; pointer to mask table.
 	sta z80_c 		; left mask.
 	lda spmask+1,x
 	sta z80_b 		; right mask.
-
-;------------------------------------------------------------------
 ; Drop into screen address routine.
-; This routine returns a screen address for (dispx, dispy) in scraddr.
-;------------------------------------------------------------------
+	jmp scadd
 
-scadd:
+spmask:	.byte 255,0,63,192,15,240,3,252
 
-	lda dispy
-	pha
-	lsr a
-	lsr a
-	lsr a
-	sta dispy
 
-	lda dispx
-	pha
-	lsr a
-	lsr a
-	lsr a
-	sta dispx
+;-----------------------------------------------------------
+; Animates a sprite.
+;
+; Input:
+;  IX = sprite address
+;  HL = last sprite address
+;-----------------------------------------------------------
 
-	jsr getoffset
+animsp:
+	and frmno
+	beq :+
+	rts
+:
+	ldy #var_newImage
+	lda (z80_ix),y		; sprite image
+	jsr gfrm		; get frame data.
 
-	pla
-	sta dispx
-	pla
-	sta dispy
-
-	lda bufaddr
-	sta scraddr
+	inc z80_l		; point to frames.
+	bne :+
+	inc z80_h
+:
+	ldy #var_newFrame
+	lda (z80_ix),y		; sprite frame.
 	clc
-	lda bufaddr+1
-	adc #$10
-	sta scraddr+1
+	adc #1			; next one along.
+	ldy #0
+	cmp (z80_hl),y		; reached the last frame?
+	bcc anims0		; no, not yet.
+	lda #0			; start at first frame.
+anims0:
+	ldy #var_newFrame
+	sta (z80_ix),y		; new frame.
 	rts
 
-spmask:	.byte $ff,$00
-	.byte $3f,$c0
-	.byte $0f,$f0
-	.byte $03,$fc
-
-tmp1:	.byte 0
-tmp2:	.byte 0
-
-;-----------------------------------------------------------------
-; These are the sprite routines.
-; sspria = single sprite, old (ix).
-; 	Here are 16 lines with 3 bytes displayed
-;	  z80_b   = right byte mask
-;	  z80_c   = left byte mask
-;	  z80_de  = spriteframe address
-;	  scraddr = old screen address
+;--------------------------------------------------------------
+; Animate back
 ;
-;	   byte0 = left spriteframe byte and z80_c (mask sprite data)
-;	   byte1 = right spriteframe byte
-;	   byte2 = left spritefrae byte and z80_b (mask shifted bits)
-; ssprib = single sprite, new (ix+5).
-;	As sspria except scraddr = new screen address
-; sspric = both sprites, old (ix) and new (ix+5).
-; 	Here are 2x16 lines with 3 bytes displayed, sspria and ssprib combined
-;	Line1 erases old sprite and Line2 displays new sprite	
-;-----------------------------------------------------------------
+; Input:
+;  IX = sprite address
+;  HL = last sprite address
+;--------------------------------------------------------------
 
-sspria:
-	jsr gsprad		; get old sprite address.
+animbk:
+	and frmno
+	beq :+
+	rts
+:
+	ldy #var_newImage
+	lda (z80_ix),y		; sprite image.
+	jsr gfrm		; get frame data.
 
-sspri2:
+	inc z80_l 		; point to frames.
+	bne :+
+	inc z80_h
+:
+	ldy #var_newFrame
+	lda (z80_ix),y 		; sprite frame.
+	beq :+
+	jmp rtanb0 		; yes, start at end.
+:
+	ldy #0
+	lda (z80_hl),y 		; last sprite.
+rtanb0:
+	sec
+	sbc #1			; next one along.
+	jmp anims0		; set new frame.
+
+;--------------------------------------------------------------
+; Check for collision with other sprite, strict enforcement.
+;
+; Input:
+;  b		= sprite to test for
+;  ix		= current sprite pointer
+;
+; global:	b
+; local:	x,y,hl,de,skptr
+; calls:	-
+;--------------------------------------------------------------
+
+sktyp:
+	lda #<sprtab				; sprite table.
+	sta z80_l
+	lda #>sprtab
+	sta z80_h
+numsp2:
+	lda #NUMSPR				; number of sprites.
+	sta sktptr
+sktyp0:
+	lda z80_l 				; store pointer to sprite.
+	sta skptr
+	lda z80_h
+	sta skptr+1
 
 	ldy #0
-	lda #0
+	lda (z80_hl),y 				; get sprite type.
+	cmp z80_b				; is it the type we seek?
+	beq coltyp				; yes, we can use this one.
+sktyp1:
+	clc
+	lda skptr				; retrieve sprite pointer.
+	adc #TABSIZ				; size of each entry.
+	sta z80_l
+	lda skptr+1
+	adc #0
+	sta z80_h
+	dec sktptr					; one less iteration.
+	bne sktyp0				; keep going until we find a slot.
+	lda #0					; default to ROM address - no sprite.
+	sta z80_l
+	sta z80_h
+	sta skptr				; store pointer to sprite.
+	sta skptr+1
+
+	clc					; don't return with zero flag set.
+	rts 					; didn't find one.
+
+coltyp:
+	ldy #0
+	lda (z80_ix),y				; current sprite type.
+	cmp z80_b				; seeking sprite of same type?
+	beq colty1				; yes, need to check we're not detecting ourselves.
+colty0:
+	ldy #9					; distance to x position in table.
+	lda (z80_hl),y				; fetch x coordinate.
+	sta z80_e
+	dey
+	lda (z80_hl),y				; fetch y coordinate.
+	sta z80_d
+
+; Drop into collision detection.
+
+colc16:
+	ldy #9
+	lda (z80_ix),y			 	; x coord.
+	sec					; subtract x.
+	sbc z80_e
+	bcs  colc1a 				; result is positive.
+	eor #$ff				; make negative positive.
+	clc
+	adc #1
+colc1a:
+	cmp #16 				; within x range?
+	bcs sktyp1				; no - they"ve missed.
+	sta z80_c				; store difference.
+
+	ldy #8
+	lda (z80_ix),y				; y coord.
+	sec
+	sbc z80_d				; subtract y.
+	bcs colc1b				; result is positive.
+	eor #$ff				; make negative positive.
+	clc
+	adc #1
+colc1b:
+	cmp #16					; within y range?
+	bcs sktyp1 				; no - they've missed.
+	clc					; add x difference.
+	adc z80_c
+	cmp #26					; only 5 corner pixels touching?
+	bcs :+
+	sec
+	rts 					; carry set if there's a collision.
 :
-	sta (scraddr),y
-	iny
-	cpy #3
-	bne :-
+	jmp sktyp1				; try next sprite in table.
+colty1:
+	lda z80_x  				; compare the two.
+	cmp z80_l
+	bne end_col
+	lda z80_i
+	cmp z80_h
+	bne end_col
+	jmp sktyp1 				; addresses are identical.
+end_col:
+	jmp colty0
 
-	ldy #24
-	lda #0
+;-----------------------------------------------------------
+; Display number, left aligned
+; 
+; Input:
+;  a		= number
+;
+; global:	-
+; local:	a,y,bc,hl,displ0
+; calls:	num2ch,dmsg3
+;-----------------------------------------------------------
+
+disply:
+	sta z80_a
+	lda #<displ0				; display workspace.
+	sta z80_c
+	lda #>displ0
+	sta z80_b
+	lda z80_a
+	jsr num2ch				; convert accumulator to string.
+displ1:
+	dec z80_c				; back one character.
+	lda z80_c
+	cmp #$ff
+	bne :+
+	dec z80_b
 :
-	sta (scraddr),y
-	iny
-	cpy #27
-	bne :-
+	ldy #0
+	lda (z80_bc),y				; fetch digit.
+	ora #128				; insert end marker.
+	sta (z80_bc),y				; new value.
 
-	ldy #48
-	lda #0
-:
-	sta (scraddr),y
-	iny
-	cpy #(48+3)
-	bne :-
+	lda #<displ0				; display space.
+	sta z80_l
+	lda #>displ0
+	sta z80_h
+	jmp dmsg3				; display the string.
 
+displ0:	.byte 0,0,0,13+128
 
+;----------------------------------------------------------------
+; Initialise screen.
+;
+; global:	roomtb,scno
+; local:	-
+; calls:	tstcs
+;----------------------------------------------------------------
+
+initsc:
+	lda roomtb 			; whereabouts in the map are we?
+	jsr tstsc 			; find displacement.
+	cmp #255 			; is it valid?
+	beq init_end 			; no, it's rubbish.
+	sta scno			; store new room number.
+init_end:
 	rts
 
-;-----------------------------------------------------------------
+;----------------------------------------------------------------
+; Test screen.
+;
+; global:	-
+; local:	x
+; calls:	-
+;----------------------------------------------------------------
 
-SpriteSlotPositionCharRam:
-    .byte 201, 204, 207, 202, 205, 208, 203, 206, 209
-    .byte 210, 213, 216, 211, 214, 217, 212, 215, 218
-    .byte 219, 222, 225, 220, 223, 226, 221, 224, 227
-    .byte 228, 231, 234, 229, 232, 235, 230, 233, 236
-    .byte 237, 240, 243, 238, 241, 244, 239, 242, 245
-    .byte 246, 249, 252, 247, 250, 253, 248, 251, 254 
-
-; Starting from $18 (3 background chars * 8 bytes -> 48)
-; Increased by $48 (9 chars * 8 bytes -> 72)
-SpritesPosCharRam:
-    .word $1a48, $1a90, $1ad8, $1b20, $1b68, $1bb0
-
-
-ssprib:
-	jsr gspran 		; get new sprite address.
-
-	lda frmnr
-	sta SLOT_NUM
-
-	lda z80_de
-	sta SPRITE_PTR
-	lda z80_de+1
-	sta SPRITE_PTR+1
-
-    ; Set char ram to be used by the current sprite
-    MS_SET_CHAR_RAM_PTR
-
-    ; Check position of the sprite on screen
-    MS_POS_CHAR_ON_SCREEN
-
-    ; clean sprite in char ram
-    MS_CLEAN_SPRITE_RAM ; cpu intensive
-
-    ; Copy selected sprite from table to char ram
-    ; moved to the right position in the 3x3 sprite char
-    ; and merged with background
-    MS_COPY_SPRITE_CHAR_RAM 
-
-	; Draw the entire sprite on screen
-    MS_DRAW_SPRITE_ON_SCREEN
-
+tstsc:
+	sta tmproom
+	clc
+	adc #MAPWID 			; add width in case we"re negative.
+	tax 				; add displacement to map data.
+	lda mapdat-MAPWID,x 		; find room number there.
 	rts
-	
-;-----------------------------------------------------------------
 
-sspric:
-	jsr sspria
-	jsr ssprib
+;--------------------------
+; Screen left.
+;--------------------------
+
+scrl:
+	lda roomtb 			; present room table pointer.
+	sec
+	sbc #1				; room left.
+scrl0:
+	jsr tstsc			; test screen.
+	cmp #255			; is there a screen this way?
+	bne :+
+	rts				; no, return to loop.
+:
+	lda tmproom			; restore room displacement.
+	sta roomtb			; new room table position.
+scrl1:
+	jsr initsc 			; set new screen.
+	lda #2
+	sta restfl 			; set it.
+	rts
+scrr:
+	lda roomtb 			; room table pointer.
+	clc
+	adc #1				; room right.
+	jmp scrl0
+scru:
+	lda roomtb 			; room table pointer.
+	sec
+	sbc #MAPWID 			; room up.
+	jmp scrl0
+scrd:
+	lda roomtb 			; room table pointer.
+	clc
+	adc #MAPWID 			; room down.
+	jmp scrl0
+
+;-----------------------------------------
+; Jump to new screen.
+;-----------------------------------------
+
+nwscr:
+	ldx #0				; start of map data.
+nwscr0:
+	cmp mapdat,x
+	beq nwscr1			; have we found a match for screen?
+	inx 				; next room.
+	cpx #80				; zero room count, 80 to search.
+	bne nwscr0			; keep looking.
+	rts
+nwscr1:
+	stx roomtb			; set the map position.
+	jmp scrl1			; draw new room.
+
+
+;----------------------------------------------------------
+; Gravity processing.
+;----------------------------------------------------------
+
+grav:
+	ldy #13
+	lda (z80_ix),y			; jump pointer low.
+	sta z80_l
+	ldy #14
+	lda (z80_ix),y			; jump pointer high.
+	sta z80_h
+	ora z80_l			; merge in low byte.
+	bne :+
+	rts				; if neither is set, we're not in the air.
+:
+	ldy #0
+	lda (z80_hl),y			; pixels to move.
+	sta z80_a
+	cmp #99				; reached the end?
+	bne grav0			; no, continue.
+grav2:
+	dec z80_l			; go back to previous value.
+	cmp #$ff
+	bne :+
+	dec z80_h
+:
+	lda (z80_hl),y			; fetch that from table.
+	sta z80_a
+grav0:
+	inc z80_l			; point to next table entry.
+	bne :+
+	inc z80_h
+:
+	lda z80_l
+	ldy #13
+	sta (z80_ix),y			; store new pointer low.
+	lda z80_h
+	ldy #14
+	sta (z80_ix),y			; store new pointer high.
+grav1:
+	lda z80_a
+	bne :+				; any movement required?
+	rts				; no, not this time.
+:
+	lda z80_a
+	cmp #128			; is it up or down?
+	bcs gravu			; it's up.
+gravd:
+	sta z80_b			; set pixels to move.
+gravd0:
+	jsr cangd			; can we go down?
+	bne gravst			; can't move down, so stop.
+	ldy #8
+	lda (z80_ix),y			; adjust new x coord.
+	clc
+	adc #1
+	sta (z80_ix),y
+	dec z80_b
+	bne gravd0
+	rts
+gravu:
+	eor #$ff			; flip the sign so it's positive.
+	clc
+	adc #1
+	sta z80_b			; set pixels to move.
+gravu0:
+	jsr cangu			; can we go up?
+	bne ifalls			; can't move up, go down next.
+	ldy #8
+	lda (z80_ix),y
+	sec
+	sbc #1
+	sta (z80_ix),y			; adjust new x coord.
+	dec z80_b
+	bne gravu0
+	rts
+gravst:
+	ldy #var_jumpLo
+	lda (z80_ix),y			; jump pointer low.
+	sta z80_l
+	ldy #var_jumpHi
+	lda (z80_ix),y			; jump pointer high.
+	sta z80_h
+
+	lda #0				; null value in pointer.
+	ldy #var_jumpLo
+	sta (z80_ix),y			; store new pointer low.
+	iny
+	sta (z80_ix),y			; store new pointer high.
+
+	ldy #0
+	lda (z80_hl),y			; fetch byte from table.
+	cmp #99				; is it the end marker?
+evftf:
+	beq :+				; yes, fallen too far.
+	rts
+:
+	jmp evnt15			; EVENT FELLTOOFAR
+
+;------------------------------------------------
+; Initiate fall check.
+;------------------------------------------------
+
+ifall:
+	ldy #var_jumpLo
+	lda (z80_ix),y 			; jump pointer low.
+	sta z80_l
+	ldy #var_jumpHi
+	lda (z80_ix),y 			; jump pointer high.
+	sta z80_h			; high byte in accumulator.
+	ora z80_l			; merge in low byte.
+	beq :+
+	rts				; if either is set, we're already in the air.
+:
+	ldy #9
+	lda (z80_ix),y			; y coordinate.
+	sta dispx
+	ldy #8
+	lda (z80_ix),y			; look x coordinate.
+	clc
+numsp7:
+	adc #SPR_HGT			; add 16 pixels.
+	sta dispy			; set up test coordinates.
+	jsr tstbl			; get map address.
+	jsr plchk			; block, platform check.
+	beq :+
+	rts				; it's solid, don't fall.
+:
+	inc bufaddr			; look right one cell.
+	jsr plchk			; block, platform check.
+	beq :+
+	rts				; it's solid, don't fall.
+:
+	lda dispx			; y coordinate.
+	and #7				; position straddling block cells.
+	beq ifalls			; no more checks needed.
+	inc bufaddr			; look to third cell.
+	jsr plchk			; block, platform check.
+	beq :+
+	rts				; it's solid, don't fall.
+:
+ifalls:
+	lda #<jtab			; jump table start.
+	sta z80_l
+	lda #>jtab
+	sta z80_h
+ifal0:
+	inc z80_l			; point to next value.
+	bne :+
+	inc z80_h
+:
+	ldy #0
+	lda (z80_hl),y			; fetch value.
+	beq ifal0			; no, get next value.
+	cmp #99				; reached end of table?
+	bne :+
+	rts				; yes, don't fall.
+:
+	cmp #128			; is it going up?
+	bcs ifal0			; yes, looking for first movement down.
+
+	ldy #13
+	lda z80_l
+	sta (z80_ix),y 			; set jump low.
+	ldy #14
+	lda z80_h
+	sta (z80_ix),y 			; set jump high.
+	rts
+
+
+;----------------------------------------------------
+; Get frame data for a particular sprite.
+; Input:
+;  a		= framenumer
+; Output:
+;  hl		= frame address
+;
+; global:	hl,frmptr
+; local:	-
+; calls:	-
+;----------------------------------------------------
+
+gfrm:
+	asl a	 		 	; multiple of 2.
+	clc
+	adc frmptr 			; frames used by game.
+	sta z80_l
+	lda frmptr+1
+	adc #0
+	sta z80_h 			; point to frame start.
+	rts
+
+;----------------------------------------------------
+; Find sprite list for current room.
+;
+; global:	hl
+; local:	x,y
+; calls:	-
+;----------------------------------------------------
+
+sprlst:
+	lda #<nmedat 			; list of enemy sprites.
+	sta z80_l
+	lda #>nmedat
+	sta z80_h
+	ldx scno 			; screen number.
+	bne sprls2 			; is it the first screen?
+	rts 				; yes, don't need to search data.
+sprls2:
+	ldy #0
+sprls1:
+	lda (z80_hl),y 			; fetch type of sprite.
+	cmp #255			; is it an end marker?
+	beq sprls0 			; yes, end of this room.
+
+	clc 				; point to next sprite in list.
+	lda z80_l
+	adc #NMESIZ
+	sta z80_l
+	bcc :+
+	inc z80_h
+:
+	jmp sprls1 			; continue until end of room.
+sprls0:
+	inc z80_l 			; point to start of next screen.s
+	bne :+
+	inc z80_h
+:
+	dex
+	bne sprls1 			; continue until room found.
+	rts
+
+
+;----------------------------------------------------
+; Clear all but a single player sprite.
+;
+; global:	-
+; local:	x,y,ix
+; calls:	-
+;----------------------------------------------------
+
+nspr:
+	lda #NUMSPR			; sprite slots in table.
+	sta sprcnt
+	lda #<sprtab 			; sprite table.
+	sta z80_x
+	lda #>sprtab
+	sta z80_i
+nspr0:
+	ldy #0 				; fetch sprite type.
+	lda (z80_ix),y 			; is it a player?
+	beq nspr1 			; yes, keep this one.
+
+	lda #255
+	ldy #0 				; fetch sprite type.
+	sta (z80_ix),y 			; delete sprite.
+	ldy #5
+	sta (z80_ix),y 			; remove next type.
+
+	clc	 			; next sprite.
+	lda z80_x
+	adc #TABSIZ 			; distance to next odd/even entry.
+	sta z80_x
+	bcc :+
+	inc z80_i
+:
+	dec sprcnt	 			; one less space in the table.
+	bne nspr0
+	rts
+nspr1:
+	lda #255
+	ldy #0
+	sta (z80_ix),y 			; delete sprite.
+
+	clc	 			; point to next sprite.
+	lda z80_x
+	adc #TABSIZ 			; distance to next odd/even entry.
+	sta z80_x
+	bcc :+
+	inc z80_i
+:
+	dec sprcnt	 			; one less to do.
+	bne nspr2
+	rts
+nspr2:
+	lda #255
+	ldy #0
+	sta (z80_ix),y 			; delete sprite.
+	ldy #5
+	sta (z80_ix),y 			; remove next type.
+
+	clc	 			; next sprite.
+	lda z80_x
+	adc #TABSIZ 			; distance to next odd/even entry.
+	sta z80_x
+	bcc :+
+	inc z80_i
+:
+	dec sprcnt	 			; one less space in table.
+	bne nspr2
+	rts
+
+;----------------------------------------------------------
+; Two initialisation routines.
+; Initialise sprites - copy everything from list to table.
+;
+; global:	-
+; local:	x,y,ix
+; calls:	cpsp
+;----------------------------------------------------------
+
+ispr:
+	lda #NUMSPR			; sprite slots in table.
+	sta sprcnt
+	lda #<sprtab			; sprite table.
+	sta z80_x
+	lda #>sprtab
+	sta z80_i
+ispr2:
+	ldy #0
+	lda (z80_hl),y 			; fetch byte.
+	cmp #255 			; is it an end marker?
+	bne :+
+	rts 				; yes, no more to do.
+:
+ispr1:
+	ldy #0
+	lda (z80_ix),y 			; fetch sprite type.
+	cmp #255 			; is it enabled yet?
+	bne ispr4			; yes, try another slot.
+
+	ldy #5
+	lda (z80_ix),y		 	; next type.
+	cmp #255 			; is it enabled yet?
+	beq ispr3 			; no, process this one.
+ispr4:
+	clc 				; next sprite.
+	lda z80_x
+	adc #TABSIZ		 	; distance to next odd/even entry.
+	sta z80_x
+	bcc :+
+	inc z80_i
+:
+	dec sprcnt
+	bne ispr1 			; repeat for remaining sprites.
+	rts  				; no more room in table.
+ispr3:
+	jsr cpsp			; initialise a sprite.
+	dec sprcnt			; one less space in the table.
+	bne ispr2
+	rts
+
+
+;-----------------------------------------------------------------------
+; Initialise sprites - but not player, we're keeping the old one.
+;
+; global:	-
+; local:	x,y,ix
+; calls:	cpsp
+;-----------------------------------------------------------------------
+
+kspr:
+	ldx #NUMSPR			; sprite slots in table.
+	lda #<sprtab 			; sprite table.
+	sta z80_x
+	lda #>sprtab
+	sta z80_i
+kspr2:
+	ldy #0
+	lda (z80_hl),y 			; fetch byte.
+	cmp #255 			; is it an end marker?
+	bne :+
+	rts 				; yes, no more to do.
+:
+	cmp #0
+	bne kspr1 			; no, add to table as normal.
+
+	clc 				; next sprite.
+	lda z80_l
+	adc #NMESIZ		 	; distance to next odd/even entry.
+	sta z80_l
+	bcc :+
+	inc z80_h
+:
+	jmp kspr2
+kspr1:
+	ldy #0 				; fetch sprite type.
+	lda (z80_ix),y
+	cmp #255 			; is it enabled yet?
+	bne kspr4 			; yes, try another slot.
+
+	ldy #5 				; next type.
+	lda (z80_ix),y
+	cmp #255 			; is it enabled yet?
+	beq kspr3 			; no, process this one.
+kspr4:
+	clc 				; next sprite.
+	lda z80_x
+	adc #TABSIZ		 	; distance to next odd/even entry.
+	sta z80_x
+	bcc :+
+	inc z80_i
+:
+	dex	 			; repeat for remaining sprites.
+	bne kspr1
+	rts  				; no more room in table.
+kspr3:
+	jsr cpsp 			; copy sprite to table.
+	dex	 			; one less space in the table.
+	bne kspr2
+	rts
+
+;----------------------------------------------
+; Copy sprite from list to table.
+;
+; global:	hl,ix
+; local:	y
+; calls:	evnt09
+;----------------------------------------------
+
+cpsp:
+	ldy #0					; fetch byte from table.
+	lda (z80_hl),y
+	; y=var_Type
+	sta (z80_ix),y			; set up type.
+	ldy #var_newType
+	sta (z80_ix),y 			; set up type.
+
+	inc z80_l 				; move to next byte.
+	bne :+
+	inc z80_h
+:
+	ldy #0 					; fetch byte from table.
+	lda (z80_hl),y
+	ldy #var_newImage
+	sta (z80_ix),y			; set up image.
+
+	inc z80_l 				; move to next byte.
+	bne :+
+	inc z80_h
+:
+	ldy #0
+	lda (z80_hl),y 			; fetch byte from table.
+	ldy #var_newY
+	sta (z80_ix),y 			; set up coordinate.
+
+	lda #200 				; set initial coordinate off screen.
+	ldy #var_Y
+	sta (z80_ix),y
+
+	inc z80_l 				; move to next byte.
+	bne :+
+	inc z80_h
+:
+	ldy #0 					; fetch byte from table.
+	lda (z80_hl),y
+	ldy #var_newX
+	sta (z80_ix),y 			; set up coordinate.
+
+	inc z80_l 				; move to next byte.
+	bne :+
+	inc z80_h
+:
+	lda #0					; zeroes in accumulator.
+	ldy #var_newFrame 		; reset frame number.
+	sta (z80_ix),y
+	ldy #var_Direction 		; reset direction.
+	sta (z80_ix),y
+	ldy #var_jumpLo			; reset jump pointer low.
+	sta (z80_ix),y
+	ldy #var_jumpHi	 		; reset jump pointer high.
+	sta (z80_ix),y
+
+	lda #255 				; reset data pointer to auto-restore.
+	ldy #var_dataHi
+	sta (z80_ix),y
+evis0:
+	lda z80_i
+	pha
+	lda z80_x
+	pha
+	lda z80_h
+	pha
+	lda z80_l
+	pha
+
+	jsr evnt09 				; perform event.
+
+	pla
+	sta z80_l
+	pla
+	sta z80_h
+	pla
+	sta z80_x
+	pla
+	sta z80_i
+
+	clc
+	lda z80_x 			; distance to next odd/even entry.
+	adc #TABSIZ		 	; next sprite.
+	sta z80_x
+	bcc :+
+	inc z80_i
+:
 	rts
 
 
@@ -5649,7 +5536,6 @@ sspric:
 ; Clear the play area window.
 ;-------------------------------------
 
-.if clwflag
 clw:
 	lda wintop			; get coordinates of window.
 	sta dispy			; put into dispx for calculation.
@@ -5663,14 +5549,8 @@ clw3:
 	sta rcol
 clw2:
 	jsr gprad 			; get print address.
-	lda #0				; zero byte to write.
-	ldx #7				; pixel height of each cell.
-clw1:
-	ldy scrtab,x
-	sta (scraddr),y 			; copy to screen.
-	dex				; next screen row down.
-	bpl clw1
-
+	lda #32
+	jsr pchar
 	inc dispx			; next column.
 	dec rcol			; one less to do.
 	bne clw2			; repeat for remaining columns.
@@ -5687,101 +5567,188 @@ clw1:
 	lda winlft
 	sta charx
 	rts
-.endif
+
 
 ;----------------------------------------------------------
 ; Effects code.
 ; Ticker routine is called 25 times per second.
 ;
-; HL = txtscr = left text screen address
-; DE = txtscr+txtwid-1 = right text screen address
-; BC = txtpos = text scroller position
-;
+; txtini = text scroller address
+; txtscr = left text screen address
+; txtwid = scroller width
+; txtbit = 128
+; X      = message nr
 ;----------------------------------------------------------
 
 .if sflag
+
+scrollpos_lb:	.byte $00,$10,$20,$30,$40,$50,$60,$70
+		.byte $80,$90,$a0,$b0,$c0,$d0,$e0,$f0
+		.byte $00,$10,$20,$30,$40,$50
+scrollpos_hb:	.byte $00,$00,$00,$00,$00,$00,$00,$00
+		.byte $00,$00,$00,$00,$00,$00,$00,$00
+		.byte $01,$01,$01,$01,$01,$01
+
 scrly:
-	rts
-	.word txtscr         	; get left screen address.
 
-; Scroll all characters to the left 
+; Set scr_l = txtscr
 
-	inc txtcnt
-	lda txtcnt
-	and #3
-	beq :+
 	rts
+	.word txtscr         	; set scr_l = left screen address.
+	sta scr_l
+	sta scr_r
+	lda txtscr+1
+	sta scr_l+1
+	sta scr_r+1
+	
+	stx xtmp		; save x
+
+; Calculate scr_r = scr_l + 16*(txtwid -1)
+
+	ldx txtwid
+	dex
+	lda scrollpos_lb,x
+	clc
+	adc scr_r
+	sta scr_r		; set lb scr_r = scr_l + (txtwid - 1) * 8
+	bcc :+
+	inc scr_r+1
 :
-	ldy #1
-sleft:
-	lda (txtscr),y 
-	dey
-	sta (txtscr),y
-	iny
-	lda (txtclr),y 
-	dey
-	sta (txtclr),y
-	iny
-	iny
-	cpy txtwid
-	bne sleft
+	clc
+	lda scrollpos_hb,x
+	adc scr_r+1
+	sta scr_r+1
 
-; Print character
+; Scroll string
 
-	ldy txtpos
-	lda (txtini),y
-	pha
-	sec
-	sbc #32
+	lda #0
+	sta line_cnt		; Set line counter
+scrly1:
+	clc
+	lda scr_r
+	adc line_cnt
+	sta scr_tmp
+	lda scr_r+1
+	sta scr_tmp+1
+
+	ldx txtwid		; set column counter
+	dex
+	ldy #0
+	clc			; Reset pixel to be shifted in
+scrly0:
+	lda (scr_tmp),y
+	rol a			; Shift screenbyte
+	sta (scr_tmp),y		; store screenbyte
+	php			; save carry
+
+	sec			; subtract 16 form screenaddress
+	lda scr_tmp
+	sbc #$10
+	sta scr_tmp
+	bcs :+
+	dec scr_tmp+1
+:
+	plp			; restore carry
+	dex			; previous column
+	bpl scrly0		; repeat for all columns
+
+	inc line_cnt		; next line
+	lda line_cnt
+	cmp #8
+	bne scrly1		; repeat for 8 lines
+
+; Get next character in string
+
+	lda txtpos 		; get text pointer.
+	sta scr_txt
+	lda txtpos+1
+	sta scr_txt+1
+
+	ldy #0
+	lda (scr_txt),y 	; find character we're displaying.
 	and #127 		; remove end marker bit if applicable.
 	cmp #13			; is it newline?
 	bne scrly5 		; no, it's okay.
 	lda #32			; convert to a space instead.
 scrly5:
-	ldy txtwid
-	dey
-	sta (txtscr),y
-	lda fontcol
-	sta (txtclr),y
-	pla
+	sta fntaddr		; calculate char address
+	lda #0
+	sta fntaddr+1
+	asl fntaddr  		; multiply char by 8.
+	rol fntaddr+1
+	asl fntaddr
+	rol fntaddr+1
+	asl fntaddr
+	rol fntaddr+1
+	lda fntaddr
+	clc
+	adc #<(FONT-256)
+	sta scrly3+1		; that's the low byte.
+	lda fntaddr+1
+	adc #>(FONT-256)
+	sta scrly3+2		; add displacement.
+
+	ldy #0
+scrly3:
+	lda $3333,y		; get image of char line.
+	and txtbit
+	beq scrly2		; don't plot pixel
+	lda (scr_r),y
+	clc
+	ora #1
+	sta (scr_r),y		; plot pixel
+scrly2:
+	iny			; next line of char.
+	cpy #8
+	bne scrly3
+
+	lsr txtbit		; bit of text to display.
+	bcs :+
+	rts
+:
+	ldy #0
+	lda (scr_txt),y 	; what was the character?
 	asl a	  		; end of message?
 	bcs scrly4
 	inc txtpos
+	bne :+
+	inc txtpos+1
+:
 	jmp scrly6 		; not yet - continue.
 scrly4:
-	lda #0 			; reset string pointer.
+	lda txtini 		; start of scrolling message.
 	sta txtpos
+	lda txtini+1
+	sta txtpos+1
 scrly6:
+	lda #128
+	sta txtbit
+	ldx xtmp
 	rts
+
+tmp_byte:	.byte 0
+line_cnt:	.byte 0
 
 ;-------------------------------------------------------
 ; Entry TICKER command
 ;
-; Input:
+; Entry:
 ;  z80_b = message nr
 ;  z80_c = width
-; Output
-;  txtini = message address
-;  txtscr = screen address
-;  txtwid = width of scroller
-;  txtpos = message pointer
-;  txtcnt = delay counter
 ;-------------------------------------------------------
 
 iscrly:
 	jsr prescr 		; set up display position.
-
 	lda #<msgdat 		; text messages.
 	sta z80_l
 	lda #>msgdat
 	sta z80_h
-
 	lda z80_c 		; width.
 	sec
 	sbc #1			; subtract one.
-	cmp #24 		; is it between 1 and 24?
+	cmp #32 		; is it between 1 and 32?
 	bcc :+
-	lda #$60		; Opcode RTS
+	lda #$60
 	jmp iscrl0		; no, disable messages.
 :
 	ldx z80_b		; message number.
@@ -5801,18 +5768,14 @@ iscrl0:
 
 	lda scraddr 		; set text screen address.
 	sta txtscr
-	sta txtclr
 	lda scraddr+1
 	sta txtscr+1
-	clc
-	adc #>(ColorAttr-ScreenAddr)
-	sta txtclr+1
 
 	lda z80_c		; width.
 	sta txtwid		; set width in working storage.
 
-	lda #0			; reset delay counter
-	sta txtcnt
+	lda #128 		; start with leftmost bit.
+	sta txtbit
 
 	jmp scrly4
 .endif
@@ -5934,21 +5897,49 @@ digh:
 	jmp fdchk
 
 digcnt:	.byte 0
+
 .endif
+
+;------------------------------------------------------------------
+; Sprite table 
+;------------------------------------------------------------------
+
+
+; ix+0  = type.
+; ix+1  = sprite image number.
+; ix+2  = frame.
+; ix+3  = y coord.
+; ix+4  = x coord.
+
+; ix+5  = new type.
+; ix+6  = new image number.
+; ix+7  = new frame.
+; ix+8  = new y coord.
+; ix+9  = new x coord.
+
+; ix+10 = direction.
+; ix+11 = parameter 1.
+; ix+12 = parameter 2.
+; ix+13 = jump pointer low.
+; ix+14 = jump pointer high.
+; ix+15 = data pointer low.
+; ix+16 = data pointer high.
+
+; block NUMSPR * TABSIZ,255
+
+sprtab:	.res NUMSPR*TABSIZ,255
+ssprit:	.byte 255,255,255,255,255,255,255,0,192,120,0,0,0,255,255,255,255
+roomtb:	.byte 7                      ; start room map offset.
+
+setfgcol:
+setbgcol:
+	rts
 
 ; User routine.  Put your own code in here to be called with USER instruction.
 ; if USER has an argument it will be passed in the accumulator.
 
 user:
 	.include "user.inc"
-
-setfgcol:
-setbgcol:
-	rts
-andeor:	.byte 0,0
-
-
-numblk:	.byte (sprgfx-bprop)
 
 ; Everything below here will be generated by the editors.
 

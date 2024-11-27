@@ -1,0 +1,65 @@
+---------------------------------------------------------------------
+Engine:
+---------------------------------------------------------------------
+x redrw0: check cmp #177
+x nexpos: check for overshoot
+x nexlin: check for overshoot
+- pradd: check to simplefy like scadd:
+- grprad: check to simplefy like scadd:
+- NUMSPR, check speed for maximum nr of sprites
+- MAP, adjust declaration, is $1e4 bytes, not $300 bytes
+- PAL/NTSC not in engine, relocate to logical area
+- cls: relocate to lib
+- plsnd: add soundeffects for SOUND command
+x checkx: cmp#24 must be cmp #22
+- gtblk: check calculation screen address
+- tstbl: check MAP address calculation
+- bsort: check if sorting needed (speed)
+
+---------------------------------------------------------------------
+Lib:
+---------------------------------------------------------------------
+- gaadd: add routine to set colour attribute (now in engine)
+x pchar: add fontcol to colour character
+- dline: check to simplefy
+- ddline: check to simplefy
+x VIC constants, check for scrwidth/scrheight 
+x joy2scan, add second joystick?
+
+---------------------------------------------------------------------
+MPAGD:
+---------------------------------------------------------------------
+x MENU, check command
+x INV, check command
+x LASER, check command
+x DIG, check command
+- TICKER, check command
+- SPRITEINK, check command
+- CALL, check command
+- COLOUR, check command
+x CRASH, add white noise
+- SOUND, check fx sounds
+- SILENCE, check command
+- Collectable blocks, check adventure mode
+- Big sprites, check 16x24 sprites
+x Colourmode, think of easy way to implement multicolour mode
+   Auxilary colour
+   BORDER, border colour
+   INK, front colour
+   PAPER, background colour
+- hflag, hidden sprites behind tiles not implemented
+- xflag, check metablocks
+- Check map movements
+- Check sprite outside screen, eg y=200
+
+---------------------------------------------------------------------
+Compiler:
+---------------------------------------------------------------------
+x DEFINEBLOCK, handle colour
+x DEFINEOBJECT, handle colour
+
+TODO:
+- SCROLL UP/DOWN command
+x AUXCOLOUR command
+- FADE command
+- PALETTE command

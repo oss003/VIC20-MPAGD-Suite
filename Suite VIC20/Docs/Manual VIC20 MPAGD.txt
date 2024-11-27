@@ -1,0 +1,405 @@
+====================================================================
+V I C 2 0   M P A G D   v 1 . 0 
+====================================================================
+
+====================================================================
+1.0 General:
+====================================================================
+
+--------------------------------------------------------------------
+1.1 AGD:
+--------------------------------------------------------------------
+
+AGD or Arcade Game Designer is a program for the ZX Spectrum created by Jonathan Cauldwell to make creating games easy and understandable for everyone. The AGD program has 3 parts, editors, a compiler and an engine.
+
+Editors:
+Editors can be used for designing graphics and code like blocks, sprites, objects, screens, map and eventcode. The eventcode consists of AGD commands, a kind of pseudo game language which defines all graphics and describes the game algoritm.
+
+Compiler:
+The AGD commands can be converted to asm code by using a compiler which is also included in AGD. Most of the commands set some parameters and do a call to an engine routine.
+
+Engine:
+The engine consists of general routines for playing a game.
+
+--------------------------------------------------------------------
+1.2 MPAGD:
+--------------------------------------------------------------------
+
+Because the original AGD only ran on a ZX Spectrum, Jonathan started to create a more versatile version to also create games for other platforms instead of the ZX Spectrum. This is how MPAGD or Multiple Platform Arcade Game Designer was born. The goal was to create general gamecode which can be compiled for different platforms.
+This means that for every platform, you need a dedicated compiler and engine. Because graphics can differ a lot for other platforms, you need special editors to create graphics in MPAGD. Jonathan wrote WinAGD which contains graphic editors for several platforms and a text editor for eventcode. Then, depending on the choosen platform, a MPAGD Suite is started to compile, assemble and emulate a created game. MPAGD is event based which means that code is executed when a certain event occcurs. 
+ 
+--------------------------------------------------------------------
+1.3 WinAGD:
+--------------------------------------------------------------------
+
+WinAGD is a Windows program with editors. You can define the game graphics and add the eventcode in WinAGD. When you build the game. What happens is that an AGD text file DELETEME.AGD is created and passed to the platform Suite. Then the Suite compiles, assembles and emulates the game.
+
+====================================================================
+2.0 VIC20 port:
+====================================================================
+
+--------------------------------------------------------------------
+2.1 System requirements
+--------------------------------------------------------------------
+
+To run MPAGD games you need a standard PAL/NTSC VIC20. You do need RAM expansions to run MPAGD. Below is an overview of the hardware you need:
+
+	- RAM      : Block 0: $0400-$0fff
+	             Block 1: $2000-$3fff
+	             Block 2: $4000-$5fff
+	             Block 3: $6000-$7fff
+	             Block 5: $a000-$bfff
+	- Disc     : Turboload is selectable in MPAGD
+	- Joystick : Optional
+
+MPAGD is designed to run a game on a PAL or NTSC machine without difference.
+
+The VIC20 port does have a few restrictions when using MPAGD:
+
+- Screen size max 22 x 11 big characters (8x16)
+- Resolution high res mode max 176 x 176 pixels
+- Resolution multicolour mode max 89 x 176 pixels
+- Colour can be set for a 8 x 16 block
+
+--------------------------------------------------------------------
+2.2 VIC20 MPAGD Suite
+--------------------------------------------------------------------
+
+A MPAGD Suite is a work around for creating and testing games for multiple platorms. How does the this work?
+
+1. Create an AGD text file:
+First you create a text file (the so called .AGD file) which contains commands to define all graphics and the game plot. This can be done manually or by using WinAGD. The commands are AGD commands and can be found in the manual of MPAGD.
+
+2. Compile the AGD text file to an asm source file:
+After creating the .AGD file, you need to compile this file. The compiler compiles the AGD commands into asm instructions and merges an engine file. The engine file contains routines needed for playing the game.
+
+3. Assemble the asm source file to a bin file:
+After the asm file is created, an assembler is used to assemble a binary file. This binary file can be used to run in an emulator. If the used platform used disk images, a diskimage is created and the binary file is added to this image.
+
+4. Start an emulator with the bin file:
+The final step is starting an emulator with the binary file or diskimage for testing.
+
+If you want to start the process manually after creating an AGD file eg TEST.AGD, type: build test
+There are a few parameters you can add to the build command:
+
+	- build <game> pal	, Start VICE in PAL mode (default)
+	- build <game> ntsc	, Start VICE in NTSC mode
+	- build <game> turbo	, Add a selectable turboloader to the diskimage
+	- build <game> a	, Enables adventure mode (see MPAGD documentation)
+	- build <game> b	, Enables big sprites 16x24
+	- build <game> i	, Enables inverted graphics (usefull for monochrome games)
+	- build <game> r	, Enables pre-shifted tables to save space
+ 
+--------------------------------------------------------------------
+2.3 Create hires game
+--------------------------------------------------------------------
+
+- Screen	: bitmap hires mode 176 x 176
+		  The screen is switched to 22 x 11 big character mode
+- Character	: 8 x 16 pixels
+- Colours	: 8
+    PAPER	: 0 -  7, sets the background colour for the complete screen		
+    INK		: 0 -  7, sets the front colour per attribute colour block 		
+    BORDER	: 0 - 15, sets border colour.		 
+
+--------------------------------------------------------------------
+2.4 Create multicolour game
+--------------------------------------------------------------------
+
+- Screen	: bitmapmode multicolour mode 89 x 176 
+		  The screen is switched to 22 x 11 big character mode
+- Characters	: 4 x 16 pixels
+- Colours	: 16
+    PAPER	: 8 - 15, switch to Multicolour mode (for colours 0-7)
+    INK		: 8 - 15, switch to Multicolour mode (for colours 0-7)
+    BORDER	: 0 - 15, sets border colour.
+    AUXCOLOUR	: 0 - 15, sets the auxiliary colour for multicolour mode
+
+--------------------------------------------------------------------
+2.5 Create game using WinAGD (hack)
+--------------------------------------------------------------------
+
+You can create a VIC20 game in WinAGD, but there are some rules to follow. There are 2 hacks to create VIC20 games:
+
+- Monochrome games, use the ZX Spectrum port
+- Multicolour games, use the Atom port
+
+Monochrome games, use the ZX Spectrum port:
+-------------------------------------------
+There are a few settings which have to be done to be able to create a VIC20 game:
+
+WinnAGD:
+- Start WinAGD10.exe
+- Select Machine -> Spectrum Standard
+
+Editor -> Window size:
+- Select editor: Window size
+- Define a window from topleft, max size 22x22 
+- Click on SCORE-, LIVES- and HIGH SCORE button to remove blocks
+
+Editor -> Blocks:
+- Select block 0
+- Click until frontcolour (left coloured block) is DARK blue
+- Click until backcolour (right coloured block) is DARK blue
+  Click once right to make the backcolour black
+- Repeat this for all other blocks
+- Create new blocks
+
+Editor -> Sprites:
+- Select sprite 0
+- Click until frontcolour (left coloured block) is DARK blue
+- Click until backcolour (right coloured block) is DARK blue
+  Click once right to make the backcolour black
+- Repeat this for all other sprites
+- Create new sprites
+
+Editor -> Object:
+- Select object 0
+- Click until frontcolour (left coloured block) is DARK blue
+- Repeat this for all other sprites
+- Create new objects
+
+Events -> Game Initialisation:
+- Remove all code below EVENT GAMEINIT
+- Be sure the last line is an empty line
+
+Events -> Intromenu:
+- Add: PAPER 0
+- Add: INK 1
+- Add: CLS
+
+WinnAGD:
+- Select File -> Build or press F5
+
+So for minimal testing you must follow these steps:
+
+- All block, sprites and object frontcolour dark blue (1)
+  All block, sprites and object background colour black (0)
+- You need minimal 1 sprite
+- You need minimal 1 screen
+- You must locate a sprite with Editor -> Sprite positions on the defined screen
+- Add movement sprite with Tools -> Script generator
+  Select for Player -> Platformer
+  Press: Generate scripts
+- Select File -> Build or press F5
+- Copy the DELETEME.AGD file into the VIC20 scripts folder
+- Open a CMD window and go to the VIC20 folder
+- Type: build deleteme
+
+Multicolour games, use the Atom port:
+-------------------------------------------
+There are a few settings which have to be done to be able to create a VIC20 game:
+You can use 4 colours, the Atom colours correspondent with VIC20 colours:
+
+	Atom:	 VIC20
+	-----------------
+	GREEN  = PAPER
+	YELLOW = BORDER
+	BLUE   = INK
+	RED    = AUXCOLOUR
+
+WinnAGD:
+- Start WinAGD10.exe
+- Select Machine -> Acorn Atom Colour
+
+Editor -> Window size:
+- Select editor: Window size
+- Define a window from topleft, max size 22x22 
+- Click on SCORE-, LIVES- and HIGH SCORE button to remove blocks
+
+Editor -> Blocks:
+- Select frontcolour (left coloured block)
+- Select backcolour (right coloured block)
+- Create new blocks
+
+Editor -> Sprites:
+- Select frontcolour (left coloured block)
+- Select backcolour (right coloured block)
+- Create new sprites
+
+Editor -> Object:
+- Select frontcolour (left coloured block)
+- Select backcolour (right coloured block)
+- Create new objects
+
+Events -> Game Initialisation:
+- Remove all code below EVENT GAMEINIT
+- Be sure the last line is an empty line
+
+Events -> Intromenu:
+- Add: PAPER 5
+- Add: BORDER 7
+- Add: INK 6
+- Add: AUXCOLOUR 2
+- Add: CLS
+
+WinnAGD:
+- Select File -> Build or press F5
+
+So for minimal testing you must follow these steps:
+
+- You need minimal 1 sprite
+- You need minimal 1 screen
+- You must locate a sprite with Editor -> Sprite positions on the defined screen
+- Add movement sprite with Tools -> Script generator
+  Select for Player -> Platformer
+  Press: Generate scripts
+- Select File -> Build or press F5
+- Copy the DELETEME.AGD file into the VIC20 scripts folder
+- Open DELETEME.AGD
+  Change all last numbers (96) in DEFINEBLOCK in 14 
+  Change first number (96) in DEFINEOBJECT in 14 
+- Open a CMD window and go to the VIC20 folder
+- Type: build deleteme
+
+You can change the colours in the DELETEME.AGD file into other colours but to go to multicolourmode, add 8 to the colour number ( eg RED = 2 -> 2 + 8 = 10)
+
+====================================================================
+3.0 Features:
+====================================================================
+
+--------------------------------------------------------------------
+3.1 Input:
+--------------------------------------------------------------------
+
+There are 2 ways to use an input device in MPAGD:
+
+	- Keyboard
+	- Joystick
+
+You can set these inputs manually by setting the CONTROL variable, LET CONTROL 0 is for the keyboard and LET CONTROL 1 for the joystick selection. You can also use the CONTROLMENU command, then the game waits for pressing the 1-key (keyboard) or the 2-key (joystick). All movements and FIRE are mapped to the joystick, FIRE2,3 and the OPTION keys will be key inputs.
+
+--------------------------------------------------------------------
+3.2 Turbodisk
+--------------------------------------------------------------------
+
+The Turbodisk source file is stored in the folder ...\CC65\Turboload
+You can compile Turbodisk with BUILD TURBOLOAD
+This compiles the asm file into a binary file and copies TURBODISK into the ...\Suite VIC20 Bitmap\CC65 folder.
+
+The BUILD.BAT for MPAGD adds this file to the diskimage if the turbo parameter is added at the BUILD command.
+Eg. build game turbo
+
+You can use Turbodisk by adding code to the MPAGD file:
+
+	LOAD "TURBODISK"
+	CALL $a400 
+
+Add this code in EVENT INTROMENU and only load it once.
+
+--------------------------------------------------------------------
+3.3 Music
+--------------------------------------------------------------------
+
+The music player file is stored in the folder ...\CC65\Music
+You can compile eg PLAYER1 with BUILD PLAYER1
+This compiles the asm file into a binary file and copies it into the ...\Suite VIC20 Bitmap\Music folder.
+
+The BUILD.BAT for MPAGD adds this file standard to the diskimage.
+There is an interrupt routine which is called at 50Hz so the music will sound the same for PAL and NTSC.
+
+- Loadaddress	: $a900
+- Filesize	: max $c000-$a900 = 5888 bytes (5,75kB)
+- Zeropage	: $d0-$e8
+- API calls	: $a900 = jmp music_init
+		  $a903 = jmp music_on
+		  $a906 = jmp music_off
+		  $a909 = jmp music_play
+
+Add this code in EVENT INTROMENU and only load it once.
+
+	LOAD "PLAYER1"	; load music
+	MUSICINIT	; music_init
+
+The API calls can be called in the code by adding:
+	MUSICINIT	; music_init
+	MUSICON		; music_on
+	MUSICOFF	; music_off
+
+--------------------------------------------------------------------
+3.4 Pictures
+--------------------------------------------------------------------
+
+You can use pictures made in MultiPaint or MiniPaint.
+
+Multipaint:
+-----------
+To create a picture in Multipaint, use VIC 20 Hires mode. In Multipaint you can load or edit pictures and colours. When you are ready then select File -> Export TXT -> Hex -> +Save VIC
+The filename should be the gamename with a number, eg. SLASHER1 and the file should be stored in the folder ...\_FileConvert.
+
+To use the picture in MPAGD, start a CMD window, go to the VIC20 suite folder and type: ConvertMultipaintPic
+All pictures in the _FileConvert folder are converted to the right format for MPAGD and copied into the pictures folder ready to be used.
+
+ When you BUILD your game, MPAGD looks for pictures with the same name in the pictures folder and if they exist, these pictures are assembled and added to the diskimage. You can load pictures in MPAGD by using the LOAD command, eg:
+
+	DISPLAYOFF		; Hide screen
+	LOAD "GAMENAME1D"	; Load bitmapdata
+	LOAD "GAMENAME1C"	; Load colour attributes
+	DISPLAYON		; Show screen
+
+MiniPaint:
+----------
+Minipaint is more advanced and can mix hires- with multicolour mode to get the best result. When the picture is finished, export it as a PRG file. 
+
+Then start Vice and load the PRG file. When the picture is shown, enter the active Monitor in Vice and type:
+
+	s "gamename1d" 0 1000 1fff
+	s "gamename1c" 0 9400 97ff
+	m 900e
+
+Now write down 3 numbers:
+	The high nibble of $900e = AUXCOLOUR
+	The high nibble of $900f = PAPER
+	The low nibble of $900f  = BORDER
+
+To load the picture in MPAGD, use the LOAD command:
+
+	DISPLAYOFF		; Hide screen
+	LOAD "GAMENAME1D"	; Load bitmapdata
+	LOAD "GAMENAME1C"	; Load colour attributes
+	DISPLAYON		; Show screen
+
+	gamename: should be the name of the game
+	1	: should be and adjustent number, so for the second picture in the game use 2, etc
+	d	: stands for picture data
+	c	: stands for the picture colour attributes
+
+--------------------------------------------------------------------
+3.5 User routines
+--------------------------------------------------------------------
+
+In the file USER.INC, you can add your own assembler code. The command USER x jumps to this routine with A=x. A common used USER x can be:
+
+	cmp #0		; Execute routine0 when USER 0 is entered
+	bne :+
+	jmp routine0
+:
+	cmp #1		; Execute routine1 when USER 1 is entered
+	bne :+
+	jmp routine1
+:
+	cmp #2		; Execute routine1 when USER 2 is entered
+	bne :+
+	jmp routine2
+:
+	rts
+
+routine0:
+	.....
+	rts
+routine1:
+	.....
+	rts
+routine2:
+	.....
+	rts
+
+====================================================================
+4.0 Credits
+====================================================================
+
+- Jonathan
+- Kees
+- Mauro
+- Sebastian
+- 

@@ -31,8 +31,13 @@ load:   .word @end
 main:
 	.include "game.inc"
 	.include "lib.inc"
+;	.include "music.inc"
+;colscr:	.incbin "..\pictures\slasher3c"
+;datscr:	.incbin "..\pictures\slasher3d"
+
 	.include "z80.asm"
+
 eind_asm:
 eop:					; End Of Program
 
-.out .sprintf("Gamecode size = %d bytes, free space = %d bytes", (eind_asm - main),(35840-eind_asm + main))
+.out .sprintf("Gamecode size = %d bytes, free space = %d bytes", (eind_asm - main),(24576-eind_asm + main))

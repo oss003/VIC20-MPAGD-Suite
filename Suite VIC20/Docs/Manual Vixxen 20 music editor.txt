@@ -1,0 +1,116 @@
+==  V  I  X  X  E  N    2  0  ==
+
+
+~github repo
+
+Known Issues
+~ no idea how well this runs on slower machines
+~ audio emulation is not close to perfect (issue #19)
+
+Keys
+~ Meta Key is Ctrl for Windows/Linux and Option/Alt on OSX
+~ Keys marked with * are not yet implementd
+
+
+Global Keys
+
+Tab               - next input
+Shift Tab         - widdershins input
+Meta Tab          - toggle PAL/NTSC
+Meta CapsLock     - toggle petscii blocks
+Meta Shift \      - reboot vixxen
+Meta Shift [      - decrease audio buffer
+Meta Shift ]      - increase audio buffer
+
+
+Grid Input Keys
+
+Arrow Keys        - navigation
+Meta Down         - decrease value
+Meta Up           - increase value
+Meta Left         - decrease value by 16
+Meta Right        - increase value by 16
+Page Up           - move cursor 4 up
+Page Down         - move cursor 4 down
+Home              - move cursor to the top
+End               - move cursor to the bottom
+Backspace         - move cell value up one cell
+. or Delete       - empty cell, move cursor down
+Insert            - insert empty cell
+Shift Backspace   - move cell values up one cell across row
+Shift Delete      - empty cells across row, move cursor down
+Shift Insert      - insert empty cells across row
+
+Shift Arrow Keys  - mark selection
+Meta A				- select whole column
+Meta A (x2)       - select whole visible grid
+Meta C            - copy selection (or cursor) to clipboard
+Meta D            - deselect
+Meta V            - paste clipboard into grid
+Meta X            - cut selection (or cursor) into clipboard
+
+Hex Value Inputs
+
+Keys   ` 1 2 3 4 5 6 7 8 9 q w e r t y
+Value  0 1 2 3 4 5 6 7 8 9 A B C D E F
+
+
+
+BABY-K Global Keys
+
+Meta Shift D      - load Demo groove
+Meta E            - export VIC 20 Executible binary
+Meta Shift E      - Export song data in binary
+Meta F            - new Fresh song
+Meta O            - show a secret message Oh!
+Meta R            - Revert song to last browser save
+Meta S            - save song to browser localStorage
+Meta Shift S      - force donload of Song data
+*F5               - play song from begining
+*F6               - loop pattern
+*F7               - play song from position
+*F8               - stop
+Space             - toggle play/pause
+\                 - toggle root octave
+/                 - set root octave to 0
+*                 - set root octave to 1
+'                 - change input tuning
+, or Scroll Lock  - follow mode toggle
+Meta Shift Down   - next row of song
+Meta Shift Up     - previous row of song
+Meta Shift Right  - skip 4 rows ahead in song
+Meta Shift Left   - skip 4 rows behind in song
+Meta Shift Home   - beginning of song
+Meta Shift End    - end of song space
+
+
+Song Editor Keys
+
+*Meta R            - replicate (clone) pattern(s)
+
+
+Pattern + Song Editor Keys
+
+-                 - decrease pattern number
+=                 - increase pattern number
+Meta -            - decrease pattern by 16
+Meta =            - increase pattern by 16
+Shift -           - decrease pattern numbers in row
+Shift =           - increase pattern numbers in row
+Meta Shift -      - decrease patterns in row by 16
+Meta Shift =      - increase patterns in row by 16
+
+
+Pattern Editor
+
+1                 - OFF note
+`                 - NeXT row
+~                 - END song
+
+Music Note Inputs [2 Octaves]
+
+Keys   z s  x d  c v g  b h  n j  m
+Value  C C# D D# E F F# G G# A A# B
+
+Keys   q 2  w 3  e r 5  t 6  y 7  u i 9
+Value  C C# D D# E F F# G G# A A# B C C#
