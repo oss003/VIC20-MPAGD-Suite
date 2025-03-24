@@ -1,0 +1,34 @@
+-----------------------------------------------------------------------------------------------------
+STEP 1: Download MPAGD
+-----------------------------------------------------------------------------------------------------
+- Download MPAGD v0.7.10 from: 
+	https://jonathan-cauldwell.itch.io/multi-platform-arcade-game-designer
+- Unzip MPAGD v0.7.10 and create V0.7.10
+
+-----------------------------------------------------------------------------------------------------
+STEP 2: Download VIC20 Suite
+-----------------------------------------------------------------------------------------------------
+- Download the VIC20 Suite from: 
+	https://github.com/oss003/VIC20-MPAGD-Suite-Bitmap-/archive/refs/heads/master.zip
+- Unzip Suite in V0.7.10 directory
+- Rename the Suite to: Suite VIC20 Bitmap
+
+-----------------------------------------------------------------------------------------------------
+STEP 3: Automate VIC20 build
+-----------------------------------------------------------------------------------------------------
+- Open BUILD-ZX.BAT and replace content with:
+	@echo off
+	echo VIC20 build ....
+	copy %1.agd ".\Suite VIC20 Bitmap\scripts"
+	cd "Suite VIC20 Bitmap"
+	call build %~n1
+	cd ..
+- Save BUILD-ZX.BAT
+
+-----------------------------------------------------------------------------------------------------
+STEP 4: Download demo project
+-----------------------------------------------------------------------------------------------------
+- Download VIC20_MONO.ZIP
+- Unzip project in V0.7.10\ExampleProjects
+- Start WinAGD and load project
+

@@ -1,6 +1,12 @@
 @echo off
 
 rem -------------------------------------------------------
+rem Save current folder path
+rem -------------------------------------------------------
+
+ set curdir=%cd%
+
+rem -------------------------------------------------------
 rem Check parameters
 rem -------------------------------------------------------
 
@@ -108,7 +114,8 @@ rem Error handling
 rem -------------------------------------------------------
 
 :copyerror
- echo *** COPY ERROR ***, %1.agd not found .....
+ cd %curdir%
+ echo *** COPY ERROR ***, %1 not found .....
  goto end
 
 :agderror

@@ -4440,10 +4440,10 @@ void CR_Divide( void )
 
 void CR_SpriteInk( void )
 {
-//	CompileArgument();
-//	WriteInstruction( "and #7" );
-//	WriteInstruction( "sta z80_c" );
-//	WriteInstruction( "jsr cspr" );
+	CompileArgument();
+	WriteInstruction( "and #7" );
+	WriteInstruction( "sta z80_c" );
+	WriteInstruction( "jsr cspr" );
 	WriteInstruction( "; SPRITEINK command" );
 }
 

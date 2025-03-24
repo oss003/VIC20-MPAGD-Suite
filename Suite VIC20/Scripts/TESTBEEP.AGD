@@ -111,7 +111,7 @@ DEFINEFONT      0 0 0 0 0 0 0 0
 ; Block 0
 
 DEFINEBLOCK     EMPTYBLOCK      ; property
-                0 0 0 0 0 0 0 0 1                                      ; Spectrum.
+                0 0 0 0 0 0 0 0 71                                      ; Spectrum.
 
 ; Sprites
 ; First argument defines the number of frames
@@ -227,10 +227,8 @@ ENDIF
 EVENT MAINLOOP2
 
 EVENT INTROMENU
-; LOAD"PLAYER1"
-; MUSICINIT
- PAPER 0
- INK 1
+ LOAD"PLAYER1"
+ MUSICINIT
  CLS
 
 EVENT GAMEINIT

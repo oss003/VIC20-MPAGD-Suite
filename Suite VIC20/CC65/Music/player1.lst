@@ -147,6 +147,7 @@ Current file: player1.asm
 00003Br 2               
 00003Br 2  A9 01        	lda #$01		; load first frame length
 00003Dr 2  85 D3        	sta FRAME_LENGTH
+00003Fr 2               
 00003Fr 2  60           	rts
 000040r 2               
 000040r 2               

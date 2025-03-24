@@ -82,6 +82,7 @@
 ;	$9003	set # of rows
 ;		bit 0 sets 8x8 or 16x8 chars
 ;		bits 1-6 set # of rows
+;	$9004	TV raster beam line
 ;	$9005	start of character memory
 ;		bits 0-3 start of character memory (default = 0)
 ;		bits 4-7 is rest of video address (default= F)
@@ -212,6 +213,15 @@
 
 init:
 
+	lda #0
+	sta crtflag
+	lda $ede4
+	cmp #5
+	beq Ntsc_System
+	lda #1
+	sta crtflag
+Ntsc_System:	
+
 ; Disable interrupts
 
 	lda #$7f
@@ -227,9 +237,12 @@ init:
 	sta RegB
 	sta RegC
 	sta RegD
-	sta RegE
 	lda #$00
 	sta SOUNDS_STATUS
+
+	lda RegE
+	ora #$0f		; Set volume max
+	sta RegE
 
 ; Init screen for NTSC
 ; this sets the background and border color of the screen
@@ -664,6 +677,10 @@ vsync1:
 	beq vsync1		; wait if timer not expired
 	lda Timer11_Low		; clear Timer interrupt
 
+rasterwait:
+	lda Reg4
+	bne rasterwait
+
 ;-------------------------------------------------------------
 ; Handle sound command
 ;-------------------------------------------------------------
@@ -933,6 +950,15 @@ ssprib:
 ;------------------------------------------------------------------
 
 sspric:
+	lda fontcol			; Background colour
+	sta z80_c
+	jsr cspr_old
+
+	ldy #17
+	lda (z80_ix),y
+	sta z80_c
+	jsr cspr_new
+
 .if rflag
 	jsr gsprad 		; get old sprite address.
 
@@ -1304,6 +1330,102 @@ ddline_shift4:
 	sta z80_lp+1		; new high byte of address.
 	rts
 .endif
+
+;----------------------------------------------------
+; SPRINTEINK
+;----------------------------------------------------
+
+cspr:
+	lda z80_c
+	ldy #17
+	sta (z80_ix),y
+	jsr cspr_new
+	rts
+
+cspr_new:
+	ldy #8
+	lda (z80_ix),y			; Get sprite y
+	jmp cspr_go
+cspr_old:
+	ldy #3
+	lda(z80_ix),y
+cspr_go:
+	sta dispy
+	cmp #8*ScrHeight+1		; Check if on screen
+	bcc :+
+	rts
+:
+	iny
+	lda (z80_ix),y			; Get sprite x
+	sta dispx
+
+; Calculate colour attribte address in scraddr
+
+	jsr coladdr
+ 
+; Set number of rows
+
+	lda #2
+	sta z80_b
+	lda dispy
+	and #15
+	bne :+
+	dec z80_b
+:
+; Loop to colour row blocks
+
+cspr0:
+	ldy #0
+	lda z80_c
+	sta (scraddr),y
+cspr6:
+	ldy #1
+	sta (scraddr),y
+cspr7:
+	lda dispx
+	and #7
+	beq cspr1
+
+	ldy #2
+	lda z80_c
+	sta (scraddr),y
+cspr1:
+	lda scraddr
+	clc
+	adc #22
+	sta scraddr
+	bcc :+
+	inc scraddr+1
+:
+	dec z80_b
+	bne cspr0
+	rts
+
+; Calculate colour attribte address
+; scraddr = COLOR + dispy/16 + dispx/8
+
+coladdr:
+	lda dispy
+	lsr a
+	lsr a
+	lsr a
+	lsr a
+	tay
+	lda COLATTTB_hb,y
+	sta scraddr+1
+	lda COLATTTB_lb,y
+	sta scraddr
+	lda dispx
+	lsr a
+	lsr a
+	lsr a
+	clc
+	adc scraddr
+	sta scraddr
+	bcc :+
+	inc scraddr+1
+:
+	rts
 
 ;----------------------------------------------------
 ; Display character in A at dispx,dispy.

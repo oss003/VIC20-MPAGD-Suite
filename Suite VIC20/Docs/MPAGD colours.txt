@@ -1,0 +1,10 @@
+MPAGD ZX Spectrum		VIC20 emulator
+----------------------------------------------
+  0	Black		->	Black
+  1	Dark blue	->	White	
+  2	Dark red	->	Red	
+  3	Dark magenta	->	Cyan	
+  4	Dark green	->	Purple	
+  5	Dark cyan	->	Green	
+  6	Dark yellow	->	Blue	
+  7	Dark white	->	Yellow	

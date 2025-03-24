@@ -129,6 +129,7 @@ music_init:
 
 	lda #$01		; load first frame length
 	sta FRAME_LENGTH
+
 	rts	
 
 

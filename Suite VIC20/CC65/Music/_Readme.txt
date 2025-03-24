@@ -20,4 +20,9 @@ Change musicdata in player1.asm after label songpos:
 	.incbin "songdata_pal.bin"
 
 Type: build player1
+
+Rename player1.prg to <gamename>.mus and copy it to:
+	..\Suite VIC20 Bitmap\Music
+E.g. music for slasher should be named slasher.mus
+
  
